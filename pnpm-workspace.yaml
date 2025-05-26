@@ -1,0 +1,5 @@
+packages:
+  # Development tools and infrastructure
+  - "tools/*"
+  # Library packages (for future shared utilities)
+  - "packages/*"

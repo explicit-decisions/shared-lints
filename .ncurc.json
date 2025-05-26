@@ -1,0 +1,18 @@
+{
+  "$schema": "https://raw.githubusercontent.com/raineorshine/npm-check-updates/main/src/types/RunOptions.json",
+  "target": "latest",
+  "upgrade": false,
+  "interactive": false,
+  "format": ["group", "repo"],
+  "color": true,
+  "cache": true,
+  "cacheExpiration": 1440,
+  "timeout": 30000,
+  "doctor": false,
+  "doctorTest": "npm test",
+  "pre": false,
+  "peer": false,
+  "packageManager": "pnpm",
+  "workspaces": true,
+  "concurrency": 8
+}

@@ -1,0 +1,10 @@
+{
+  "$schema": "./schemas/dependency-versions.schema.json",
+  "lastUpdated": "2025-05-26",
+  "dependencies": {},
+  "rules": {
+    "allowedOutdatedDays": 30,
+    "requireReasonForOld": true,
+    "blockMajorUpdatesWithoutReview": true
+  }
+}

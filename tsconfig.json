@@ -1,0 +1,35 @@
+{
+  "extends": "@tsconfig/strictest",
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "types": [
+      "node"
+    ],
+    "strict": true,
+    "noEmit": true,
+    "allowArbitraryExtensions": true,
+    "allowImportingTsExtensions": true,
+    "exactOptionalPropertyTypes": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true
+  },
+  "exclude": [
+    "node_modules",
+    "**/node_modules",
+    "dist",
+    "**/dist",
+    "coverage",
+    "**/coverage",
+    ".vitest",
+    "**/.vitest",
+    "eslint.config.js",
+    "reference-repos/**",
+    "tools/**/*.js"
+  ]
+}

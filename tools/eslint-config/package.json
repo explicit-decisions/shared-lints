@@ -1,0 +1,34 @@
+{
+  "name": "@explicit-decisions/eslint-config",
+  "version": "1.0.0",
+  "description": "ESLint configurations enforcing explicit decisions for LLM-assisted TypeScript development",
+  "type": "module",
+  "main": "src/index.js",
+  "exports": {
+    ".": "./src/index.js",
+    "./strict": "./src/strict.js",
+    "./base": "./src/base.js",
+    "./test": "./src/test.js"
+  },
+  "scripts": {
+    "test": "vitest",
+    "lint": "eslint src/"
+  },
+  "keywords": [
+    "eslint",
+    "eslint-config",
+    "typescript",
+    "shared"
+  ],
+  "peerDependencies": {
+    "eslint": ">=9.0.0",
+    "@typescript-eslint/eslint-plugin": ">=8.0.0",
+    "@typescript-eslint/parser": ">=8.0.0",
+    "eslint-config-prettier": ">=10.0.0",
+    "eslint-plugin-import-x": ">=4.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.17.50",
+    "vitest": "^1.6.1"
+  }
+}

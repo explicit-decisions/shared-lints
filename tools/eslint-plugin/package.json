@@ -1,0 +1,27 @@
+{
+  "name": "@explicit-decisions/eslint-plugin",
+  "version": "1.0.0",
+  "description": "Custom ESLint rules enforcing explicit decisions for LLM-assisted development",
+  "type": "module",
+  "main": "src/index.js",
+  "exports": {
+    ".": "./src/index.js"
+  },
+  "scripts": {
+    "test": "vitest",
+    "lint": "eslint src/"
+  },
+  "keywords": [
+    "eslint",
+    "eslintplugin",
+    "eslint-plugin",
+    "shared"
+  ],
+  "peerDependencies": {
+    "eslint": ">=9.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.17.50",
+    "vitest": "^1.6.1"
+  }
+}

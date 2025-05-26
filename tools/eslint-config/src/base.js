@@ -1,0 +1,70 @@
+// @ts-check
+
+/**
+ * @typedef {import('eslint').Linter.Config} ESLintConfig
+ */
+
+/**
+ * Base ESLint configuration with import rules
+ * Applied to all files in projects using this config
+ */
+
+import * as importPlugin from "eslint-plugin-import-x";
+
+/**
+ * Configure import plugin rules
+ * @type {ESLintConfig}
+ */
+export const importConfig = {
+  plugins: {
+    "import-x": /** @type {any} */ (importPlugin),
+  },
+  rules: {
+    // Import sorting and organization (these support auto-fix)
+    "import-x/order": [
+      "error",
+      {
+        groups: [
+          "builtin",
+          "external",
+          "internal", 
+          "parent",
+          "sibling",
+          "index",
+        ],
+        "newlines-between": "always",
+        alphabetize: {
+          order: "asc",
+          caseInsensitive: true,
+        },
+      },
+    ],
+    "import-x/no-duplicates": "error",
+    "import-x/newline-after-import": "error",
+    "import-x/consistent-type-specifier-style": ["error", "prefer-top-level"],
+    "import-x/no-unresolved": "off", // TypeScript handles this better
+    "import-x/extensions": [
+      "error",
+      "ignorePackages",
+      {
+        ts: "always",
+        tsx: "always", 
+        js: "always",
+        jsx: "always",
+      },
+    ],
+  },
+};
+
+/**
+ * Base rules for all JavaScript/TypeScript files
+ * @type {Record<string, any>}
+ */
+export const baseRules = {
+  // Core JavaScript rules
+  "no-var": "error",
+  "prefer-const": "error",
+  eqeqeq: ["error", "always"],
+  curly: ["error", "all"],
+  "no-undef": "off", // TypeScript already handles this better
+};

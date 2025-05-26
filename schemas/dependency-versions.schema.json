@@ -1,0 +1,90 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Dependency Version Tracking",
+  "description": "Schema for tracking dependency versions and update decisions",
+  "type": "object",
+  "required": ["lastUpdated", "dependencies", "rules"],
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "lastUpdated": {
+      "type": "string",
+      "format": "date",
+      "description": "Date when this file was last updated"
+    },
+    "dependencies": {
+      "type": "object",
+      "description": "Map of dependency names to version tracking info",
+      "additionalProperties": {
+        "$ref": "#/definitions/DependencyInfo"
+      }
+    },
+    "rules": {
+      "$ref": "#/definitions/Rules"
+    }
+  },
+  "definitions": {
+    "DependencyInfo": {
+      "type": "object",
+      "required": ["currentVersion", "latestAvailable", "reason", "reviewDate", "reviewer", "status"],
+      "properties": {
+        "currentVersion": {
+          "type": "string",
+          "description": "Version currently used in package.json"
+        },
+        "latestAvailable": {
+          "type": "string",
+          "description": "Latest version available on npm"
+        },
+        "reason": {
+          "type": "string",
+          "description": "Reason for keeping current version or update decision"
+        },
+        "reviewDate": {
+          "type": "string",
+          "format": "date",
+          "description": "Date when this decision was last reviewed"
+        },
+        "reviewer": {
+          "type": "string",
+          "description": "Who made the decision (user, system, etc.)"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["current", "outdated", "blocked", "scheduled"],
+          "description": "Status of this dependency"
+        },
+        "updateScheduled": {
+          "type": "string",
+          "format": "date",
+          "description": "When update is scheduled (if status is 'scheduled')"
+        },
+        "breakingChanges": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "Known breaking changes in newer versions"
+        }
+      }
+    },
+    "Rules": {
+      "type": "object",
+      "required": ["allowedOutdatedDays", "requireReasonForOld", "blockMajorUpdatesWithoutReview"],
+      "properties": {
+        "allowedOutdatedDays": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Number of days a dependency can be outdated before requiring review"
+        },
+        "requireReasonForOld": {
+          "type": "boolean",
+          "description": "Whether a reason is required for keeping old versions"
+        },
+        "blockMajorUpdatesWithoutReview": {
+          "type": "boolean",
+          "description": "Whether major version updates require explicit review"
+        }
+      }
+    }
+  }
+}
