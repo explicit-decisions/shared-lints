@@ -17,6 +17,9 @@
     "deps:init": "node scripts/deps-init.js",
     "deps:interactive": "node scripts/deps-interactive.js",
     "deps:check": "pnpm exec npm-check-updates",
+    "refs:sync": "./scripts/update-reference-repos.sh",
+    "refs:validate": "node scripts/validate-reference-config.js",
+    "llm:bootstrap": "node scripts/llm-bootstrap.js",
     "typecheck": "tsc --noEmit",
     "clean": "pnpm -r run clean"
   },
