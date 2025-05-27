@@ -150,6 +150,150 @@ The linting rules in this project embody these principles:
 
 This creates a feedback loop where AI assistants learn project context through encountering and respecting these explicit decision points.
 
+## ESLint Rule Design: Guidance vs. Automation
+
+### What Should Auto-Fix ✅
+
+**Mechanical, deterministic changes:**
+
+```typescript
+// Import ordering - safe, well-understood
+import { b } from './b';
+import { a } from './a';  // Auto-fix: reorder
+
+// File extensions - clear project convention
+import { utils } from './utils';  // Auto-fix: add .ts extension
+
+// Syntax corrections - no ambiguity
+const x = 1  // Auto-fix: add semicolon
+```
+
+**Characteristics of good auto-fixes:**
+
+- Single correct answer based on project rules
+- No architectural implications
+- Can be applied consistently without context
+- Failure to auto-fix would be annoying busywork
+
+### What Should Guide (No Auto-Fix) 🤔
+
+**Architectural and design decisions:**
+
+```typescript
+// ❌ Don't auto-fix dependency injection
+import fs from 'fs';  // Guide: suggest injection, but don't automatically change
+
+// ❌ Don't auto-fix factory extraction  
+const data = { huge: 'object' };  // Guide: suggest factory, but human decides structure
+
+// ❌ Don't auto-fix test architecture
+function complexTest() { /* lots of logic */ }  // Guide: suggest real implementations
+```
+
+**Characteristics that require human judgment:**
+
+- Multiple valid approaches depending on context
+- Require understanding of business requirements
+- Affect code architecture and design patterns
+- Need domain knowledge to implement correctly
+
+### The Critical Reliability Requirement
+
+**Auto-fixes must be 100% reliable** because they run automatically in developer workflows:
+
+```bash
+# Developers expect this to always improve code, never break it
+pnpm lint:fix
+
+# CI/CD pipelines run auto-fixes automatically
+- run: pnpm lint:fix && git commit -am "Auto-fix lint issues"
+
+# AI assistants auto-apply fixes without human review
+# If fixes are unreliable, trust in the entire system breaks down
+```
+
+**Why 100% reliability matters:**
+
+1. **Developer trust** - One bad auto-fix breaks confidence in the entire linting system
+2. **CI/CD integration** - Automated pipelines can't recover from broken auto-fixes
+3. **AI amplification** - AI assistants will apply bad patterns at scale if they learn from unreliable fixes
+4. **Compounding errors** - Unreliable fixes can create cascading problems across codebases
+
+### The Over-Aggressive Auto-Fix Problem
+
+**What we learned:** If auto-fixes are corrupting code, the rules are poorly designed.
+
+**Example of unreliable auto-fix:**
+
+```javascript
+// This rule was adding duplicate comments every time it ran
+fix(fixer) {
+  return fixer.insertTextBefore(node, '// Consider dependency injection\n');
+}
+// Result: Multiple identical comments, corrupted files after multiple runs
+```
+
+**Why this failed the reliability test:**
+
+- Not idempotent (running twice gives different results)
+- Assumes knowledge about existing comments
+- Modifies code structure without understanding context
+
+**Better approach - guidance only:**
+
+```javascript
+// No auto-fix, just clear guidance
+context.report({
+  node,
+  messageId: 'considerDependencyInjection',
+  // Human reads message and makes architectural decision
+});
+```
+
+### Rule Design Guidelines
+
+1. **Auto-fix criteria (ALL must be true):**
+   - Is there exactly one correct way to fix this?
+   - Can it be applied without understanding business context?
+   - Would not auto-fixing create annoying busywork?
+   - **Is the fix 100% reliable and idempotent?**
+   - **Will the fix never break working code?**
+   - **Can the fix be applied safely in any codebase context?**
+
+2. **Reliability tests for auto-fixes:**
+
+   ```bash
+   # The fix must pass ALL of these tests:
+   
+   # 1. Idempotent test
+   pnpm lint:fix
+   pnpm lint:fix  # Should make no additional changes
+   
+   # 2. No regression test  
+   pnpm test      # Should pass before and after auto-fix
+   
+   # 3. Multiple codebase test
+   # Apply to different codebases - should never break anything
+   
+   # 4. Edge case test
+   # Test with unusual formatting, comments, syntax variations
+   ```
+
+3. **Guidance-only criteria (ANY can trigger this):**
+   - Are there multiple valid approaches?
+   - Does fixing require architectural decisions?
+   - Could auto-fixing introduce bugs or poor design?
+   - **Could the fix fail in any reasonable codebase scenario?**
+   - **Does the fix depend on context not visible in the AST node?**
+
+4. **Error message quality:**
+   - Explain WHY the pattern is problematic
+   - Provide ACTIONABLE next steps
+   - Reference documentation for complex patterns
+   - **For guidance-only rules: explain what the developer should consider**
+
+This philosophy ensures ESLint rules **enhance human decision-making** rather than **replace human judgment**.
+
 ## The Bigger Picture
 
 Traditional development workflows evolved for human-to-human coordination. AI needs different feedback loops—ones that make human context explicit enough for AI to understand and respect it.

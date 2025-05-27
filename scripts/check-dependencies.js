@@ -66,7 +66,6 @@ async function checkDependencies() {
 
   // Check each outdated dependency against tracking file
   const violations = [];
-  const today = new Date().toISOString().split('T')[0];
 
   for (const [depName, newVersion] of Object.entries(outdatedDeps)) {
     const tracked = tracking.dependencies[depName];

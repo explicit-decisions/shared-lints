@@ -12,11 +12,12 @@ export default [
     }
   },
 
-  // Disable no-npx-usage in scripts and tooling since they contain examples
+  // Disable rules that don't apply to infrastructure code
   {
     files: ["scripts/**", "tools/**"],
     rules: {
       "@explicit-decisions/no-npx-usage": "off",
+      "@explicit-decisions/prefer-real-implementations": "off",
     }
   },
 

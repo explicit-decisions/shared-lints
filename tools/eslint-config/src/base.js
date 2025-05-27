@@ -62,6 +62,9 @@ export const importConfig = {
     "@explicit-decisions/require-ts-extensions": "error", 
     "@explicit-decisions/no-npx-usage": "error",
     "@explicit-decisions/prefer-ts-imports": "error",
+    "@explicit-decisions/require-factory-functions": "warn",
+    "@explicit-decisions/no-any-in-tests": "error", 
+    "@explicit-decisions/prefer-real-implementations": "warn",
   },
 };
 

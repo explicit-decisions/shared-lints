@@ -27,10 +27,18 @@ pnpm lint
 
 ### 🔧 ESLint Rules That Enforce Explicit Decisions
 
+**Code Quality & Structure:**
+
 - **`prefer-ts-imports`** - Auto-fixes `.js` imports to `.ts` when TypeScript files exist
 - **`require-ts-extensions`** - Enforces explicit file extensions in imports  
-- **`no-mocks-or-spies`** - Prevents test mocking, enforces factory functions
 - **`no-npx-usage`** - Prevents `npx` usage, enforces explicit package management
+
+**Testing Philosophy (No-Mocks Approach):**
+
+- **`no-mocks-or-spies`** - Prevents test mocking, enforces real implementations
+- **`require-factory-functions`** - Guides toward factory functions for test data
+- **`no-any-in-tests`** - Enforces TypeScript strictness in test files
+- **`prefer-real-implementations`** - Suggests dependency injection patterns
 
 ### 📋 Dependency Management with Decision Tracking
 
@@ -67,6 +75,11 @@ explicit-decisions init
 # Dependency management  
 explicit-decisions deps check
 explicit-decisions deps interactive
+
+# Testing setup (with no-mocks philosophy)
+explicit-decisions init --testing vitest  # Vitest with factory functions
+explicit-decisions init --testing jest    # Jest with real implementations
+explicit-decisions init --testing none    # Skip testing setup
 
 # Reference repository management
 pnpm refs:link    # Symlink for direct editing (migration work)
@@ -206,6 +219,135 @@ When the target tag is satisfied, the dependency checker will notify you:
 1. Tag-based policy satisfied: stable tag now points to ^3.0.0
    🎯 Update ready! Run 'pnpm deps:interactive' to upgrade to stable tag
 ```
+
+## Testing Philosophy: No-Mocks Approach
+
+The explicit-decisions framework enforces a **no-mocks testing philosophy** that promotes better design and more reliable tests.
+
+### Core Principles
+
+1. **No Mocks/Spies** - Never use `jest.fn()`, `sinon`, or similar mocking libraries
+2. **Factory Functions** - Use factory functions for test data creation  
+3. **Real Implementations** - Create real test implementations of external dependencies
+4. **Type Safety** - Tests follow the same TypeScript strictness as production code
+
+### Why No Mocks?
+
+**Problems with traditional mocking:**
+
+- Creates false confidence - tests pass but code is broken
+- Requires maintaining mock behavior alongside real behavior
+- Makes refactoring harder due to brittle test coupling
+- Leads to poor design (hard-to-test code gets mocked instead of refactored)
+
+**Benefits of real implementations:**
+
+- Tests catch real integration issues
+- Encourages better architecture through dependency injection
+- Tests become documentation of actual behavior
+- Refactoring is safer and easier
+
+### Automatic Setup
+
+When you run `explicit-decisions init --testing vitest`, you get:
+
+**Generated test utilities:**
+
+```typescript
+// src/test-utils/factories.ts
+export function createTestUser(overrides: Partial<TestUser> = {}): TestUser {
+  return {
+    id: 'test-user-1',
+    name: 'Test User',
+    email: 'test@example.com',
+    createdAt: new Date('2024-01-01'),
+    ...overrides,
+  };
+}
+
+// Real implementation for testing
+export class TestLogger {
+  public logs: string[] = [];
+  
+  info(message: string): void {
+    this.logs.push(\`INFO: \${message}\`);
+  }
+  
+  clear(): void {
+    this.logs = [];
+  }
+}
+```
+
+**Vitest configuration with strict coverage:**
+
+```typescript
+// vitest.config.ts (auto-generated)
+export default defineConfig({
+  test: {
+    coverage: {
+      thresholds: {
+        global: {
+          branches: 70,
+          functions: 70,
+          lines: 70,
+          statements: 70,
+        },
+      },
+    },
+  },
+});
+```
+
+### ESLint Enforcement
+
+The framework includes ESLint rules that enforce these patterns:
+
+```typescript
+// ❌ Caught by @explicit-decisions/no-mocks-or-spies
+const mockFn = jest.fn();
+const spy = sinon.spy(obj, 'method');
+
+// ❌ Caught by @explicit-decisions/no-any-in-tests
+const testData: any = { ... };
+
+// ✅ Encouraged by @explicit-decisions/require-factory-functions
+const user = createTestUser({ name: 'Custom Name' });
+
+// ✅ Encouraged by @explicit-decisions/prefer-real-implementations
+const logger = new TestLogger();
+const userService = new UserService(logger);
+```
+
+### Design Philosophy: Guidance Over Automation
+
+**Critical principle: Auto-fixes must be 100% reliable.**
+
+Developers and AI assistants run `pnpm lint:fix` automatically, expecting it to always improve code and never break it. One unreliable auto-fix destroys trust in the entire system.
+
+**What ESLint auto-fixes (100% reliable only):**
+
+- ✅ Import ordering and formatting - deterministic, safe
+- ✅ Simple syntax corrections - well-understood transformations
+- ✅ File extension consistency - clear project conventions
+
+**What ESLint guides (no auto-fix):**
+
+- 🤔 Dependency injection patterns - requires architectural decisions
+- 🤔 Factory function extraction - requires design judgment  
+- 🤔 Test structure improvements - requires human context
+- 🤔 Any change that could fail in edge cases or different codebases
+
+**Reliability tests for auto-fixes:**
+
+```bash
+# Every auto-fix must pass these tests:
+pnpm lint:fix
+pnpm lint:fix    # Idempotent - no additional changes
+pnpm test        # No regressions introduced
+```
+
+This approach ensures that **humans make the important decisions** while tooling provides **rock-solid automation** for mechanical tasks.
 
 ## Benefits
 
