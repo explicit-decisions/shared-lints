@@ -77,7 +77,7 @@ export const requireFactoryFunctions = createRule<[], MessageIds>({
         // Check for arrays of objects that could benefit from factories
         if (node.elements && node.elements.length > 3) {
           const hasObjectElements = node.elements.some((el) => 
-            Boolean(el) && el.type === AST_NODE_TYPES.ObjectExpression
+            el !== null && el.type === AST_NODE_TYPES.ObjectExpression
           );
           
           if (hasObjectElements) {
