@@ -1,0 +1,151 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://shared-lints.local/schemas/reference-repos.config.schema.json",
+  "title": "Reference Repositories Configuration",
+  "description": "Configuration schema for reference repositories used to extract patterns and validate the shared-lints framework",
+  "type": "object",
+  "properties": {
+    "description": {
+      "type": "string",
+      "description": "Human-readable description of this configuration file and its purpose"
+    },
+    "repositories": {
+      "type": "array",
+      "description": "List of reference repositories to sync",
+      "items": {
+        "$ref": "#/definitions/repository"
+      },
+      "minItems": 1
+    },
+    "syncOptions": {
+      "type": "object",
+      "description": "Options for the rsync synchronization process",
+      "properties": {
+        "exclude": {
+          "type": "array",
+          "description": "Patterns to exclude during sync (passed to rsync --exclude)",
+          "items": {
+            "type": "string",
+            "pattern": "^[^/].*[^/]$|^[^/]+$",
+            "description": "File or directory pattern to exclude (no leading/trailing slashes)"
+          },
+          "default": [
+            "node_modules/",
+            ".git/",
+            "coverage/",
+            "dist/",
+            "build/",
+            ".next/",
+            "*.log",
+            ".env*",
+            ".DS_Store"
+          ]
+        },
+        "dryRun": {
+          "type": "boolean",
+          "description": "Whether to run rsync in dry-run mode (no files actually copied)",
+          "default": false
+        },
+        "verbose": {
+          "type": "boolean",
+          "description": "Whether to enable verbose output during sync",
+          "default": true
+        },
+        "delete": {
+          "type": "boolean", 
+          "description": "Whether to delete files in destination that don't exist in source",
+          "default": true
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "required": ["repositories"],
+  "additionalProperties": false,
+  "definitions": {
+    "repository": {
+      "type": "object",
+      "description": "Configuration for a single reference repository",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Directory name in reference-repos/ (must be a valid directory name)",
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._-]*$",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "path": {
+          "type": "string",
+          "description": "Absolute path to the source repository on the local filesystem",
+          "pattern": "^/.*[^/]$",
+          "minLength": 2
+        },
+        "description": {
+          "type": "string",
+          "description": "Human-readable description of what this repository demonstrates",
+          "minLength": 10,
+          "maxLength": 500
+        },
+        "enabled": {
+          "type": "boolean",
+          "description": "Whether this repository should be synced (useful for temporarily disabling repos)",
+          "default": true
+        },
+        "tags": {
+          "type": "array",
+          "description": "Tags to categorize this repository (e.g., 'dependency-management', 'testing', 'typescript')",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z0-9-]+$",
+            "minLength": 2,
+            "maxLength": 30
+          },
+          "uniqueItems": true
+        },
+        "excludePatterns": {
+          "type": "array",
+          "description": "Additional exclude patterns specific to this repository (added to global excludes)",
+          "items": {
+            "type": "string",
+            "pattern": "^[^/].*[^/]$|^[^/]+$"
+          }
+        }
+      },
+      "required": ["name", "path", "description"],
+      "additionalProperties": false
+    }
+  },
+  "examples": [
+    {
+      "description": "Configuration for shared-lints reference repositories",
+      "repositories": [
+        {
+          "name": "my-typescript-project",
+          "path": "/home/user/Code/my-typescript-project",
+          "description": "Demonstrates TypeScript best practices and dependency management",
+          "tags": ["typescript", "dependency-management", "eslint"],
+          "enabled": true
+        },
+        {
+          "name": "test-framework-example",
+          "path": "/home/user/Code/testing-example",
+          "description": "Shows advanced testing patterns with custom matchers",
+          "tags": ["testing", "vitest", "no-mocks"],
+          "excludePatterns": ["test-results/", "*.coverage"]
+        }
+      ],
+      "syncOptions": {
+        "exclude": [
+          "node_modules/",
+          ".git/",
+          "coverage/",
+          "dist/",
+          "build/"
+        ],
+        "dryRun": false,
+        "verbose": true,
+        "delete": true
+      }
+    }
+  ]
+}

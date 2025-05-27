@@ -87,6 +87,22 @@ importers:
         specifier: ^1.6.1
         version: 1.6.1(@types/node@20.17.50)
 
+  tools/tooling:
+    dependencies:
+      eslint:
+        specifier: '>=9.0.0'
+        version: 9.27.0
+      npm-check-updates:
+        specifier: ^17.1.11
+        version: 17.1.18
+    devDependencies:
+      '@types/node':
+        specifier: ^20.17.50
+        version: 20.17.50
+      vitest:
+        specifier: ^1.6.1
+        version: 1.6.1(@types/node@20.17.50)
+
 packages:
 
   '@emnapi/core@1.4.3':

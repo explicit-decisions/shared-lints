@@ -1,0 +1,48 @@
+{
+  "name": "@explicit-decisions/tooling",
+  "version": "1.0.0",
+  "description": "CLI tools for setting up and managing explicit-decisions framework",
+  "type": "module",
+  "bin": {
+    "explicit-decisions": "./bin/cli.js",
+    "ed-deps": "./bin/deps.js",
+    "ed-init": "./bin/init.js"
+  },
+  "exports": {
+    ".": "./src/index.js",
+    "./deps": "./src/deps.js",
+    "./init": "./src/init.js"
+  },
+  "scripts": {
+    "test": "vitest",
+    "lint": "eslint src/ bin/",
+    "build": "echo 'No build step needed for this package'"
+  },
+  "keywords": [
+    "eslint",
+    "tooling",
+    "dependency-management",
+    "typescript",
+    "shared",
+    "cli"
+  ],
+  "dependencies": {
+    "npm-check-updates": "^17.1.11"
+  },
+  "peerDependencies": {
+    "eslint": ">=9.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.17.50",
+    "vitest": "^1.6.1"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "files": [
+    "bin/",
+    "src/",
+    "schemas/",
+    "templates/"
+  ]
+}

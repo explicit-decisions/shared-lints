@@ -1,2 +1,9 @@
 node_modules
-# Reference repositories for analysis\nreference-repos/
+
+# Reference repositories for analysis
+# Keep configuration files and documentation, but ignore the synced repos
+reference-repos/*/
+!reference-repos/.gitkeep
+!reference-repos/.gitignore
+!reference-repos/README.md
+!reference-repos/*.json

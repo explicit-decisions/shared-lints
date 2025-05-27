@@ -1,0 +1,2 @@
+# This file keeps the reference-repos directory in git while excluding the actual repos
+# The README.md in this directory is tracked, but the repository directories are ignored

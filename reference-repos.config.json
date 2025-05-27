@@ -1,0 +1,34 @@
+{
+  "description": "Configuration for reference repositories used to extract patterns and validate shared-lints framework",
+  "repositories": [
+    {
+      "name": "DoctorWhoScripts",
+      "path": "/home/ykatz/Code/Personal/DoctorWhoScripts",
+      "description": "TypeScript project with sophisticated dependency management and phase-based development patterns"
+    },
+    {
+      "name": "quick-mcp",
+      "path": "/home/ykatz/Code/Personal/quick-mcp",
+      "description": "Model Context Protocol implementation with advanced ESLint rules and testing patterns"
+    },
+    {
+      "name": "claude-exporter",
+      "path": "/home/ykatz/Code/Personal/claude-exporter",
+      "description": "Claude conversation export tool demonstrating LLM-optimized development practices"
+    }
+  ],
+  "syncOptions": {
+    "exclude": [
+      "node_modules/",
+      ".git/",
+      "coverage/",
+      "dist/",
+      "build/",
+      ".next/",
+      "*.log",
+      ".env*",
+      ".DS_Store"
+    ],
+    "dryRun": false
+  }
+}

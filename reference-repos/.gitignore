@@ -1,0 +1,11 @@
+# Ignore actual reference repository directories (these are synced from local sources)
+*/
+
+# Ignore local configuration (use template to create your own)
+reference-repos.config.json
+
+# Keep the README and template
+!README.md
+!reference-repos.config.template.json
+!.gitignore
+!.gitkeep

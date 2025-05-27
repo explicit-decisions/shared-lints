@@ -1,0 +1,47 @@
+{
+  "$schema": "../schemas/reference-repos.config.schema.json",
+  "description": "Configuration for reference repositories used to extract patterns and validate shared-lints framework",
+  "repositories": [
+    {
+      "name": "DoctorWhoScripts",
+      "path": "/home/ykatz/Code/Personal/DoctorWhoScripts",
+      "description": "Demonstrates comprehensive dependency management system and phase-based development",
+      "tags": ["typescript", "dependency-management", "phase-based-development"],
+      "enabled": true
+    },
+    {
+      "name": "quick-mcp",
+      "path": "/home/ykatz/Code/quick-mcp",
+      "description": "Shows LLM-optimized development practices and custom test infrastructure", 
+      "tags": ["testing", "no-mocks", "typescript", "mcp"],
+      "enabled": true
+    },
+    {
+      "name": "claude-exporter",
+      "path": "/home/ykatz/Code/Personal/claude-exporter",
+      "description": "Additional reference implementation for framework validation",
+      "tags": ["typescript", "cli", "ai-tools"],
+      "enabled": true
+    }
+  ],
+  "syncOptions": {
+    "exclude": [
+      "node_modules/",
+      ".git/",
+      ".DS_Store",
+      "*.log",
+      "coverage/",
+      "dist/",
+      "build/",
+      ".next/",
+      ".turbo/",
+      ".vercel/",
+      ".env.local",
+      ".env.*.local",
+      "*.tsbuildinfo"
+    ],
+    "dryRun": false,
+    "verbose": true,
+    "delete": true
+  }
+}

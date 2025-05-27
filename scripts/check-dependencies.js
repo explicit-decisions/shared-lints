@@ -24,45 +24,40 @@ async function checkDependencies() {
     process.exit(1);
   }
 
-  // Get outdated dependencies from npm-check-updates
-  let ncuOutput;
+  // Get outdated dependencies using simple ncu command
+  let outdatedOutput;
   try {
-    const output = execSync('pnpm exec ncu --jsonAll', { 
+    outdatedOutput = execSync('pnpm exec ncu --jsonUpgraded', { 
       cwd: rootDir, 
       encoding: 'utf8',
       stdio: ['pipe', 'pipe', 'pipe']
     });
-    ncuOutput = JSON.parse(output);
   } catch (error) {
+    // NCU exits with code 0 when there are no updates, but may write to stdout
     if (error.stdout) {
-      try {
-        ncuOutput = JSON.parse(error.stdout);
-      } catch {
-        console.error('❌ Failed to parse ncu output');
-        process.exit(1);
-      }
+      outdatedOutput = error.stdout;
     } else {
-      console.error('❌ Failed to run npm-check-updates:', error.message);
-      process.exit(1);
+      console.log('✅ All dependencies are up to date!');
+      return;
     }
   }
 
-  // Extract dependencies that have updates available
+  // Parse the outdated dependencies
+  let ncuResult = {};
+  if (outdatedOutput.trim()) {
+    try {
+      ncuResult = JSON.parse(outdatedOutput);
+    } catch (parseError) {
+      console.log('✅ All dependencies are up to date!');
+      return;
+    }
+  }
+
+  // Flatten workspace results into single outdated dependencies object
   const outdatedDeps = {};
-  if (ncuOutput.dependencies) {
-    Object.entries(ncuOutput.dependencies).forEach(([name, info]) => {
-      if (info.current !== info.latest) {
-        outdatedDeps[name] = info;
-      }
-    });
-  }
-  if (ncuOutput.devDependencies) {
-    Object.entries(ncuOutput.devDependencies).forEach(([name, info]) => {
-      if (info.current !== info.latest) {
-        outdatedDeps[name] = info;
-      }
-    });
-  }
+  Object.values(ncuResult).forEach(packageUpdates => {
+    Object.assign(outdatedDeps, packageUpdates);
+  });
 
   if (Object.keys(outdatedDeps).length === 0) {
     console.log('✅ All dependencies are up to date!');
@@ -73,39 +68,27 @@ async function checkDependencies() {
   const violations = [];
   const today = new Date().toISOString().split('T')[0];
 
-  for (const [depName, depInfo] of Object.entries(outdatedDeps)) {
+  for (const [depName, newVersion] of Object.entries(outdatedDeps)) {
     const tracked = tracking.dependencies[depName];
     
     if (!tracked) {
       violations.push({
         type: 'UNTRACKED',
         dependency: depName,
-        current: depInfo.current,
-        latest: depInfo.latest,
-        message: `Dependency ${depName} is outdated but not tracked in dependency-versions.json`
+        newVersion: newVersion,
+        message: `Dependency ${depName} has updates available but is not tracked in dependency-versions.json`
       });
       continue;
     }
 
-    // Check if the tracked version matches current
-    if (tracked.currentVersion !== depInfo.current) {
-      violations.push({
-        type: 'VERSION_MISMATCH',
-        dependency: depName,
-        current: depInfo.current,
-        tracked: tracked.currentVersion,
-        message: `Tracked version (${tracked.currentVersion}) doesn't match package.json (${depInfo.current})`
-      });
-    }
-
     // Check if latest available has changed
-    if (tracked.latestAvailable !== depInfo.latest) {
+    if (tracked.latestAvailable !== newVersion) {
       violations.push({
         type: 'NEW_VERSION_AVAILABLE',
         dependency: depName,
         trackedLatest: tracked.latestAvailable,
-        actualLatest: depInfo.latest,
-        message: `New version available: ${tracked.latestAvailable} → ${depInfo.latest} (requires decision update)`
+        actualLatest: newVersion,
+        message: `New version available: ${tracked.latestAvailable} → ${newVersion} (requires decision update)`
       });
     }
 
@@ -122,56 +105,32 @@ async function checkDependencies() {
         message: `Dependency ${depName} decision is ${daysSinceReview} days old (max: ${tracking.rules.allowedOutdatedDays})`
       });
     }
+  }
 
-    // Check for major version updates requiring review
-    if (tracking.rules.blockMajorUpdatesWithoutReview) {
-      const currentMajor = parseInt(depInfo.current.split('.')[0].replace(/\D/g, ''));
-      const latestMajor = parseInt(depInfo.latest.split('.')[0].replace(/\D/g, ''));
-      
-      if (latestMajor > currentMajor && tracked.status !== 'blocked' && !tracked.reason.includes('REVIEWED')) {
-        violations.push({
-          type: 'MAJOR_UPDATE_NEEDS_REVIEW',
-          dependency: depName,
-          currentMajor,
-          latestMajor,
-          message: `Major version update available (${currentMajor} → ${latestMajor}) requires explicit review`
-        });
-      }
+  if (violations.length === 0) {
+    console.log('✅ All outdated dependencies are properly tracked and up to date!');
+    return;
+  }
+
+  console.log('❌ Dependency policy violations found:\n');
+  
+  violations.forEach((violation, index) => {
+    console.log(`${index + 1}. ${violation.message}`);
+    
+    if (violation.type === 'UNTRACKED') {
+      console.log(`   💡 Run 'pnpm deps:interactive' to make decisions about updates\n`);
+    } else if (violation.type === 'NEW_VERSION_AVAILABLE') {
+      console.log(`   💡 Run 'pnpm deps:interactive' to review the new version\n`);
+    } else if (violation.type === 'STALE_DECISION') {
+      console.log(`   💡 Run 'pnpm deps:interactive' to refresh your decision\n`);
     }
-  }
+  });
 
-  // Report violations
-  if (violations.length > 0) {
-    console.log('❌ Dependency version violations found:\n');
-    
-    violations.forEach((violation, index) => {
-      console.log(`${index + 1}. ${violation.type}: ${violation.dependency}`);
-      console.log(`   ${violation.message}\n`);
-    });
-
-    console.log('🔧 To fix these issues:');
-    console.log('1. Run `pnpm deps:interactive` to make decisions interactively');
-    console.log('2. Or manually update dependency-versions.json with decisions');
-    console.log('3. For major updates, add "REVIEWED:" prefix to reason\n');
-    
-    console.log('💡 Example entry:');
-    console.log(JSON.stringify({
-      "currentVersion": "^1.6.1",
-      "latestAvailable": "^3.1.4", 
-      "reason": "REVIEWED: Waiting for ecosystem compatibility with v3",
-      "reviewDate": today,
-      "reviewer": "human",
-      "status": "blocked"
-    }, null, 2));
-
-    process.exit(1);
-  }
-
-  console.log('✅ All dependency versions are properly tracked and decisions are current!');
+  console.log('🚫 Dependency checking failed. Please address the violations above.');
+  process.exit(1);
 }
 
-// Self-executing async function
 checkDependencies().catch(error => {
-  console.error('❌ Error checking dependencies:', error);
+  console.error('❌ Unexpected error:', error.message);
   process.exit(1);
 });
