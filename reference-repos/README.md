@@ -93,27 +93,52 @@ The configuration file is validated by a JSON schema located at `../schemas/refe
 
 ## Updating Reference Repositories
 
-Reference repositories are synchronized using rsync to maintain current snapshots without git history. This approach allows us to:
+Two strategies are available for working with reference repositories:
 
-1. **Keep examples current** - Regular updates ensure documentation reflects real-world usage
-2. **Avoid git complexity** - No need to manage submodules or git history
-3. **Focus on code patterns** - Clean snapshots without development noise
-4. **Maintain consistency** - Standardized sync process across all references
+### Strategy 1: Symlinks (Recommended for Migration)
 
-### Automatic Updates
-
-Use the provided script to update all reference repositories:
+Creates direct symlinks to source repositories for real-time editing:
 
 ```bash
 # From the project root
-./scripts/update-reference-repos.sh
+pnpm refs:link
 ```
 
-This script:
-- Syncs from known source locations
-- Excludes development artifacts (node_modules, .git, etc.)
-- Preserves directory structure
-- Provides colored output for status
+**Benefits:**
+- Direct editing of source repositories
+- Real-time sync - no manual updates needed  
+- Perfect for migration and experimentation
+- Changes immediately visible in both locations
+
+**Use when:** Actively migrating repositories to explicit-decisions framework
+
+### Strategy 2: Rsync Snapshots (Recommended for Analysis)
+
+Synchronized snapshots using rsync to maintain current copies without git history:
+
+```bash
+# From the project root  
+pnpm refs:sync
+```
+
+**Benefits:**
+- Keep examples current - Regular updates ensure documentation reflects real-world usage
+- Avoid git complexity - No need to manage submodules or git history
+- Focus on code patterns - Clean snapshots without development noise
+- Maintain consistency - Standardized sync process across all references
+
+**Use when:** Analyzing patterns or creating documentation examples
+
+### Choosing a Strategy
+
+- **For migration work:** Use `pnpm refs:link` to work directly on source repositories
+- **For analysis/docs:** Use `pnpm refs:sync` to create clean snapshots for reference
+
+Both scripts:
+- Read configuration from `reference-repos.config.json`
+- Process only enabled repositories
+- Provide colored output for status
+- Handle missing source directories gracefully
 
 ### Manual Updates
 

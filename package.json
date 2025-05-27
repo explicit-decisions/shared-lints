@@ -18,6 +18,7 @@
     "deps:interactive": "node scripts/deps-interactive.js",
     "deps:check": "pnpm exec npm-check-updates",
     "refs:sync": "./scripts/update-reference-repos.sh",
+    "refs:link": "./scripts/link-reference-repos.sh",
     "refs:validate": "node scripts/validate-reference-config.js",
     "llm:bootstrap": "node scripts/llm-bootstrap.js",
     "typecheck": "tsc --noEmit",

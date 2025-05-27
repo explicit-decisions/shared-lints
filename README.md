@@ -68,6 +68,10 @@ explicit-decisions init
 explicit-decisions deps check
 explicit-decisions deps interactive
 
+# Reference repository management
+pnpm refs:link    # Symlink for direct editing (migration work)
+pnpm refs:sync    # Snapshot for analysis (documentation)
+
 # Get help
 explicit-decisions --help
 ```
