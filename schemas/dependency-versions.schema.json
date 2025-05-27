@@ -27,7 +27,7 @@
   "definitions": {
     "DependencyInfo": {
       "type": "object",
-      "required": ["currentVersion", "latestAvailable", "reason", "reviewDate", "reviewer", "status"],
+      "required": ["currentVersion", "latestAvailable", "reason", "reviewDate", "reviewer"],
       "properties": {
         "currentVersion": {
           "type": "string",
@@ -50,15 +50,32 @@
           "type": "string",
           "description": "Who made the decision (user, system, etc.)"
         },
-        "status": {
-          "type": "string",
-          "enum": ["current", "outdated", "blocked", "scheduled"],
-          "description": "Status of this dependency"
-        },
         "updateScheduled": {
           "type": "string",
           "format": "date",
           "description": "When update is scheduled (if status is 'scheduled')"
+        },
+        "updatePolicy": {
+          "type": "object",
+          "description": "Policy for when to update this dependency",
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": ["manual", "tag-based", "scheduled"],
+              "description": "Type of update policy"
+            },
+            "targetTag": {
+              "type": "string",
+              "description": "NPM dist-tag to wait for (e.g., 'stable', 'lts', 'latest')"
+            },
+            "checkInterval": {
+              "type": "string",
+              "enum": ["daily", "weekly", "monthly"],
+              "description": "How often to check for tag changes"
+            }
+          },
+          "required": ["type"],
+          "additionalProperties": false
         },
         "breakingChanges": {
           "type": "array",

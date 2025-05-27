@@ -58,26 +58,31 @@ explicit-decisions/
 I want you to help me refine and improve this blog post about the "Enforced Explicit Decision" pattern. Please:
 
 ### 1. Content Review
+
 - **Strengthen the narrative**: Help make the story more compelling and relatable
 - **Clarify technical concepts**: Ensure the pattern is explained clearly for both technical and non-technical readers
 - **Add concrete examples**: Suggest specific scenarios where this pattern helps vs hurts
 
 ### 2. Structure Analysis
+
 - **Flow and pacing**: Does the post build logically to its conclusions?
 - **Reader engagement**: Are there places where readers might lose interest?
 - **Call to action**: Is there a clear next step for readers?
 
 ### 3. Technical Accuracy
+
 - **Verify concepts**: Do the technical explanations align with the philosophy?
 - **Check examples**: Are the code examples accurate and illustrative?
 - **Balance detail**: Right level of technical depth for the audience?
 
 ### 4. Writing Quality
+
 - **Voice consistency**: Does it maintain a personal, thoughtful tone?
 - **Clarity**: Are complex ideas explained simply?
 - **Accessibility**: Can non-developers understand the core concepts?
 
 ### 5. Meta-Questions
+
 - **Missing angles**: What important aspects of this pattern am I not covering?
 - **Counter-arguments**: What are the potential weaknesses or limitations?
 - **Real-world applicability**: Where might this pattern not be worth the overhead?
@@ -85,6 +90,7 @@ I want you to help me refine and improve this blog post about the "Enforced Expl
 ## Context About My Writing Style
 
 Based on the draft, I tend to:
+
 - Use personal anecdotes to introduce technical concepts
 - Question whether I'm solving real problems vs creating busy work
 - Write conversationally with some uncertainty ("I think...", "Maybe...")

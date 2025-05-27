@@ -78,6 +78,41 @@ async function initDependencyTracking(cwd) {
 }
 
 /**
+ * Get npm dist-tags for a package
+ */
+async function getNpmDistTags(packageName) {
+  try {
+    const output = execSync(`pnpm exec npm view ${packageName} dist-tags --json`, { 
+      encoding: 'utf8',
+      stdio: ['pipe', 'pipe', 'pipe']
+    });
+    return JSON.parse(output);
+  } catch (error) {
+    console.warn(`⚠️  Could not fetch dist-tags for ${packageName}`);
+    return {};
+  }
+}
+
+/**
+ * Check if a tag-based update policy is satisfied
+ */
+async function checkTagPolicy(packageName, policy, latestVersion) {
+  if (policy.type !== 'tag-based' || !policy.targetTag) {
+    return false;
+  }
+
+  const distTags = await getNpmDistTags(packageName);
+  const targetTagVersion = distTags[policy.targetTag];
+  
+  if (!targetTagVersion) {
+    return false;
+  }
+
+  // Check if the target tag points to the latest version
+  return targetTagVersion === latestVersion;
+}
+
+/**
  * Check dependencies against tracking file
  */
 async function checkDependencies(cwd) {
@@ -97,7 +132,7 @@ async function checkDependencies(cwd) {
   // Get outdated dependencies using NCU
   let outdatedOutput;
   try {
-    outdatedOutput = execSync('npx npm-check-updates --jsonUpgraded', { 
+    outdatedOutput = execSync('pnpm exec npm-check-updates --jsonUpgraded', { 
       cwd, 
       encoding: 'utf8',
       stdio: ['pipe', 'pipe', 'pipe']
@@ -161,6 +196,20 @@ async function checkDependencies(cwd) {
       });
     }
 
+    // Check tag-based update policies
+    if (tracked.updatePolicy?.type === 'tag-based') {
+      const tagReady = await checkTagPolicy(depName, tracked.updatePolicy, newVersion);
+      if (tagReady) {
+        violations.push({
+          type: 'TAG_POLICY_READY',
+          dependency: depName,
+          targetTag: tracked.updatePolicy.targetTag,
+          newVersion: newVersion,
+          message: `Tag-based policy satisfied: ${tracked.updatePolicy.targetTag} tag now points to ${newVersion}`
+        });
+      }
+    }
+
     // Check if decision is stale
     const reviewDate = new Date(tracked.reviewDate);
     const daysSinceReview = Math.floor((new Date() - reviewDate) / (1000 * 60 * 60 * 24));
@@ -190,6 +239,8 @@ async function checkDependencies(cwd) {
       console.log(`   💡 Run 'explicit-decisions deps interactive' to make decisions about updates\n`);
     } else if (violation.type === 'NEW_VERSION_AVAILABLE') {
       console.log(`   💡 Run 'explicit-decisions deps interactive' to review the new version\n`);
+    } else if (violation.type === 'TAG_POLICY_READY') {
+      console.log(`   🎯 Update ready! Run 'explicit-decisions deps interactive' to upgrade to ${violation.targetTag} tag\n`);
     } else if (violation.type === 'STALE_DECISION') {
       console.log(`   💡 Run 'explicit-decisions deps interactive' to refresh your decision\n`);
     }
@@ -220,7 +271,7 @@ async function interactiveDependencyManagement(cwd) {
 
   try {
     // Run ncu -i to let user select which packages to update
-    execSync('npx npm-check-updates -i', { 
+    execSync('pnpm exec npm-check-updates -i', { 
       cwd, 
       stdio: 'inherit'
     });
@@ -245,18 +296,15 @@ async function interactiveDependencyManagement(cwd) {
  * Update tracking file with user decisions
  */
 async function updateTrackingFile(tracking, trackingPath, cwd) {
-  // Get current outdated dependencies
-  let outdatedOutput;
+  // Check if there are still any outdated dependencies to track
   try {
-    outdatedOutput = execSync('npx npm-check-updates --jsonUpgraded', { 
+    execSync('pnpm exec npm-check-updates --jsonUpgraded', { 
       cwd, 
       encoding: 'utf8',
       stdio: ['pipe', 'pipe', 'pipe']
     });
   } catch (error) {
-    if (error.stdout) {
-      outdatedOutput = error.stdout;
-    } else {
+    if (!error.stdout || error.stdout.trim() === '{}') {
       console.log('✅ All dependencies are now up to date!');
       return;
     }
@@ -304,7 +352,7 @@ async function getSchemaContent() {
     "definitions": {
       "DependencyInfo": {
         "type": "object",
-        "required": ["currentVersion", "latestAvailable", "reason", "reviewDate", "reviewer", "status"],
+        "required": ["currentVersion", "latestAvailable", "reason", "reviewDate", "reviewer"],
         "properties": {
           "currentVersion": {
             "type": "string",
@@ -327,15 +375,32 @@ async function getSchemaContent() {
             "type": "string",
             "description": "Who made the decision (user, system, etc.)"
           },
-          "status": {
-            "type": "string",
-            "enum": ["current", "outdated", "blocked", "scheduled"],
-            "description": "Status of this dependency"
-          },
           "updateScheduled": {
             "type": "string",
             "format": "date",
             "description": "When update is scheduled (if status is 'scheduled')"
+          },
+          "updatePolicy": {
+            "type": "object",
+            "description": "Policy for when to update this dependency",
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": ["manual", "tag-based", "scheduled"],
+                "description": "Type of update policy"
+              },
+              "targetTag": {
+                "type": "string",
+                "description": "NPM dist-tag to wait for (e.g., 'stable', 'lts', 'latest')"
+              },
+              "checkInterval": {
+                "type": "string",
+                "enum": ["daily", "weekly", "monthly"],
+                "description": "How often to check for tag changes"
+              }
+            },
+            "required": ["type"],
+            "additionalProperties": false
           },
           "breakingChanges": {
             "type": "array",

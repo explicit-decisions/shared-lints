@@ -27,7 +27,7 @@ async function checkDependencies() {
   // Get outdated dependencies using simple ncu command
   let outdatedOutput;
   try {
-    outdatedOutput = execSync('pnpm exec ncu --jsonUpgraded', { 
+    outdatedOutput = execSync('pnpm exec npm-check-updates --jsonUpgraded', { 
       cwd: rootDir, 
       encoding: 'utf8',
       stdio: ['pipe', 'pipe', 'pipe']

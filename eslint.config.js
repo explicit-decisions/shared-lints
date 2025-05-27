@@ -1,27 +1,29 @@
 // @ts-check
 
-import js from "@eslint/js";
-import prettier from "eslint-config-prettier";
+import explicitDecisions from './tools/eslint-config/src/index.js';
 
 export default [
-  js.configs.recommended,
+  ...explicitDecisions,
   
+  // Project-specific overrides
   {
     rules: {
-      "no-var": "error",
-      "prefer-const": "error",
-      eqeqeq: ["error", "always"],
-      curly: ["error", "all"],
-    },
+      // Add any project-specific rule overrides here
+    }
   },
 
+  // Disable no-npx-usage in scripts and tooling since they contain examples
+  {
+    files: ["scripts/**", "tools/**"],
+    rules: {
+      "@explicit-decisions/no-npx-usage": "off",
+    }
+  },
+
+  // Exclude reference repositories from linting
   {
     ignores: [
-      "node_modules/**",
-      "**/node_modules/**",
-      "**/coverage/**",
+      "reference-repos/**",
     ],
-  },
-
-  prettier,
+  }
 ];

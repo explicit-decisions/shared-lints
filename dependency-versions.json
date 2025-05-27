@@ -1,7 +1,32 @@
 {
   "$schema": "./schemas/dependency-versions.schema.json",
-  "lastUpdated": "2025-05-26",
-  "dependencies": {},
+  "lastUpdated": "2025-05-27",
+  "dependencies": {
+    "@types/node": {
+      "currentVersion": "^20.17.50",
+      "latestAvailable": "^22.15.21",
+      "reason": "Staying on Node 20 LTS for compatibility, major update requires testing",
+      "reviewDate": "2025-05-27",
+      "reviewer": "system"
+    },
+    "markdownlint-cli2": {
+      "currentVersion": "^0.12.1",
+      "latestAvailable": "^0.18.1",
+      "reason": "Version 0.x series, avoiding potential breaking changes until v1.0",
+      "reviewDate": "2025-05-27",
+      "reviewer": "system"
+    },
+    "npm-check-updates": {
+      "currentVersion": "^17.1.11",
+      "latestAvailable": "^18.0.1",
+      "reason": "Tool works well on v17, manually managing major version upgrade",
+      "reviewDate": "2025-05-27",
+      "reviewer": "system",
+      "updatePolicy": {
+        "type": "manual"
+      }
+    }
+  },
   "rules": {
     "allowedOutdatedDays": 30,
     "requireReasonForOld": true,

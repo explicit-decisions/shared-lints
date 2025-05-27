@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest';
+
 import { version, help } from './index.js';
 
 describe('@explicit-decisions/tooling', () => {

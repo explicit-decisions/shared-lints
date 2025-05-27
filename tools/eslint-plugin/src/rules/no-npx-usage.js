@@ -44,7 +44,7 @@ export const noNpxUsage = {
           const value = node.value;
           
           // Check for npx at start of string
-          if (value.startsWith('npx ')) {
+          if (value.startsWith('pnpm exec ')) {
             const command = value.substring(4);
             context.report({
               node,
@@ -60,7 +60,7 @@ export const noNpxUsage = {
           }
           
           // Check for pnpx at start of string  
-          if (value.startsWith('pnpx ')) {
+          if (value.startsWith('pnpm exec ')) {
             const command = value.substring(5);
             context.report({
               node,
@@ -84,8 +84,8 @@ export const noNpxUsage = {
       TemplateLiteral(node) {
         if (node.quasis.length === 1) {
           const value = node.quasis[0].value.cooked;
-          if (value && (value.startsWith('npx ') || value.startsWith('pnpx '))) {
-            const isNpx = value.startsWith('npx ');
+          if (value && (value.startsWith('pnpm exec ') || value.startsWith('pnpm exec '))) {
+            const isNpx = value.startsWith('pnpm exec ');
             const command = value.substring(isNpx ? 4 : 5);
             context.report({
               node,
@@ -115,7 +115,7 @@ export const noNpxUsage = {
           if (firstArg && firstArg.type === 'Literal' && typeof firstArg.value === 'string') {
             const command = firstArg.value;
             
-            if (command.startsWith('npx ')) {
+            if (command.startsWith('pnpm exec ')) {
               const actualCommand = command.substring(4);
               context.report({
                 node: firstArg,
@@ -130,7 +130,7 @@ export const noNpxUsage = {
               });
             }
             
-            if (command.startsWith('pnpx ')) {
+            if (command.startsWith('pnpm exec ')) {
               const actualCommand = command.substring(5);
               context.report({
                 node: firstArg,

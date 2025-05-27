@@ -27,19 +27,30 @@ export async function init() {
     const packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf8'));
     
     console.log('📦 Setting up explicit-decisions framework for:', packageJson.name || 'unnamed project');
+    
+    // Check package manager and provide pnpm recommendation
+    const packageManager = existsSync(join(cwd, 'pnpm-lock.yaml')) ? 'pnpm' : 
+                           existsSync(join(cwd, 'yarn.lock')) ? 'yarn' :
+                           existsSync(join(cwd, 'package-lock.json')) ? 'npm' : 'unknown';
+    
+    if (packageManager !== 'pnpm') {
+      console.log('💡 Recommendation: Consider using pnpm for better dependency management');
+      console.log('   Install: npm install -g pnpm');
+      console.log('   Migrate: pnpm import (in this directory)');
+    } else {
+      console.log('✅ Great choice using pnpm for dependency management!');
+    }
     console.log('');
 
-    // Ask what to set up
-    const setupESLint = await askQuestion(rl, '🔧 Set up ESLint configuration? (y/n): ');
+    // Ask what to set up (ESLint is automatic, others are optional)
     const setupDeps = await askQuestion(rl, '📋 Set up dependency management? (y/n): ');
     const setupGitignore = await askQuestion(rl, '📂 Update .gitignore? (y/n): ');
 
     console.log('\n📝 Setting up your project...\n');
 
-    // Set up ESLint configuration
-    if (setupESLint.toLowerCase().startsWith('y')) {
-      await setupESLintConfig(cwd, packageJson);
-    }
+    // Set up ESLint configuration (automatic - core part of explicit-decisions)
+    console.log('🔧 Setting up ESLint configuration (automatic)...');
+    await setupESLintConfig(cwd);
 
     // Set up dependency management
     if (setupDeps.toLowerCase().startsWith('y')) {
@@ -57,12 +68,16 @@ export async function init() {
 
     console.log('🎉 explicit-decisions framework initialized successfully!\n');
     console.log('🎯 Next steps:');
-    console.log('  1. Run `npm run lint` to check your code');
+    console.log('  1. Run `pnpm lint` to check your code (ESLint auto-configured!)');
     if (setupDeps.toLowerCase().startsWith('y')) {
-      console.log('  2. Run `explicit-decisions deps interactive` to manage dependencies');
+      console.log('  2. Run `pnpm deps:interactive` to manage dependencies');
+      console.log('  3. Review the generated configuration files');
+      console.log('  4. Commit your changes\n');
+    } else {
+      console.log('  2. Review the generated eslint.config.js');
+      console.log('  3. Consider setting up dependency management later with `explicit-decisions deps init`');
+      console.log('  4. Commit your changes\n');
     }
-    console.log('  3. Review the generated configuration files');
-    console.log('  4. Commit your changes\n');
 
   } finally {
     rl.close();
@@ -81,13 +96,15 @@ function askQuestion(rl, question) {
 }
 
 /**
- * Set up ESLint configuration
+ * Set up ESLint configuration with automatic explicit-decisions integration
  */
-async function setupESLintConfig(cwd, packageJson) {
-  console.log('🔧 Setting up ESLint configuration...');
+async function setupESLintConfig(cwd) {
+  console.log('🔧 Setting up ESLint configuration with explicit-decisions rules...');
 
-  // Create eslint.config.js
-  const eslintConfig = `import explicitDecisions from '@explicit-decisions/eslint-config';
+  // Create comprehensive eslint.config.js with explicit-decisions pre-configured
+  const eslintConfig = `// @ts-check
+
+import explicitDecisions from '@explicit-decisions/eslint-config';
 
 export default [
   ...explicitDecisions,
@@ -95,25 +112,51 @@ export default [
   // Project-specific overrides
   {
     rules: {
-      // Add any project-specific rule overrides here
+      // Customize explicit-decisions rules as needed
+      // '@explicit-decisions/prefer-ts-imports': 'error',
+      // '@explicit-decisions/no-mocks-or-spies': 'error',
+      // '@explicit-decisions/require-ts-extensions': 'error',
+      // '@explicit-decisions/no-npx-usage': 'error',
     }
+  },
+
+  // Additional project-specific ignores
+  {
+    ignores: [
+      // Add any project-specific files to ignore
+    ],
   }
 ];`;
 
   writeFileSync(join(cwd, 'eslint.config.js'), eslintConfig);
-  console.log('✅ Created eslint.config.js');
+  console.log('✅ Created eslint.config.js with explicit-decisions rules pre-configured');
 
   // Create .eslintignore if it doesn't exist
   const eslintIgnorePath = join(cwd, '.eslintignore');
   if (!existsSync(eslintIgnorePath)) {
-    const eslintIgnore = `node_modules/
+    const eslintIgnore = `# Build outputs
+node_modules/
 dist/
 build/
 coverage/
 *.min.js
+
+# Package manager files
+pnpm-lock.yaml
+package-lock.json
+yarn.lock
+
+# IDE files
+.vscode/
+.idea/
+
+# Logs
+*.log
 `;
     writeFileSync(eslintIgnorePath, eslintIgnore);
-    console.log('✅ Created .eslintignore');
+    console.log('✅ Created comprehensive .eslintignore');
+  } else {
+    console.log('✅ .eslintignore already exists');
   }
 }
 
@@ -156,7 +199,10 @@ async function updatePackageScripts(packageJsonPath, packageJson, includeDeps) {
     packageJson.scripts = {};
   }
 
-  // Add or update lint script
+  // Add or update lint script (pnpm recommended)
+  const packageManager = existsSync(join(cwd, 'pnpm-lock.yaml')) ? 'pnpm' : 
+                         existsSync(join(cwd, 'package-lock.json')) ? 'npm' : 'pnpm';
+  
   const lintCommand = includeDeps 
     ? 'explicit-decisions deps check && eslint .'
     : 'eslint .';
@@ -168,6 +214,12 @@ async function updatePackageScripts(packageJsonPath, packageJson, includeDeps) {
     packageJson.scripts['deps:check'] = 'explicit-decisions deps check';
     packageJson.scripts['deps:interactive'] = 'explicit-decisions deps interactive';
     packageJson.scripts['deps:init'] = 'explicit-decisions deps init';
+  }
+
+  // Add helpful comments about pnpm
+  if (packageManager !== 'pnpm') {
+    console.log('💡 Consider switching to pnpm for better dependency management:');
+    console.log('   npm install -g pnpm && pnpm import');
   }
 
   // Add devDependencies

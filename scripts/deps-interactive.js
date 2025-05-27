@@ -33,7 +33,7 @@ async function interactiveDependencies() {
 
   try {
     // Run ncu -i to let user select which packages to update
-    execSync('pnpm exec ncu -i', { 
+    execSync('pnpm exec npm-check-updates -i', { 
       cwd: rootDir, 
       stdio: 'inherit'
     });

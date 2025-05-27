@@ -11,6 +11,8 @@
 
 import * as importPlugin from "eslint-plugin-import-x";
 
+import explicitDecisionsPlugin from "../../eslint-plugin/src/index.js";
+
 /**
  * Configure import plugin rules
  * @type {ESLintConfig}
@@ -18,6 +20,7 @@ import * as importPlugin from "eslint-plugin-import-x";
 export const importConfig = {
   plugins: {
     "import-x": /** @type {any} */ (importPlugin),
+    "@explicit-decisions": /** @type {any} */ (explicitDecisionsPlugin),
   },
   rules: {
     // Import sorting and organization (these support auto-fix)
@@ -53,6 +56,12 @@ export const importConfig = {
         jsx: "always",
       },
     ],
+
+    // Explicit decisions rules - enforce explicit technical decisions
+    "@explicit-decisions/no-mocks-or-spies": "error",
+    "@explicit-decisions/require-ts-extensions": "error", 
+    "@explicit-decisions/no-npx-usage": "error",
+    "@explicit-decisions/prefer-ts-imports": "error",
   },
 };
 
