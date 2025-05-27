@@ -1,8 +1,13 @@
 {
-  "name": "explicit-decisions",
+  "name": "shared-lints",
   "version": "1.0.0",
   "private": true,
   "description": "ESLint configurations enforcing explicit decisions for LLM-assisted development",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yehudakatz/shared-lints.git"
+  },
   "type": "module",
   "scripts": {
     "dev": "pnpm -r --parallel run dev",

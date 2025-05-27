@@ -1,15 +1,26 @@
 {
-  "name": "@explicit-decisions/eslint-plugin",
+  "name": "@shared-lints/eslint-plugin",
   "version": "1.0.0",
   "description": "Custom ESLint rules enforcing explicit decisions for LLM-assisted development",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yehudakatz/shared-lints.git",
+    "directory": "tools/eslint-plugin"
+  },
   "type": "module",
-  "main": "src/index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "exports": {
-    ".": "./src/index.js"
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
   },
   "scripts": {
     "build": "tsc",
     "build:watch": "tsc --watch",
+    "clean": "rm -rf dist",
     "test": "vitest",
     "lint": "eslint src/",
     "typecheck": "tsc --noEmit"
@@ -18,8 +29,17 @@
     "eslint",
     "eslintplugin",
     "eslint-plugin",
-    "shared"
+    "shared-lints",
+    "ai-assisted-development",
+    "llm",
+    "no-mocks",
+    "typescript"
   ],
+  "author": "Yehuda Katz",
+  "homepage": "https://github.com/yehudakatz/shared-lints#readme",
+  "bugs": {
+    "url": "https://github.com/yehudakatz/shared-lints/issues"
+  },
   "peerDependencies": {
     "eslint": ">=9.0.0"
   },

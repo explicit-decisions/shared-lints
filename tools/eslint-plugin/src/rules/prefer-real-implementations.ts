@@ -3,12 +3,12 @@ import { ESLintUtils, AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 type MessageIds = 'injectDependency' | 'useRealImplementation' | 'extractInterface';
 
-interface Options {
+export interface Options {
   allowedGlobals?: string[];
 }
 
 const createRule = ESLintUtils.RuleCreator(
-  name => `https://github.com/your-org/explicit-decisions/docs/rules/${name}`
+  name => `https://github.com/explicit-decisions/shared-lints/blob/main/docs/RULES_REFERENCE.md${name}`
 );
 
 /**

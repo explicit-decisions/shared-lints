@@ -1,9 +1,9 @@
 // @ts-check
 
-import explicitDecisions from './tools/eslint-config/src/index.js';
+import sharedLints from './tools/eslint-config/src/index.js';
 
 export default [
-  ...explicitDecisions,
+  ...sharedLints,
   
   // Project-specific overrides
   {
@@ -16,15 +16,26 @@ export default [
   {
     files: ["scripts/**", "tools/**"],
     rules: {
-      "@explicit-decisions/no-npx-usage": "off",
-      "@explicit-decisions/prefer-real-implementations": "off",
+      "@shared-lints/no-npx-usage": "off",
+      "@shared-lints/prefer-real-implementations": "off",
     }
   },
 
-  // Exclude reference repositories from linting
+  // Relax strict rules for ESLint plugin source (AST processing has many false positives)
+  {
+    files: ["tools/eslint-plugin/src/**"],
+    rules: {
+      "@typescript-eslint/no-unnecessary-condition": "off",
+      "@typescript-eslint/strict-boolean-expressions": "off",
+    }
+  },
+
+  // Exclude reference repositories and build outputs from linting
   {
     ignores: [
       "reference-repos/**",
+      "**/dist/**",
+      "**/temp/**",
     ],
   }
 ];

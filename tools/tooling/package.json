@@ -1,12 +1,18 @@
 {
-  "name": "@explicit-decisions/tooling",
+  "name": "@shared-lints/tooling",
   "version": "1.0.0",
-  "description": "CLI tools for setting up and managing explicit-decisions framework",
+  "description": "CLI tools for setting up and managing shared-lints framework",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yehudakatz/shared-lints.git",
+    "directory": "tools/tooling"
+  },
   "type": "module",
   "bin": {
-    "explicit-decisions": "./bin/cli.js",
-    "ed-deps": "./bin/deps.js",
-    "ed-init": "./bin/init.js"
+    "shared-lints": "./bin/cli.js",
+    "sl-deps": "./bin/deps.js",
+    "sl-init": "./bin/init.js"
   },
   "exports": {
     ".": "./src/index.js",

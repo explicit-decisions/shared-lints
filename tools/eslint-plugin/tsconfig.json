@@ -8,7 +8,10 @@
     "target": "ES2022",
     "declaration": true,
     "declarationMap": true,
-    "sourceMap": true
+    "sourceMap": true,
+    "noEmit": false,
+    "allowImportingTsExtensions": true,
+    "rewriteRelativeImportExtensions": true
   },
   "include": [
     "src/**/*.ts"
@@ -16,7 +19,6 @@
   "exclude": [
     "**/*.test.ts",
     "**/*.test.js",
-    "**/*.js",
     "dist"
   ]
 }

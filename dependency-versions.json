@@ -1,35 +1,137 @@
 {
   "$schema": "./schemas/dependency-versions.schema.json",
   "lastUpdated": "2025-05-27",
+  "frameworkVersion": "1.0.0",
+  "metadata": {
+    "decisionFramework": "docs/principles/PACKAGE_SELECTION.md",
+    "reviewSchedule": "30-day cycle for all dependencies",
+    "maintainer": "Yehuda"
+  },
   "dependencies": {
     "@types/node": {
       "currentVersion": "^20.17.50",
       "latestAvailable": "^22.15.21",
+      "tier": "essential",
+      "justification": "Required for Node.js TypeScript development",
       "reason": "Staying on Node 20 LTS for compatibility, major update requires testing",
-      "reviewDate": "2025-05-27",
-      "reviewer": "system"
+      "reviewDate": "2025-02-26",
+      "nextReviewDate": "2025-03-26",
+      "reviewer": "Yehuda",
+      "packageSelectionCriteria": {
+        "platformAlternative": "None - TypeScript definitions required",
+        "uniqueValue": "TypeScript support for Node.js APIs",
+        "maintenanceRisk": "Low - Microsoft maintained"
+      }
+    },
+    "@typescript-eslint/utils": {
+      "currentVersion": "^8.32.1",
+      "latestAvailable": "^8.32.1",
+      "tier": "essential",
+      "justification": "Required for professional TypeScript ESLint rule development",
+      "reason": "Core dependency for type-safe AST manipulation",
+      "reviewDate": "2025-01-26",
+      "nextReviewDate": "2025-07-26",
+      "reviewer": "Yehuda",
+      "packageSelectionCriteria": {
+        "platformAlternative": "Raw ESLint APIs (rejected: complex, no type safety)",
+        "uniqueValue": "Professional ESLint rule development patterns",
+        "maintenanceRisk": "Low - TypeScript team maintained"
+      }
+    },
+    "typescript": {
+      "currentVersion": "^5.8.3",
+      "latestAvailable": "^5.8.3",
+      "tier": "essential",
+      "justification": "Core to project's TypeScript-first approach",
+      "reason": "Essential for TypeScript development",
+      "reviewDate": "2025-01-26",
+      "nextReviewDate": "2025-07-26",
+      "reviewer": "Yehuda",
+      "packageSelectionCriteria": {
+        "platformAlternative": "None for TypeScript development",
+        "uniqueValue": "Type safety and development experience",
+        "maintenanceRisk": "Low - Microsoft maintained"
+      }
+    },
+    "vitest": {
+      "currentVersion": "^3.1.4",
+      "latestAvailable": "^3.1.4",
+      "tier": "essential",
+      "justification": "Fast, modern testing with excellent TypeScript support",
+      "reason": "Better TypeScript support than Jest, faster execution",
+      "reviewDate": "2025-01-26",
+      "nextReviewDate": "2025-07-26",
+      "reviewer": "Yehuda",
+      "packageSelectionCriteria": {
+        "platformAlternative": "Node.js test runner (rejected: immature)",
+        "uniqueValue": "Superior TypeScript testing experience",
+        "maintenanceRisk": "Medium - Community maintained but active"
+      }
+    },
+    "eslint": {
+      "currentVersion": ">=9.0.0",
+      "latestAvailable": "^9.27.0",
+      "tier": "essential",
+      "justification": "Core functionality for rule enforcement",
+      "reason": "Essential for project's rule enforcement approach",
+      "reviewDate": "2025-01-26",
+      "nextReviewDate": "2025-07-26",
+      "reviewer": "Yehuda",
+      "packageSelectionCriteria": {
+        "platformAlternative": "None viable for ESLint plugin development",
+        "uniqueValue": "Linting infrastructure and rule system",
+        "maintenanceRisk": "Low - Well established, widely used"
+      }
     },
     "markdownlint-cli2": {
       "currentVersion": "^0.12.1",
       "latestAvailable": "^0.18.1",
+      "tier": "justified",
+      "justification": "Enforces markdown documentation quality standards",
       "reason": "Version 0.x series, avoiding potential breaking changes until v1.0",
-      "reviewDate": "2025-05-27",
-      "reviewer": "system"
+      "reviewDate": "2025-02-26",
+      "nextReviewDate": "2025-03-26",
+      "reviewer": "Yehuda",
+      "packageSelectionCriteria": {
+        "platformAlternative": "Manual markdown review (rejected: inconsistent)",
+        "uniqueValue": "Automated markdown quality enforcement",
+        "maintenanceRisk": "Medium - Pre-1.0 but actively developed"
+      },
+      "removalTrigger": "If documentation quality can be maintained without automated linting"
     },
     "npm-check-updates": {
       "currentVersion": "^17.1.11",
       "latestAvailable": "^18.0.1",
+      "tier": "justified",
+      "justification": "Enables systematic dependency review workflow",
       "reason": "Tool works well on v17, manually managing major version upgrade",
-      "reviewDate": "2025-05-27",
-      "reviewer": "system",
+      "reviewDate": "2025-02-26",
+      "nextReviewDate": "2025-03-26",
+      "reviewer": "Yehuda",
       "updatePolicy": {
         "type": "manual"
-      }
+      },
+      "packageSelectionCriteria": {
+        "platformAlternative": "Manual dependency checking (rejected: error-prone)",
+        "uniqueValue": "Systematic dependency update discovery",
+        "maintenanceRisk": "Medium - Single maintainer but widely used"
+      },
+      "removalTrigger": "If package managers add equivalent built-in functionality"
     }
   },
   "rules": {
     "allowedOutdatedDays": 30,
     "requireReasonForOld": true,
-    "blockMajorUpdatesWithoutReview": true
+    "blockMajorUpdatesWithoutReview": true,
+    "tierRequirements": {
+      "essential": "Must have platformAlternative documented",
+      "justified": "Must have removalTrigger documented",
+      "deprecated": "Must have removal timeline"
+    },
+    "reviewCycle": {
+      "essential": "6 months",
+      "justified": "30 days",
+      "deprecated": "immediate removal"
+    }
   }
 }

@@ -4,7 +4,7 @@ import { ESLintUtils, AST_NODE_TYPES } from '@typescript-eslint/utils';
 type MessageIds = 'noAnyType' | 'noAsAny' | 'noImplicitAny';
 
 const createRule = ESLintUtils.RuleCreator(
-  name => `https://github.com/your-org/explicit-decisions/docs/rules/${name}`
+  name => `https://github.com/explicit-decisions/shared-lints/blob/main/docs/RULES_REFERENCE.md${name}`
 );
 
 /**
@@ -86,8 +86,7 @@ export const noAnyInTests = createRule<[], MessageIds>({
 
       // Check for variables that might need explicit type annotations
       VariableDeclarator(node: TSESTree.VariableDeclarator): void {
-        if (node.type === AST_NODE_TYPES.VariableDeclarator && 
-            node.id.type === AST_NODE_TYPES.Identifier && 
+        if (node.id.type === AST_NODE_TYPES.Identifier && 
             !hasTSTypeAnnotation(node.id) && 
             node.init) {
           
@@ -116,8 +115,7 @@ export const noAnyInTests = createRule<[], MessageIds>({
 
       // Check for functions without return type annotations
       FunctionDeclaration(node: TSESTree.FunctionDeclaration): void {
-        if (node.type === AST_NODE_TYPES.FunctionDeclaration && 
-            node.id && 
+        if (node.id && 
             node.id.type === AST_NODE_TYPES.Identifier && 
             !('returnType' in node && node.returnType)) {
           
@@ -143,10 +141,9 @@ export const noAnyInTests = createRule<[], MessageIds>({
 
       // Check for arrow functions in variable declarations without return types
       ArrowFunctionExpression(node: TSESTree.ArrowFunctionExpression): void {
-        if (node.type === AST_NODE_TYPES.ArrowFunctionExpression && 
-            node.parent && 
+        if (Boolean(node.parent) && 
             node.parent.type === AST_NODE_TYPES.VariableDeclarator && 
-            node.parent.id && 
+            Boolean(node.parent.id) && 
             node.parent.id.type === AST_NODE_TYPES.Identifier && 
             !('returnType' in node && node.returnType)) {
           

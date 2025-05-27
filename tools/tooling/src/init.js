@@ -3,13 +3,13 @@ import { join } from 'path';
 import { createInterface } from 'readline';
 
 /**
- * Initialize explicit-decisions framework in current project
+ * Initialize shared-lints framework in current project
  * @param {Object} options - Configuration options
  * @param {string} [options.testing='vitest'] - Testing framework to set up
  */
 export async function init(options = {}) {
   const { testing = 'vitest' } = options;
-  console.log('🚀 Initializing explicit-decisions framework...\n');
+  console.log('🚀 Initializing shared-lints framework...\n');
   
   const cwd = process.cwd();
   const rl = createInterface({
@@ -29,7 +29,7 @@ export async function init(options = {}) {
     // Read existing package.json
     const packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf8'));
     
-    console.log('📦 Setting up explicit-decisions framework for:', packageJson.name || 'unnamed project');
+    console.log('📦 Setting up shared-lints framework for:', packageJson.name || 'unnamed project');
     
     // Check package manager and provide pnpm recommendation
     const packageManager = existsSync(join(cwd, 'pnpm-lock.yaml')) ? 'pnpm' : 
@@ -58,7 +58,7 @@ export async function init(options = {}) {
 
     console.log('\n📝 Setting up your project...\n');
 
-    // Set up ESLint configuration (automatic - core part of explicit-decisions)
+    // Set up ESLint configuration (automatic - core part of shared-lints)
     console.log('🔧 Setting up ESLint configuration (automatic)...');
     await setupESLintConfig(cwd);
 
@@ -82,7 +82,7 @@ export async function init(options = {}) {
     // Update package.json scripts
     await updatePackageScripts(packageJsonPath, packageJson, setupDeps.toLowerCase().startsWith('y'));
 
-    console.log('🎉 explicit-decisions framework initialized successfully!\n');
+    console.log('🎉 shared-lints framework initialized successfully!\n');
     console.log('🎯 Next steps:');
     console.log('  1. Run `pnpm lint` to check your code (ESLint auto-configured!)');
     if (setupDeps.toLowerCase().startsWith('y')) {
@@ -91,7 +91,7 @@ export async function init(options = {}) {
       console.log('  4. Commit your changes\n');
     } else {
       console.log('  2. Review the generated eslint.config.js');
-      console.log('  3. Consider setting up dependency management later with `explicit-decisions deps init`');
+      console.log('  3. Consider setting up dependency management later with `shared-lints deps init`');
       console.log('  4. Commit your changes\n');
     }
 
@@ -112,27 +112,27 @@ function askQuestion(rl, question) {
 }
 
 /**
- * Set up ESLint configuration with automatic explicit-decisions integration
+ * Set up ESLint configuration with automatic shared-lints integration
  */
 async function setupESLintConfig(cwd) {
-  console.log('🔧 Setting up ESLint configuration with explicit-decisions rules...');
+  console.log('🔧 Setting up ESLint configuration with shared-lints rules...');
 
-  // Create comprehensive eslint.config.js with explicit-decisions pre-configured
+  // Create comprehensive eslint.config.js with shared-lints pre-configured
   const eslintConfig = `// @ts-check
 
-import explicitDecisions from '@explicit-decisions/eslint-config';
+import sharedLints from '@shared-lints/eslint-config';
 
 export default [
-  ...explicitDecisions,
+  ...sharedLints,
   
   // Project-specific overrides
   {
     rules: {
-      // Customize explicit-decisions rules as needed
-      // '@explicit-decisions/prefer-ts-imports': 'error',
-      // '@explicit-decisions/no-mocks-or-spies': 'error',
-      // '@explicit-decisions/require-ts-extensions': 'error',
-      // '@explicit-decisions/no-npx-usage': 'error',
+      // Customize shared-lints rules as needed
+      // '@shared-lints/prefer-ts-imports': 'error',
+      // '@shared-lints/no-mocks-or-spies': 'error',
+      // '@shared-lints/require-ts-extensions': 'error',
+      // '@shared-lints/no-npx-usage': 'error',
     }
   },
 
@@ -145,7 +145,7 @@ export default [
 ];`;
 
   writeFileSync(join(cwd, 'eslint.config.js'), eslintConfig);
-  console.log('✅ Created eslint.config.js with explicit-decisions rules pre-configured');
+  console.log('✅ Created eslint.config.js with shared-lints rules pre-configured');
 
   // Create .eslintignore if it doesn't exist
   const eslintIgnorePath = join(cwd, '.eslintignore');
@@ -189,15 +189,15 @@ async function updateGitignore(cwd) {
     gitignoreContent = readFileSync(gitignorePath, 'utf8');
   }
 
-  // Add explicit-decisions specific ignores
-  const explicitDecisionsIgnores = `
-# explicit-decisions framework
+  // Add shared-lints specific ignores
+  const sharedLintsIgnores = `
+# shared-lints framework
 dependency-versions.json.bak
 .ncu-cache/
 `;
 
-  if (!gitignoreContent.includes('explicit-decisions framework')) {
-    gitignoreContent += explicitDecisionsIgnores;
+  if (!gitignoreContent.includes('shared-lints framework')) {
+    gitignoreContent += sharedLintsIgnores;
     writeFileSync(gitignorePath, gitignoreContent);
     console.log('✅ Updated .gitignore');
   } else {
@@ -220,16 +220,16 @@ async function updatePackageScripts(packageJsonPath, packageJson, includeDeps) {
                          existsSync(join(cwd, 'package-lock.json')) ? 'npm' : 'pnpm';
   
   const lintCommand = includeDeps 
-    ? 'explicit-decisions deps check && eslint .'
+    ? 'shared-lints deps check && eslint .'
     : 'eslint .';
     
   packageJson.scripts.lint = lintCommand;
   packageJson.scripts['lint:fix'] = 'eslint . --fix';
 
   if (includeDeps) {
-    packageJson.scripts['deps:check'] = 'explicit-decisions deps check';
-    packageJson.scripts['deps:interactive'] = 'explicit-decisions deps interactive';
-    packageJson.scripts['deps:init'] = 'explicit-decisions deps init';
+    packageJson.scripts['deps:check'] = 'shared-lints deps check';
+    packageJson.scripts['deps:interactive'] = 'shared-lints deps interactive';
+    packageJson.scripts['deps:init'] = 'shared-lints deps init';
   }
 
   // Add helpful comments about pnpm
@@ -243,8 +243,8 @@ async function updatePackageScripts(packageJsonPath, packageJson, includeDeps) {
     packageJson.devDependencies = {};
   }
 
-  packageJson.devDependencies['@explicit-decisions/eslint-config'] = '^1.0.0';
-  packageJson.devDependencies['@explicit-decisions/tooling'] = '^1.0.0';
+  packageJson.devDependencies['@shared-lints/eslint-config'] = '^1.0.0';
+  packageJson.devDependencies['@shared-lints/tooling'] = '^1.0.0';
   packageJson.devDependencies['eslint'] = '^9.17.0';
 
   writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2));
@@ -255,7 +255,7 @@ async function updatePackageScripts(packageJsonPath, packageJson, includeDeps) {
  * Set up testing framework configuration
  */
 async function setupTestingFramework(cwd, framework, packageJson) {
-  console.log(`🧪 Configuring ${framework} with explicit-decisions testing patterns...`);
+  console.log(`🧪 Configuring ${framework} with shared-lints testing patterns...`);
 
   if (framework === 'vitest') {
     await setupVitest(cwd, packageJson);
@@ -450,7 +450,7 @@ export class TestLogger {
 
   // Create test setup file
   const setupFile = `/**
- * Test setup following explicit-decisions testing patterns
+ * Test setup following shared-lints testing patterns
  */
 
 // Import custom matchers or setup code here
@@ -472,7 +472,7 @@ afterEach(() => {
   // Create README with testing guidelines
   const testingReadme = `# Test Utils
 
-This directory contains utilities for testing following the explicit-decisions no-mocks philosophy.
+This directory contains utilities for testing following the shared-lints no-mocks philosophy.
 
 ## Principles
 

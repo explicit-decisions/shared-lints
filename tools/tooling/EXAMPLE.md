@@ -1,19 +1,19 @@
 # Example Usage
 
-This document shows how to use `@explicit-decisions/tooling` in a real project.
+This document shows how to use `@shared-lints/tooling` in a real project.
 
 ## Installation
 
 ```bash
 # In your project directory
-npm install -D @explicit-decisions/tooling @explicit-decisions/eslint-config eslint
+npm install -D @shared-lints/tooling @shared-lints/eslint-config eslint
 ```
 
 ## Setup
 
 ```bash
 # Interactive setup
-npx explicit-decisions init
+npx shared-lints init
 ```
 
 This will ask you questions and set up:
@@ -34,10 +34,10 @@ Example output:
 ❌ Dependency policy violations found:
 
 1. Dependency react has updates available but is not tracked in dependency-versions.json
-   💡 Run 'explicit-decisions deps interactive' to make decisions about updates
+   💡 Run 'shared-lints deps interactive' to make decisions about updates
 
 2. Dependency typescript decision is 45 days old (max: 30)
-   💡 Run 'explicit-decisions deps interactive' to refresh your decision
+   💡 Run 'shared-lints deps interactive' to refresh your decision
 ```
 
 ### 2. Make dependency decisions
@@ -96,10 +96,10 @@ After using the interactive mode, you'll get a file like:
 The tooling creates an `eslint.config.js`:
 
 ```javascript
-import explicitDecisions from '@explicit-decisions/eslint-config';
+import sharedLints from '@shared-lints/eslint-config';
 
 export default [
-  ...explicitDecisions,
+  ...sharedLints,
   
   // Project-specific overrides
   {
@@ -117,15 +117,15 @@ Your package.json gets updated with scripts:
 ```json
 {
   "scripts": {
-    "lint": "explicit-decisions deps check && eslint .",
+    "lint": "shared-lints deps check && eslint .",
     "lint:fix": "eslint . --fix", 
-    "deps:check": "explicit-decisions deps check",
-    "deps:interactive": "explicit-decisions deps interactive",
-    "deps:init": "explicit-decisions deps init"
+    "deps:check": "shared-lints deps check",
+    "deps:interactive": "shared-lints deps interactive",
+    "deps:init": "shared-lints deps init"
   },
   "devDependencies": {
-    "@explicit-decisions/eslint-config": "^1.0.0",
-    "@explicit-decisions/tooling": "^1.0.0",
+    "@shared-lints/eslint-config": "^1.0.0",
+    "@shared-lints/tooling": "^1.0.0",
     "eslint": "^9.17.0"
   }
 }

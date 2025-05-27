@@ -8,7 +8,7 @@ import type { RuleFixer } from '@typescript-eslint/utils/ts-eslint';
 type MessageIds = 'missingTsExtension';
 
 const createRule = ESLintUtils.RuleCreator(
-  name => `https://github.com/your-org/explicit-decisions/docs/rules/${name}`
+  name => `https://github.com/explicit-decisions/shared-lints/blob/main/docs/RULES_REFERENCE.md${name}`
 );
 
 /**

@@ -1,22 +1,19 @@
 #!/usr/bin/env node
 
-import { readFileSync } from 'fs';
-import { join, dirname } from 'path';
-import { fileURLToPath } from 'url';
-
-const __dirname = dirname(fileURLToPath(import.meta.url));
-const packageJson = JSON.parse(readFileSync(join(__dirname, '../package.json'), 'utf8'));
+import packageJson from '../package.json' with { type: 'json' };
+import { init } from '../src/init.js';
+import { deps } from '../src/deps.js';
 
 function showHelp() {
   console.log(`
-explicit-decisions v${packageJson.version}
-CLI tools for setting up and managing explicit-decisions framework
+shared-lints v${packageJson.version}
+CLI tools for setting up and managing shared-lints framework
 
 Usage:
-  explicit-decisions <command> [options]
+  shared-lints <command> [options]
 
 Commands:
-  init [options]       Initialize explicit-decisions in current project
+  init [options]       Initialize shared-lints in current project
   deps init           Initialize dependency tracking
   deps check          Check dependency decisions
   deps interactive    Interactive dependency management
@@ -27,14 +24,14 @@ Init Options:
                         Default: vitest
 
 Examples:
-  explicit-decisions init
-  explicit-decisions init --testing vitest
-  explicit-decisions init --testing jest
-  explicit-decisions deps init
-  explicit-decisions deps interactive
+  shared-lints init
+  shared-lints init --testing vitest
+  shared-lints init --testing jest
+  shared-lints deps init
+  shared-lints deps interactive
 
 For more help on a specific command:
-  explicit-decisions <command> --help
+  shared-lints <command> --help
 `);
 }
 
@@ -75,13 +72,11 @@ if (!command || command === 'help' || command === '--help' || command === '-h') 
 }
 
 if (command === 'init') {
-  const { init } = await import('../src/init.js');
   await init(options);
 } else if (command === 'deps') {
-  const { deps } = await import('../src/deps.js');
   await deps(options.subCommand);
 } else {
   console.error(`Unknown command: ${command}`);
-  console.log('Run "explicit-decisions help" for available commands');
+  console.log('Run "shared-lints help" for available commands');
   process.exit(1);
 }

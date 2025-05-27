@@ -1,7 +1,13 @@
 {
-  "name": "@explicit-decisions/eslint-config",
+  "name": "@shared-lints/eslint-config",
   "version": "1.0.0",
   "description": "ESLint configurations enforcing explicit decisions for LLM-assisted TypeScript development",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yehudakatz/shared-lints.git",
+    "directory": "tools/eslint-config"
+  },
   "type": "module",
   "main": "src/index.js",
   "exports": {
@@ -18,8 +24,15 @@
     "eslint",
     "eslint-config",
     "typescript",
-    "shared"
+    "shared-lints",
+    "ai-assisted-development",
+    "llm"
   ],
+  "author": "Yehuda Katz",
+  "homepage": "https://github.com/yehudakatz/shared-lints#readme",
+  "bugs": {
+    "url": "https://github.com/yehudakatz/shared-lints/issues"
+  },
   "peerDependencies": {
     "eslint": ">=9.0.0",
     "@typescript-eslint/eslint-plugin": ">=8.0.0",

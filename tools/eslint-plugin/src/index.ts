@@ -11,7 +11,7 @@ import { requireTsExtensions } from './rules/require-ts-extensions.ts';
  * ESLint plugin enforcing explicit decisions for LLM-assisted development
  * Full TypeScript implementation
  */
-export default {
+const plugin = {
   rules: {
     'no-any-in-tests': noAnyInTests,
     'no-mocks-or-spies': noMocksOrSpies,
@@ -22,3 +22,5 @@ export default {
     'require-ts-extensions': requireTsExtensions,
   },
 };
+
+export default plugin;
