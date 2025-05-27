@@ -1,37 +1,33 @@
-// @ts-check
+import type { TSESTree } from '@typescript-eslint/utils';
+import { ESLintUtils, AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-/**
- * @typedef {import('eslint').Rule.RuleModule} RuleModule
- * @typedef {import('eslint').Rule.RuleContext} RuleContext
- * @typedef {import('eslint').Rule.RuleFixer} RuleFixer
- * @typedef {import('eslint').Rule.Node} ESLintNode
- */
+type MessageIds = 'useFactory' | 'extractFactory';
+
+const createRule = ESLintUtils.RuleCreator(
+  name => `https://github.com/your-org/explicit-decisions/docs/rules/${name}`
+);
 
 /**
  * ESLint rule to encourage factory functions for test data creation
  * Promotes no-mocks testing philosophy with structured test data
- * @type {RuleModule}
  */
-export const requireFactoryFunctions = {
+export const requireFactoryFunctions = createRule<[], MessageIds>({
+  name: 'require-factory-functions',
   meta: {
     type: 'suggestion',
     docs: {
       description: 'Encourage factory functions for test data instead of inline object literals',
-      category: 'Best Practices', 
-      recommended: false,
     },
-    fixable: undefined, // Factory function extraction should be done manually
+    // No fixable property - factory function extraction should be done manually
     schema: [],
     messages: {
       useFactory: 'Consider using a factory function for complex test data. Create a factory in test-utils/ for reusable test data creation.',
       extractFactory: 'Large object literal detected in test. Consider extracting to a factory function for better maintainability.',
     },
   },
-  /**
-   * @param {RuleContext} context
-   */
+  defaultOptions: [],
   create(context) {
-    const filename = context.filename ?? '';
+    const filename = context.filename || '';
     const isTestFile = /\.(test|spec)\.(js|ts|jsx|tsx)$/.test(filename);
     
     if (!isTestFile) {
@@ -40,39 +36,32 @@ export const requireFactoryFunctions = {
 
     /**
      * Count properties in an object expression
-     * @param {ESLintNode} node
-     * @returns {number}
      */
-    function countObjectProperties(node) {
-      if (node.type !== 'ObjectExpression') return 0;
+    const countObjectProperties = (node: TSESTree.ObjectExpression): number => {
       return node.properties.length;
-    }
+    };
 
     /**
      * Check if object has nested objects
-     * @param {ESLintNode} node
-     * @returns {boolean}
      */
-    function hasNestedObjects(node) {
-      if (node.type !== 'ObjectExpression') return false;
+    const hasNestedObjects = (node: TSESTree.ObjectExpression): boolean => {
       return node.properties.some(prop => 
-        prop.type === 'Property' && 
-        prop.value.type === 'ObjectExpression'
+        prop.type === AST_NODE_TYPES.Property && 
+        prop.value.type === AST_NODE_TYPES.ObjectExpression
       );
-    }
+    };
+
+
 
     return {
-      /**
-       * @param {ESLintNode} node
-       */
-      ObjectExpression(node) {
+      ObjectExpression(node: TSESTree.ObjectExpression): void {
         const propertyCount = countObjectProperties(node);
         const hasNested = hasNestedObjects(node);
         
         // Flag objects with >5 properties or nested objects as candidates for factories
         if (propertyCount > 5 || hasNested) {
-          const isInVariableDeclarator = node.parent?.type === 'VariableDeclarator';
-          const isInCallExpression = node.parent?.type === 'CallExpression';
+          const isInVariableDeclarator = node.parent && node.parent.type === AST_NODE_TYPES.VariableDeclarator;
+          const isInCallExpression = node.parent && node.parent.type === AST_NODE_TYPES.CallExpression;
           
           // Only suggest for test data, not for test configuration
           if (isInVariableDeclarator || isInCallExpression) {
@@ -84,14 +73,11 @@ export const requireFactoryFunctions = {
         }
       },
 
-      /**
-       * @param {ESLintNode} node
-       */
-      ArrayExpression(node) {
+      ArrayExpression(node: TSESTree.ArrayExpression): void {
         // Check for arrays of objects that could benefit from factories
-        if (node.type === 'ArrayExpression' && node.elements && node.elements.length > 3) {
+        if (node.elements && node.elements.length > 3) {
           const hasObjectElements = node.elements.some((el) => 
-            el && el.type === 'ObjectExpression'
+            Boolean(el) && el.type === AST_NODE_TYPES.ObjectExpression
           );
           
           if (hasObjectElements) {
@@ -104,4 +90,4 @@ export const requireFactoryFunctions = {
       },
     };
   },
-};
+});

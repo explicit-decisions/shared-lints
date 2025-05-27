@@ -32,7 +32,7 @@ export const noAnyInTests = {
    * @param {RuleContext} context
    */
   create(context) {
-    const filename = context.filename ?? context.getFilename?.() ?? '';
+    const filename = context.filename ?? '';
     const isTestFile = /\.(test|spec)\.(ts|tsx)$/.test(filename);
     
     // Only apply to TypeScript test files

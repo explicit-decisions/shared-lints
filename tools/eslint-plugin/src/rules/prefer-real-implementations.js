@@ -44,7 +44,7 @@ export const preferRealImplementations = {
    * @param {RuleContext} context
    */
   create(context) {
-    const filename = context.filename ?? context.getFilename?.() ?? '';
+    const filename = context.filename ?? '';
     const isTestFile = /\.(test|spec)\.(js|ts|jsx|tsx)$/.test(filename);
     const options = context.options[0] || {};
     const allowedGlobals = new Set(options.allowedGlobals || ['console', 'process', 'Buffer', 'global', 'window', 'document']);
