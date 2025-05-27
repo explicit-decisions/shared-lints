@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+
 import type { TSESTree } from '@typescript-eslint/utils';
 import { ESLintUtils, AST_NODE_TYPES } from '@typescript-eslint/utils';
 

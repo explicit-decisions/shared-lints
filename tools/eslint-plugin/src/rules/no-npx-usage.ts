@@ -1,5 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { ESLintUtils, AST_NODE_TYPES } from '@typescript-eslint/utils';
+import type { RuleFixer } from '@typescript-eslint/utils/ts-eslint';
 
 type MessageIds = 'noNpx' | 'noPnpx' | 'noNpxInExecSync' | 'noPnpxInExecSync';
 
@@ -39,12 +40,12 @@ export const noNpxUsage = createRule<[], MessageIds>({
     /**
      * Create auto-fix replacement
      */
-    const createFix = (node: TSESTree.Literal, value: string, isNpx: boolean) => {
+    const createFix = (node: TSESTree.Literal, value: string, isNpx: boolean): (fixer: RuleFixer) => ReturnType<RuleFixer['replaceText']> => {
       const prefix = isNpx ? 'npx ' : 'pnpx ';
       const command = extractCommand(value, prefix);
       const replacement = `pnpm exec ${command}`;
       
-      return (fixer: any) => {
+      return (fixer: RuleFixer) => {
         return fixer.replaceText(node, `"${replacement}"`);
       };
     };
@@ -82,13 +83,13 @@ export const noNpxUsage = createRule<[], MessageIds>({
       TemplateLiteral(node: TSESTree.TemplateLiteral): void {
         if (node.quasis.length > 0) {
           const firstQuasi = node.quasis[0];
-          if (firstQuasi && firstQuasi.value.raw.startsWith('npx ')) {
+          if (firstQuasi?.value.raw.startsWith('npx ')) {
             context.report({
               node,
               messageId: 'noNpx',
               data: { command: 'command in template literal' },
             });
-          } else if (firstQuasi && firstQuasi.value.raw.startsWith('pnpx ')) {
+          } else if (firstQuasi?.value.raw.startsWith('pnpx ')) {
             context.report({
               node,
               messageId: 'noPnpx', 

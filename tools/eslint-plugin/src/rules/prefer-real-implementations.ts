@@ -45,8 +45,8 @@ export const preferRealImplementations = createRule<[Options], MessageIds>({
   create(context) {
     const filename = context.filename || '';
     const isTestFile = /\.(test|spec)\.(js|ts|jsx|tsx)$/.test(filename);
-    const options = context.options[0] || {};
-    const allowedGlobals = new Set(options.allowedGlobals || ['console', 'process', 'global', 'window']);
+    const options = context.options[0] ?? {};
+    const allowedGlobals = new Set(options.allowedGlobals ?? ['console', 'process', 'global', 'window']);
     
     // Dependencies that could be injected for better testability
     const injectableDependencies = new Set([

@@ -1,43 +1,24 @@
 // TypeScript version of the ESLint plugin index
-import { noAnyInTests } from './rules/no-any-in-tests.js';
-import { noMocksOrSpies } from './rules/no-mocks-or-spies.js';
-import { noNpxUsage } from './rules/no-npx-usage.js';
-import { preferRealImplementations } from './rules/prefer-real-implementations.js';
-import { preferTsImports } from './rules/prefer-ts-imports.js';
-import { requireFactoryFunctions } from './rules/require-factory-functions.js';
-import { requireTsExtensions } from './rules/require-ts-extensions.js';
-
-// TypeScript imports
-import { noAnyInTests as noAnyInTestsTS } from './rules/no-any-in-tests';
-import { noMocksOrSpies as noMocksOrSpiesTS } from './rules/no-mocks-or-spies';
-import { noNpxUsage as noNpxUsageTS } from './rules/no-npx-usage';
-import { preferRealImplementations as preferRealImplementationsTS } from './rules/prefer-real-implementations';
-import { preferTsImports as preferTsImportsTS } from './rules/prefer-ts-imports';
-import { requireFactoryFunctions as requireFactoryFunctionsTS } from './rules/require-factory-functions';
-import { requireTsExtensions as requireTsExtensionsTS } from './rules/require-ts-extensions';
+import { noAnyInTests } from './rules/no-any-in-tests.ts';
+import { noMocksOrSpies } from './rules/no-mocks-or-spies.ts';
+import { noNpxUsage } from './rules/no-npx-usage.ts';
+import { preferRealImplementations } from './rules/prefer-real-implementations.ts';
+import { preferTsImports } from './rules/prefer-ts-imports.ts';
+import { requireFactoryFunctions } from './rules/require-factory-functions.ts';
+import { requireTsExtensions } from './rules/require-ts-extensions.ts';
 
 /**
  * ESLint plugin enforcing explicit decisions for LLM-assisted development
- * Now with full TypeScript support
+ * Full TypeScript implementation
  */
 export default {
   rules: {
-    // Original JavaScript versions (maintained for compatibility)
+    'no-any-in-tests': noAnyInTests,
     'no-mocks-or-spies': noMocksOrSpies,
-    'require-ts-extensions': requireTsExtensions,
     'no-npx-usage': noNpxUsage,
+    'prefer-real-implementations': preferRealImplementations,
     'prefer-ts-imports': preferTsImports,
     'require-factory-functions': requireFactoryFunctions,
-    'no-any-in-tests': noAnyInTests,
-    'prefer-real-implementations': preferRealImplementations,
-    
-    // TypeScript versions (recommended for new usage)
-    'no-mocks-or-spies-ts': noMocksOrSpiesTS,
-    'require-ts-extensions-ts': requireTsExtensionsTS,
-    'no-npx-usage-ts': noNpxUsageTS,
-    'prefer-ts-imports-ts': preferTsImportsTS,
-    'require-factory-functions-ts': requireFactoryFunctionsTS,
-    'no-any-in-tests-ts': noAnyInTestsTS,
-    'prefer-real-implementations-ts': preferRealImplementationsTS,
+    'require-ts-extensions': requireTsExtensions,
   },
 };

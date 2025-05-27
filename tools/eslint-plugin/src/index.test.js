@@ -2,7 +2,7 @@
 
 import { describe, it, expect } from "vitest";
 
-import plugin from "./index.js";
+import plugin from "./index.ts";
 
 describe("shared ESLint plugin", () => {
   it("should export rules object", () => {

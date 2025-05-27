@@ -46,7 +46,7 @@ export const noMocksOrSpies = createRule<[], MessageIds>({
      */
     const findStatement = (node: TSESTree.Node): TSESTree.Node | null => {
       let current: TSESTree.Node | undefined = node;
-      while (current && current.parent) {
+      while (current?.parent) {
         if (current.parent.type === AST_NODE_TYPES.ExpressionStatement ||
             current.parent.type === AST_NODE_TYPES.VariableDeclaration) {
           return current.parent;

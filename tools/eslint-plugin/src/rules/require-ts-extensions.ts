@@ -1,7 +1,9 @@
 import fs from 'fs';
 import path from 'path';
+
 import type { TSESTree } from '@typescript-eslint/utils';
 import { ESLintUtils, AST_NODE_TYPES } from '@typescript-eslint/utils';
+import type { RuleFixer } from '@typescript-eslint/utils/ts-eslint';
 
 type MessageIds = 'missingTsExtension';
 
@@ -54,8 +56,8 @@ export const requireTsExtensions = createRule<[], MessageIds>({
     /**
      * Create auto-fix for adding .ts extension
      */
-    const createFix = (node: TSESTree.Literal, importPath: string) => {
-      return (fixer: any) => {
+    const createFix = (node: TSESTree.Literal, importPath: string): (fixer: RuleFixer) => ReturnType<RuleFixer['replaceText']> => {
+      return (fixer: RuleFixer) => {
         const newImportPath = `${importPath}.ts`;
         return fixer.replaceText(node, `"${newImportPath}"`);
       };
