@@ -1,5 +1,11 @@
 node_modules
 
+# Ignore all files in the docs/archive directory
+/docs/archive
+/docs/ephemeral
+
+dist/
+
 # Reference repositories for analysis
 # Keep configuration files and documentation, but ignore the synced repos
 reference-repos/*/

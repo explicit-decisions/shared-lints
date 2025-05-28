@@ -1,12 +1,12 @@
 # Example Usage
 
-This document shows how to use `@shared-lints/tooling` in a real project.
+This document shows how to use `@explicit-decisions/tooling` in a real project.
 
 ## Installation
 
 ```bash
 # In your project directory
-npm install -D @shared-lints/tooling @shared-lints/eslint-config eslint
+npm install -D @explicit-decisions/tooling @explicit-decisions/eslint-config eslint
 ```
 
 ## Setup
@@ -96,7 +96,7 @@ After using the interactive mode, you'll get a file like:
 The tooling creates an `eslint.config.js`:
 
 ```javascript
-import sharedLints from '@shared-lints/eslint-config';
+import sharedLints from '@explicit-decisions/eslint-config';
 
 export default [
   ...sharedLints,
@@ -124,8 +124,8 @@ Your package.json gets updated with scripts:
     "deps:init": "shared-lints deps init"
   },
   "devDependencies": {
-    "@shared-lints/eslint-config": "^1.0.0",
-    "@shared-lints/tooling": "^1.0.0",
+    "@explicit-decisions/eslint-config": "^1.0.0",
+    "@explicit-decisions/tooling": "^1.0.0",
     "eslint": "^9.17.0"
   }
 }

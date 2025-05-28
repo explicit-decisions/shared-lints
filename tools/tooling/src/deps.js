@@ -70,7 +70,7 @@ async function initDependencyTracking(cwd) {
   console.log('✅ Created dependency-versions.json');
   console.log('✅ Created schemas/dependency-versions.schema.json');
   console.log('🎯 Next steps:');
-  console.log('  1. Add "node_modules/@shared-lints/tooling/src/check-dependencies.js" to your lint script');
+  console.log('  1. Add "node_modules/@explicit-decisions/tooling/src/check-dependencies.js" to your lint script');
   console.log('  2. Run `shared-lints deps check` to see current outdated dependencies');
   console.log('  3. Run `shared-lints deps interactive` to make decisions about updates');
   console.log('  4. The lint command will now enforce your dependency decisions!\n');

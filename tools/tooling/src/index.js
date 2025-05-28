@@ -1,5 +1,5 @@
 /**
- * @shared-lints/tooling
+ * @explicit-decisions/tooling
  * 
  * CLI tools for setting up and managing shared-lints framework
  * 
@@ -28,5 +28,5 @@ Commands:
   deps interactive    Interactive dependency management
 
 For more information, visit:
-https://github.com/yehudakatz/shared-lints
+https://github.com/explicit-decisions/shared-lints
 `;

@@ -1,11 +1,11 @@
 {
-  "name": "@shared-lints/tooling",
+  "name": "@explicit-decisions/tooling",
   "version": "1.0.0",
   "description": "CLI tools for setting up and managing shared-lints framework",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/yehudakatz/shared-lints.git",
+    "url": "https://github.com/explicit-decisions/shared-lints.git",
     "directory": "tools/tooling"
   },
   "type": "module",
@@ -32,6 +32,11 @@
     "shared",
     "cli"
   ],
+  "author": "Yehuda Katz",
+  "homepage": "https://github.com/explicit-decisions/shared-lints#readme",
+  "bugs": {
+    "url": "https://github.com/explicit-decisions/shared-lints/issues"
+  },
   "dependencies": {
     "npm-check-updates": "^17.1.11"
   },

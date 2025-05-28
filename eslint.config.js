@@ -16,8 +16,8 @@ export default [
   {
     files: ["scripts/**", "tools/**"],
     rules: {
-      "@shared-lints/no-npx-usage": "off",
-      "@shared-lints/prefer-real-implementations": "off",
+      "@explicit-decisions/no-npx-usage": "off",
+      "@explicit-decisions/prefer-real-implementations": "off",
     }
   },
 

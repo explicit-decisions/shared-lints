@@ -18,13 +18,13 @@ The shared-lints framework helps developers work more effectively with AI assist
 
 ```bash
 # Using pnpm (recommended)
-pnpm add -D @shared-lints/eslint-config @shared-lints/eslint-plugin
+pnpm add -D @explicit-decisions/eslint-config @explicit-decisions/eslint-plugin
 
 # Using npm
-npm install --save-dev @shared-lints/eslint-config @shared-lints/eslint-plugin
+npm install --save-dev @explicit-decisions/eslint-config @explicit-decisions/eslint-plugin
 
 # Using yarn
-yarn add -D @shared-lints/eslint-config @shared-lints/eslint-plugin
+yarn add -D @explicit-decisions/eslint-config @explicit-decisions/eslint-plugin
 ```
 
 ### 2. Configure ESLint
@@ -32,8 +32,8 @@ yarn add -D @shared-lints/eslint-config @shared-lints/eslint-plugin
 Create or update your `eslint.config.js`:
 
 ```javascript
-import sharedConfig from '@shared-lints/eslint-config';
-import sharedPlugin from '@shared-lints/eslint-plugin';
+import sharedConfig from '@explicit-decisions/eslint-config';
+import sharedPlugin from '@explicit-decisions/eslint-plugin';
 
 export default [
   ...sharedConfig.base,

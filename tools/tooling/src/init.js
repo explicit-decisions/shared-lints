@@ -120,7 +120,7 @@ async function setupESLintConfig(cwd) {
   // Create comprehensive eslint.config.js with shared-lints pre-configured
   const eslintConfig = `// @ts-check
 
-import sharedLints from '@shared-lints/eslint-config';
+import sharedLints from '@explicit-decisions/eslint-config';
 
 export default [
   ...sharedLints,
@@ -129,10 +129,10 @@ export default [
   {
     rules: {
       // Customize shared-lints rules as needed
-      // '@shared-lints/prefer-ts-imports': 'error',
-      // '@shared-lints/no-mocks-or-spies': 'error',
-      // '@shared-lints/require-ts-extensions': 'error',
-      // '@shared-lints/no-npx-usage': 'error',
+      // '@explicit-decisions/prefer-ts-imports': 'error',
+      // '@explicit-decisions/no-mocks-or-spies': 'error',
+      // '@explicit-decisions/require-ts-extensions': 'error',
+      // '@explicit-decisions/no-npx-usage': 'error',
     }
   },
 
@@ -243,8 +243,8 @@ async function updatePackageScripts(packageJsonPath, packageJson, includeDeps) {
     packageJson.devDependencies = {};
   }
 
-  packageJson.devDependencies['@shared-lints/eslint-config'] = '^1.0.0';
-  packageJson.devDependencies['@shared-lints/tooling'] = '^1.0.0';
+  packageJson.devDependencies['@explicit-decisions/eslint-config'] = '^1.0.0';
+  packageJson.devDependencies['@explicit-decisions/tooling'] = '^1.0.0';
   packageJson.devDependencies['eslint'] = '^9.17.0';
 
   writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2));

@@ -8,6 +8,8 @@ ESLint rules are the backbone of code quality enforcement, but writing them in J
 
 This post chronicles our journey from fighting TypeScript property access errors to embracing professional TypeScript ESLint development patterns using `@typescript-eslint/utils`.
 
+This post chronicles our journey from fighting TypeScript property access errors to embracing professional TypeScript ESLint development patterns using `@typescript-eslint/utils`.
+
 ## The Problem: JavaScript ESLint Rules in a TypeScript World
 
 ### What We Started With
@@ -51,8 +53,7 @@ export const preferRealImplementations = {
 ### Installing the Foundation
 
 ```bash
-pnpm add @typescript-eslint/utils
-pnpm add -D typescript @typescript-eslint/parser
+npm install -D @typescript-eslint/utils @typescript-eslint/parser typescript
 ```
 
 ### The TypeScript Configuration
@@ -198,7 +199,7 @@ function checkNode(node: TSESTree.ImportDeclaration): void {
 // - Integration with typescript-eslint ecosystem
 
 const createRule = ESLintUtils.RuleCreator(
-  name => `https://your-docs.com/rules/${name}`
+  name => `https://github.com/explicit-decisions/shared-lints/blob/main/docs/guides/RULES_REFERENCE.md#${name}`
 );
 ```
 
@@ -324,8 +325,8 @@ export default {
 
 ```bash
 # Test each migrated rule independently
-pnpm test src/rules/prefer-real-implementations.test.ts
-pnpm lint --rule="@explicit-decisions/prefer-real-implementations-ts"
+npm test src/rules/prefer-real-implementations.test.ts
+npm run lint:plugin
 ```
 
 ### 3. Type-First Development
@@ -415,10 +416,12 @@ Ultra-strict TypeScript configuration catches real bugs:
 
 ### What We Achieved
 
-- **100% Type Safety**: No more property access errors
-- **Professional Development**: Using industry-standard patterns
+- **7 Production-Ready TypeScript Rules**: Complete migration from JavaScript with full type safety
+- **100% Type Safety**: No more property access errors or runtime AST failures
+- **Professional Development Patterns**: Using industry-standard @typescript-eslint/utils
+- **Comprehensive Auto-Fix Support**: All rules include reliable automatic fixes
 - **Better Maintainability**: Self-documenting, refactor-safe code
-- **Future-Proof Architecture**: Aligned with TypeScript ESLint evolution
+- **Future-Proof Architecture**: Aligned with TypeScript ESLint ecosystem evolution
 
 ### Migration Checklist
 

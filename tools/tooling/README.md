@@ -1,11 +1,11 @@
-# @shared-lints/tooling
+# @explicit-decisions/tooling
 
 CLI tools for setting up and managing the shared-lints framework.
 
 ## Installation
 
 ```bash
-npm install -D @shared-lints/tooling @shared-lints/eslint-config
+npm install -D @explicit-decisions/tooling @explicit-decisions/eslint-config
 ```
 
 ## Quick Start
@@ -99,7 +99,7 @@ This tooling implements the "Enforced Explicit Decision" pattern for LLM-assiste
 
 ```bash
 cd my-project
-npm install -D @shared-lints/tooling @shared-lints/eslint-config
+npm install -D @explicit-decisions/tooling @explicit-decisions/eslint-config
 npx shared-lints init
 npm run lint
 ```

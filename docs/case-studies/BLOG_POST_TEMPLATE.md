@@ -6,7 +6,7 @@
 
 ## Context for Claude
 
-I've been working on a project called "explicit-decisions" that implements the "Enforced Explicit Decision" pattern for LLM-assisted development. This pattern addresses a fundamental mismatch: **LLMs excel at pattern recognition but lack context about human decision-making processes and organizational constraints.**
+I've been working on a project called "shared-lints" (published under @explicit-decisions) that implements the "Enforced Explicit Decision" pattern for LLM-assisted development. This pattern addresses a fundamental mismatch: **LLMs excel at pattern recognition but lack context about human decision-making processes and organizational constraints.**
 
 ### The Core Problem: The AI Assumption Gap
 

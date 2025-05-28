@@ -6,7 +6,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/yehudakatz/shared-lints.git"
+    "url": "https://github.com/explicit-decisions/shared-lints.git"
   },
   "type": "module",
   "scripts": {
