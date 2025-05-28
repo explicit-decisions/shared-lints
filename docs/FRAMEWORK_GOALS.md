@@ -130,7 +130,7 @@ With explicit decisions:
 
 ## Call to Action
 
-The explicit-decisions framework isn't just another tool—it's a fundamental shift in how we encode and communicate technical decisions in an AI-assisted world.
+The shared-lints framework isn't just another tool—it's a fundamental shift in how we encode and communicate technical decisions in an AI-assisted world.
 
 **For Developers**: Make your implicit knowledge explicit. Your future self (and AI assistant) will thank you.
 

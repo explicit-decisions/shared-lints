@@ -1,0 +1,42 @@
+{
+  "$schema": "./schemas/project-metadata.schema.json",
+  "description": "Explicit decisions about project metadata to ensure consistency across all package.json files",
+  "decisions": {
+    "organizationName": {
+      "value": "explicit-decisions",
+      "reason": "GitHub organization name for this project",
+      "decidedAt": "2025-05-28",
+      "reviewBy": "2025-08-28"
+    },
+    "repositoryName": {
+      "value": "shared-lints",
+      "reason": "Repository name within the organization",
+      "decidedAt": "2025-05-28",
+      "reviewBy": "2025-08-28"
+    },
+    "packageScope": {
+      "value": "@explicit-decisions",
+      "reason": "npm package scope matching the GitHub organization",
+      "decidedAt": "2025-05-28",
+      "reviewBy": "2025-08-28"
+    },
+    "repositoryUrl": {
+      "value": "https://github.com/explicit-decisions/shared-lints.git",
+      "reason": "Full repository URL for package.json files",
+      "decidedAt": "2025-05-28",
+      "reviewBy": "2025-08-28"
+    },
+    "homepage": {
+      "value": "https://github.com/explicit-decisions/shared-lints#readme",
+      "reason": "Project homepage URL",
+      "decidedAt": "2025-05-28",
+      "reviewBy": "2025-08-28"
+    },
+    "bugsUrl": {
+      "value": "https://github.com/explicit-decisions/shared-lints/issues",
+      "reason": "Issue tracking URL",
+      "decidedAt": "2025-05-28",
+      "reviewBy": "2025-08-28"
+    }
+  }
+}

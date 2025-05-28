@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { ESLintUtils, AST_NODE_TYPES } from '@typescript-eslint/utils';
-const createRule = ESLintUtils.RuleCreator(name => `https://github.com/explicit-decisions/shared-lints/blob/main/docs/RULES_REFERENCE.md${name}`);
+const createRule = ESLintUtils.RuleCreator(name => `https://github.com/shared-lints/shared-lints/blob/main/docs/RULES_REFERENCE.md${name}`);
 /**
  * ESLint rule to require .ts extensions when importing .ts files that exist on disk
  */

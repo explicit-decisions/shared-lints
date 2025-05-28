@@ -1,10 +1,10 @@
 # ESLint Rules Reference
 
-This document provides comprehensive documentation for all explicit-decisions ESLint rules, including examples, rationale, and configuration options.
+This document provides comprehensive documentation for all shared-lints ESLint rules, including examples, rationale, and configuration options.
 
 ## Overview
 
-The explicit-decisions ESLint plugin implements the **Enforced Explicit Decisions Pattern** through rules that create hard failures LLMs cannot ignore. Each rule embodies the core philosophy of this pattern: make implicit decisions explicit through tooling that enforces coordination between humans and AI assistants.
+The shared-lints ESLint plugin implements the **Enforced Explicit Decisions Pattern** through rules that create hard failures LLMs cannot ignore. Each rule embodies the core philosophy of this pattern: make implicit decisions explicit through tooling that enforces coordination between humans and AI assistants.
 
 ## Available Rules
 
@@ -598,7 +598,7 @@ All rules are available in both JavaScript and TypeScript versions:
 
 ## Philosophy Integration
 
-Each rule embodies the explicit-decisions philosophy:
+Each rule embodies the shared-lints philosophy:
 
 1. **Hard Failures**: Rules create failures that LLMs cannot ignore
 2. **Clear Guidance**: Error messages explain WHY and provide actionable HOW  

@@ -1,6 +1,6 @@
 # Reference Repositories
 
-This directory contains snapshots of reference repositories that demonstrate the explicit-decisions framework in practice. These are synchronized copies (without `.git` directories) of real projects that use and validate the patterns documented in this framework.
+This directory contains snapshots of reference repositories that demonstrate the shared-lints framework in practice. These are synchronized copies (without `.git` directories) of real projects that use and validate the patterns documented in this framework.
 
 ## Configuration
 
@@ -117,7 +117,7 @@ pnpm refs:link
 - Perfect for migration and experimentation
 - Changes immediately visible in both locations
 
-**Use when:** Actively migrating repositories to explicit-decisions framework
+**Use when:** Actively migrating repositories to shared-lints framework
 
 ### Strategy 2: Rsync Snapshots (Recommended for Analysis)
 

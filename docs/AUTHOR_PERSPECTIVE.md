@@ -64,7 +64,7 @@ I've been using AI code assistants extensively and discovered a two-phase patter
 
 **Phase 2: Consolidation** - Encode the decisions you've made into tooling. This is where you make your learning sustainable.
 
-The explicit-decisions framework is built for Phase 2. It's for when you've figured out what works and want to lock it in—not just for AI, but for yourself when you've forgotten the details.
+The shared-lints framework is built for Phase 2. It's for when you've figured out what works and want to lock it in—not just for AI, but for yourself when you've forgotten the details.
 
 This matters now because AI makes Phase 1 incredibly fast. But without Phase 2, you'll find yourself correcting the same AI suggestions over and over, fighting your tools instead of leveraging them.
 
@@ -77,7 +77,7 @@ Let me be honest about my use case: I built this framework to solve my own probl
 - Want AI to be helpful, not destructive
 - Value sustainable velocity over initial speed
 
-The explicit-decisions framework is opinionated because it needs to be—weak patterns don't create behavior change. It focuses on:
+The shared-lints framework is opinionated because it needs to be—weak patterns don't create behavior change. It focuses on:
 
 1. **Hard failures over soft warnings** - If it's important, it should break the build
 2. **Explicit over implicit** - Every "it depends" decision must be documented
@@ -140,7 +140,7 @@ This framework extends that philosophy to AI-assisted development. We're not fig
 
 Good tooling has always been about making the right thing easy. With AI in the mix, it's about making the right thing unambiguous.
 
-*Note: This repository itself uses the explicit-decisions framework. You can see the patterns in action in our dependency-versions.json, our ESLint rules, and our error messages. We're not just talking about these patterns—we're living them.*
+*Note: This repository itself uses the shared-lints framework. You can see the patterns in action in our dependency-versions.json, our ESLint rules, and our error messages. We're not just talking about these patterns—we're living them.*
 
 ## Try It Yourself
 
@@ -155,4 +155,4 @@ The code is there, the patterns are documented, and I'm curious to see how other
 
 ---
 
-*Want to discuss? Found this helpful? I'd love to hear your experiences—[open an issue](https://github.com/explicit-decisions/shared-lints/issues) or find me on social media.*
+*Want to discuss? Found this helpful? I'd love to hear your experiences—[open an issue](https://github.com/shared-lints/shared-lints/issues) or find me on social media.*

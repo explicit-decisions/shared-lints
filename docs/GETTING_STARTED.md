@@ -39,13 +39,13 @@ export default [
   ...explicitConfig.base,
   {
     plugins: {
-      'explicit-decisions': explicitPlugin
+      '@explicit-decisions': explicitPlugin
     },
     rules: {
       // Start with warnings to see impact
-      'explicit-decisions/no-mocks-or-spies': 'warn',
-      'explicit-decisions/require-ts-extensions': 'warn',
-      'explicit-decisions/no-npx-usage': 'warn'
+      '@explicit-decisions/no-mocks-or-spies': 'warn',
+      '@explicit-decisions/require-ts-extensions': 'warn',
+      '@explicit-decisions/no-npx-usage': 'warn'
     }
   }
 ];
@@ -142,7 +142,7 @@ Create `CLAUDE.md` (or `AI_CONTEXT.md`) in your project root:
 When working with AI, start conversations with:
 
 ```
-This project uses the explicit-decisions framework.
+This project uses the shared-lints framework.
 See CLAUDE.md for context and conventions.
 We enforce no mocks, explicit imports, and no npx.
 ```
@@ -153,9 +153,9 @@ We enforce no mocks, explicit imports, and no npx.
 
 ```javascript
 rules: {
-  'explicit-decisions/no-mocks-or-spies': 'warn',
-  'explicit-decisions/require-ts-extensions': 'warn',
-  'explicit-decisions/no-npx-usage': 'warn'
+  'shared-lints/no-mocks-or-spies': 'warn',
+  'shared-lints/require-ts-extensions': 'warn',
+  'shared-lints/no-npx-usage': 'warn'
 }
 ```
 
@@ -167,9 +167,9 @@ rules: {
 
 ```javascript
 rules: {
-  'explicit-decisions/no-npx-usage': 'error', // Security-critical
-  'explicit-decisions/require-ts-extensions': 'warn',
-  'explicit-decisions/no-mocks-or-spies': 'warn'
+  'shared-lints/no-npx-usage': 'error', // Security-critical
+  'shared-lints/require-ts-extensions': 'warn',
+  'shared-lints/no-mocks-or-spies': 'warn'
 }
 ```
 
@@ -181,9 +181,9 @@ rules: {
 
 ```javascript
 rules: {
-  'explicit-decisions/no-npx-usage': 'error',
-  'explicit-decisions/require-ts-extensions': 'error',
-  'explicit-decisions/no-mocks-or-spies': 'error'
+  'shared-lints/no-npx-usage': 'error',
+  'shared-lints/require-ts-extensions': 'error',
+  'shared-lints/no-mocks-or-spies': 'error'
 }
 ```
 
@@ -256,7 +256,7 @@ You: "We don't use npx. Please use pnpm exec or add to devDependencies."
 - **Rule Documentation**: Each rule has detailed docs with examples
 - **Error Messages**: Provide actionable guidance and links
 - **Examples**: See the `examples/` directory for real usage
-- **Issues**: Report problems at [GitHub Issues](https://github.com/explicit-decisions/shared-lints/issues)
+- **Issues**: Report problems at [GitHub Issues](https://github.com/shared-lints/shared-lints/issues)
 
 ## FAQ
 

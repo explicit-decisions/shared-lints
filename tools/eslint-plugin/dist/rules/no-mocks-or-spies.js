@@ -1,5 +1,5 @@
 import { ESLintUtils, AST_NODE_TYPES } from '@typescript-eslint/utils';
-const createRule = ESLintUtils.RuleCreator(name => `https://github.com/explicit-decisions/shared-lints/blob/main/docs/RULES_REFERENCE.md#${name}`);
+const createRule = ESLintUtils.RuleCreator(name => `https://github.com/shared-lints/shared-lints/blob/main/docs/RULES_REFERENCE.md#${name}`);
 /**
  * ESLint rule to prevent using mocks and spies in tests
  * Promotes no-mocks testing philosophy with real implementations

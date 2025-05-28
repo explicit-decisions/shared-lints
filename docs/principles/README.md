@@ -1,6 +1,6 @@
 # Principles Documentation
 
-This directory contains the fundamental principles and decision frameworks that guide the explicit-decisions project development.
+This directory contains the fundamental principles and decision frameworks that guide the shared-lints project development.
 
 ## Core Principles
 
@@ -23,6 +23,16 @@ This directory contains the fundamental principles and decision frameworks that 
 - **Tier 3:** New packages require compelling rationale and review cycle
 
 *Philosophy: "The best package is often the one you don't install"*
+
+### [PROJECT_METADATA.md](./PROJECT_METADATA.md)
+
+**Project metadata consistency** across all package.json files:
+
+- **Single source of truth:** All metadata decisions in one file
+- **Automated validation:** Fails builds on inconsistency
+- **Review cycles:** Periodic review of metadata decisions
+
+*Philosophy: "Make implicit metadata decisions explicit"*
 
 ## How These Principles Work Together
 
@@ -64,7 +74,7 @@ This directory contains the fundamental principles and decision frameworks that 
 
 ### Core Project Philosophy
 
-- [../../PHILOSOPHY.md](../../PHILOSOPHY.md) - Overall explicit-decisions pattern philosophy
+- [../../PHILOSOPHY.md](../../PHILOSOPHY.md) - Overall shared-lints pattern philosophy
 - [../../LLM_INSTRUCTIONS.md](../../LLM_INSTRUCTIONS.md) - AI collaboration guidance
 - [../../CLAUDE.md](../../CLAUDE.md) - Project-specific AI instructions
 

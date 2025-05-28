@@ -109,7 +109,7 @@ Request: Generate multiple approaches, don't worry about perfect code.
 When working with AI assistants during consolidation:
 
 ```
-Context: I'm in consolidation phase, following explicit-decisions project standards.
+Context: I'm in consolidation phase, following shared-lints project standards.
 Standards: See docs/principles/ for development priorities and package selection.
 Quality requirements: TypeScript strict mode, comprehensive tests, full documentation.
 Request: [Specific improvement or implementation task]

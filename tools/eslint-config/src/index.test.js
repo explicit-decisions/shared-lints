@@ -2,16 +2,16 @@
 
 import { describe, it, expect } from "vitest";
 
-import explicitConfig from "./index.js";
+import sharedConfig from "./index.js";
 
-describe("explicit-decisions ESLint config", () => {
+describe("shared-lints ESLint config", () => {
   it("should export an array of configurations", () => {
-    expect(Array.isArray(explicitConfig)).toBe(true);
-    expect(explicitConfig.length).toBeGreaterThan(0);
+    expect(Array.isArray(sharedConfig)).toBe(true);
+    expect(sharedConfig.length).toBeGreaterThan(0);
   });
 
   it("should include import configuration", () => {
-    const importConfig = explicitConfig.find(config => 
+    const importConfig = sharedConfig.find(config => 
       config.plugins && "import-x" in config.plugins
     );
     expect(importConfig).toBeDefined();
@@ -20,7 +20,7 @@ describe("explicit-decisions ESLint config", () => {
   });
 
   it("should include TypeScript configuration", () => {
-    const tsConfig = explicitConfig.find(config => 
+    const tsConfig = sharedConfig.find(config => 
       config.plugins && "@typescript-eslint" in config.plugins
     );
     expect(tsConfig).toBeDefined();
@@ -28,7 +28,7 @@ describe("explicit-decisions ESLint config", () => {
   });
 
   it("should include test configuration", () => {
-    const testConfig = explicitConfig.find(config => 
+    const testConfig = sharedConfig.find(config => 
       config.files && config.files.includes("**/*.test.ts")
     );
     expect(testConfig).toBeDefined();

@@ -1,7 +1,7 @@
 /**
  * @explicit-decisions/tooling
  * 
- * CLI tools for setting up and managing explicit-decisions framework
+ * CLI tools for setting up and managing shared-lints framework
  * 
  * This package provides:
  * - Project initialization and setup
@@ -19,14 +19,14 @@ export const version = '1.0.0';
 
 // Help text
 export const help = `
-explicit-decisions tooling v${version}
+shared-lints tooling v${version}
 
 Commands:
-  init                 Initialize explicit-decisions in current project
+  init                 Initialize shared-lints in current project
   deps init           Initialize dependency tracking
   deps check          Check dependency decisions
   deps interactive    Interactive dependency management
 
 For more information, visit:
-https://github.com/explicit-decisions/explicit-decisions
+https://github.com/shared-lints/shared-lints
 `;

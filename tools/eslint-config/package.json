@@ -24,14 +24,14 @@
     "eslint",
     "eslint-config",
     "typescript",
-    "shared-lints",
+    "explicit-decisions",
     "ai-assisted-development",
     "llm"
   ],
   "author": "Yehuda Katz",
-  "homepage": "https://github.com/yehudakatz/shared-lints#readme",
+  "homepage": "https://github.com/explicit-decisions/shared-lints#readme",
   "bugs": {
-    "url": "https://github.com/yehudakatz/shared-lints/issues"
+    "url": "https://github.com/explicit-decisions/shared-lints/issues"
   },
   "peerDependencies": {
     "eslint": ">=9.0.0",
@@ -39,6 +39,9 @@
     "@typescript-eslint/parser": ">=8.0.0",
     "eslint-config-prettier": ">=10.0.0",
     "eslint-plugin-import-x": ">=4.0.0"
+  },
+  "dependencies": {
+    "@explicit-decisions/eslint-plugin": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^20.17.50",

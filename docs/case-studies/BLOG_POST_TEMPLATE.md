@@ -181,7 +181,7 @@ This project itself demonstrates the pattern: by documenting these decisions exp
 ### Project Structure
 
 ```
-explicit-decisions/
+shared-lints/
 ├── tools/eslint-config/    # Shareable ESLint configurations
 ├── tools/eslint-plugin/    # Production-ready TypeScript ESLint plugin
 │   ├── src/rules/          # 7 custom rules with auto-fix capabilities
@@ -278,7 +278,7 @@ import { ESLintUtils, AST_NODE_TYPES } from '@typescript-eslint/utils';
 import type { TSESTree } from '@typescript-eslint/utils';
 
 const createRule = ESLintUtils.RuleCreator(
-  name => `https://github.com/explicit-decisions/shared-lints/blob/main/docs/guides/RULES_REFERENCE.md#${name}`
+  name => `https://github.com/shared-lints/shared-lints/blob/main/docs/guides/RULES_REFERENCE.md#${name}`
 );
 
 export const noMocksOrSpies = createRule<[], MessageIds>({

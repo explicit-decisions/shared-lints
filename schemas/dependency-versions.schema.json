@@ -16,7 +16,7 @@
     },
     "frameworkVersion": {
       "type": "string",
-      "description": "Version of the explicit-decisions dependency tracking framework"
+      "description": "Version of the shared-lints dependency tracking framework"
     },
     "metadata": {
       "type": "object",

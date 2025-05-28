@@ -11,17 +11,33 @@
     "@types/node": {
       "decision": "keep",
       "currentVersion": "^20.17.50",
-      "availableVersion": "^22.15.21",
+      "availableVersion": "^22.15.23",
       "reason": "Staying on Node 20 LTS for compatibility",
-      "reviewDate": "2025-02-26",
+      "reviewDate": "2025-05-27",
+      "tier": "essential"
+    },
+    "@typescript-eslint/eslint-plugin": {
+      "decision": "keep",
+      "currentVersion": "^8.33.0",
+      "availableVersion": "^8.33.0",
+      "reason": "Minor update with backwards compatibility",
+      "reviewDate": "2025-05-27",
+      "tier": "essential"
+    },
+    "@typescript-eslint/parser": {
+      "decision": "keep",
+      "currentVersion": "^8.33.0",
+      "availableVersion": "^8.33.0",
+      "reason": "Minor update with backwards compatibility",
+      "reviewDate": "2025-05-27",
       "tier": "essential"
     },
     "@typescript-eslint/utils": {
       "decision": "keep",
       "currentVersion": "^8.32.1",
       "availableVersion": "^8.32.1",
-      "reason": "Core dependency for type-safe AST manipulation",
-      "reviewDate": "2025-01-26",
+      "reason": "Minor update with backwards compatibility",
+      "reviewDate": "2025-05-27",
       "tier": "essential",
       "platformAlternative": "Raw ESLint APIs (rejected: no type safety)"
     },
@@ -30,7 +46,7 @@
       "currentVersion": "^5.8.3",
       "availableVersion": "^5.8.3",
       "reason": "Essential for TypeScript development",
-      "reviewDate": "2025-01-26",
+      "reviewDate": "2025-05-27",
       "tier": "essential"
     },
     "vitest": {
@@ -38,7 +54,7 @@
       "currentVersion": "^3.1.4",
       "availableVersion": "^3.1.4",
       "reason": "Better TypeScript support than Jest, faster execution",
-      "reviewDate": "2025-01-26",
+      "reviewDate": "2025-05-27",
       "tier": "essential",
       "platformAlternative": "Node.js test runner (rejected: immature)"
     },
@@ -47,15 +63,15 @@
       "currentVersion": ">=9.0.0",
       "availableVersion": "^9.27.0",
       "reason": "Essential for project's rule enforcement approach",
-      "reviewDate": "2025-01-26",
+      "reviewDate": "2025-05-27",
       "tier": "essential"
     },
     "markdownlint-cli2": {
       "decision": "keep",
       "currentVersion": "^0.12.1",
       "availableVersion": "^0.18.1",
-      "reason": "Version 0.x series, avoiding breaking changes until v1.0",
-      "reviewDate": "2025-02-26",
+      "reason": "Version 0.x series, waiting for 1.0 stable release",
+      "reviewDate": "2025-05-27",
       "tier": "justified",
       "removalTrigger": "When documentation quality can be maintained without it"
     },
@@ -63,8 +79,8 @@
       "decision": "keep",
       "currentVersion": "^17.1.11",
       "availableVersion": "^18.0.1",
-      "reason": "Tool works well on v17, managing major upgrade manually",
-      "reviewDate": "2025-02-26",
+      "reason": "Major version update, need to test breaking changes",
+      "reviewDate": "2025-05-27",
       "tier": "justified",
       "removalTrigger": "When package managers add equivalent built-in functionality"
     }

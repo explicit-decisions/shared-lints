@@ -124,7 +124,7 @@ interface Options {
 }
 
 const createRule = ESLintUtils.RuleCreator(
-  name => `https://github.com/explicit-decisions/shared-lints/blob/main/docs/guides/RULES_REFERENCE.md#${name}`
+  name => `https://github.com/shared-lints/shared-lints/blob/main/docs/guides/RULES_REFERENCE.md#${name}`
 );
 
 export const preferRealImplementations = createRule<[Options], MessageIds>({
@@ -201,7 +201,7 @@ function checkNode(node: TSESTree.ImportDeclaration): void {
 // - Integration with typescript-eslint ecosystem
 
 const createRule = ESLintUtils.RuleCreator(
-  name => `https://github.com/explicit-decisions/shared-lints/blob/main/docs/guides/RULES_REFERENCE.md#${name}`
+  name => `https://github.com/shared-lints/shared-lints/blob/main/docs/guides/RULES_REFERENCE.md#${name}`
 );
 ```
 
@@ -459,4 +459,4 @@ For any team serious about ESLint rule development, the TypeScript approach with
 
 ---
 
-*This approach is demonstrated in the [Enforced Explicit Decisions pattern implementation](https://github.com/explicit-decisions/shared-lints), which provides a complete example of professional TypeScript ESLint rule development patterns.*
+*This approach is demonstrated in the [Enforced Explicit Decisions pattern implementation](https://github.com/shared-lints/shared-lints), which provides a complete example of professional TypeScript ESLint rule development patterns.*

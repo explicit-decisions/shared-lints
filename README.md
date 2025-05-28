@@ -1,4 +1,4 @@
-# explicit-decisions
+# shared-lints
 
 > ESLint rules and configurations that make implicit technical decisions explicit, improving both human understanding and AI collaboration
 
@@ -8,7 +8,7 @@
 
 When AI assistants read your code, they make assumptions based on common patterns. These assumptions often conflict with your team's intentional decisions, leading to suggestions that would break production, violate architectural principles, or undo careful trade-offs.
 
-The explicit-decisions framework solves this by:
+The shared-lints framework solves this by:
 
 - 🚫 **Failing builds** when decisions aren't documented
 - 📝 **Forcing documentation** of non-standard patterns
@@ -28,11 +28,11 @@ import explicitPlugin from '@explicit-decisions/eslint-plugin';
 export default [
   ...explicitConfig.base,
   {
-    plugins: { 'explicit-decisions': explicitPlugin },
+    plugins: { '@explicit-decisions': explicitPlugin },
     rules: {
-      'explicit-decisions/no-mocks-or-spies': 'error',
-      'explicit-decisions/require-ts-extensions': 'error',
-      'explicit-decisions/no-npx-usage': 'error'
+      '@explicit-decisions/no-mocks-or-spies': 'error',
+      '@explicit-decisions/require-ts-extensions': 'error',
+      '@explicit-decisions/no-npx-usage': 'error'
     }
   }
 ];
@@ -90,7 +90,7 @@ pnpm add -D some-tool && pnpm exec some-tool
 ## Project Structure
 
 ```
-explicit-decisions/
+shared-lints/
 ├── tools/
 │   ├── eslint-config/      # Shareable ESLint configurations
 │   ├── eslint-plugin/      # Custom ESLint rules

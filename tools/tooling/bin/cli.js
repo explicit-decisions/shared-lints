@@ -6,11 +6,11 @@ import { init } from '../src/init.js';
 
 function showHelp() {
   console.log(`
-explicit-decisions v${packageJson.version}
-CLI tools for setting up and managing explicit-decisions framework
+shared-lints v${packageJson.version}
+CLI tools for setting up and managing shared-lints framework
 
 Usage:
-  explicit-decisions <command> [options]
+  shared-lints <command> [options]
 
 Commands:
   init [options]       Initialize shared-lints in current project

@@ -1,7 +1,7 @@
 {
   "name": "@explicit-decisions/eslint-plugin",
   "version": "1.0.0",
-  "description": "Custom ESLint rules implementing the Enforced Explicit Decisions pattern for LLM-assisted development",
+  "description": "Custom ESLint rules enforcing explicit decisions for LLM-assisted development",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -29,7 +29,7 @@
     "eslint",
     "eslintplugin",
     "eslint-plugin",
-    "shared-lints",
+    "explicit-decisions",
     "ai-assisted-development",
     "llm",
     "no-mocks",

@@ -80,7 +80,7 @@ import fs from 'fs'; // In production code: ❌ Suggests dependency injection
 
 ### 2. Automatic Test Utils Generation
 
-When you run `explicit-decisions init --testing vitest`, you get:
+When you run `shared-lints init --testing vitest`, you get:
 
 **Factory Functions:**
 
@@ -247,4 +247,4 @@ The no-mocks approach creates a positive feedback loop:
 3. **Code architecture improves** through dependency injection
 4. **Refactoring becomes safer** with integration-level test coverage
 
-This aligns with the explicit-decisions philosophy: make human context (what we're actually testing) explicit enough for AI to understand and work with effectively.
+This aligns with the shared-lints philosophy: make human context (what we're actually testing) explicit enough for AI to understand and work with effectively.

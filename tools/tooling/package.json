@@ -1,7 +1,7 @@
 {
   "name": "@explicit-decisions/tooling",
   "version": "1.0.0",
-  "description": "CLI tools for setting up and managing shared-lints framework",
+  "description": "CLI tools for setting up and managing explicit-decisions framework",
   "license": "MIT",
   "repository": {
     "type": "git",

@@ -6,7 +6,7 @@
 
 - `README.md` - Documentation index and navigation
 - `GETTING_STARTED.md` - Quick start guide for new users
-- `PHILOSOPHY.md` - Core philosophy of the explicit-decisions pattern
+- `PHILOSOPHY.md` - Core philosophy of the shared-lints pattern
 
 ### Development Guidance
 

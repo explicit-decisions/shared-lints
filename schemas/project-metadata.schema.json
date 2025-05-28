@@ -1,0 +1,60 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Project Metadata Configuration",
+  "description": "Explicit decisions about project metadata to ensure consistency",
+  "type": "object",
+  "required": ["decisions"],
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "decisions": {
+      "type": "object",
+      "properties": {
+        "organizationName": { "$ref": "#/definitions/decision" },
+        "repositoryName": { "$ref": "#/definitions/decision" },
+        "packageScope": { "$ref": "#/definitions/decision" },
+        "repositoryUrl": { "$ref": "#/definitions/decision" },
+        "homepage": { "$ref": "#/definitions/decision" },
+        "bugsUrl": { "$ref": "#/definitions/decision" }
+      },
+      "required": [
+        "organizationName",
+        "repositoryName", 
+        "packageScope",
+        "repositoryUrl",
+        "homepage",
+        "bugsUrl"
+      ]
+    }
+  },
+  "definitions": {
+    "decision": {
+      "type": "object",
+      "required": ["value", "reason", "decidedAt", "reviewBy"],
+      "properties": {
+        "value": {
+          "type": "string",
+          "description": "The decided value"
+        },
+        "reason": {
+          "type": "string",
+          "description": "Why this decision was made"
+        },
+        "decidedAt": {
+          "type": "string",
+          "format": "date",
+          "description": "When this decision was made"
+        },
+        "reviewBy": {
+          "type": "string",
+          "format": "date",
+          "description": "When this decision should be reviewed"
+        }
+      }
+    }
+  }
+}

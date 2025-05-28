@@ -7,7 +7,7 @@ import { ESLintUtils, AST_NODE_TYPES } from '@typescript-eslint/utils';
 type MessageIds = 'preferTsImport';
 
 const createRule = ESLintUtils.RuleCreator(
-  name => `https://github.com/explicit-decisions/shared-lints/blob/main/docs/RULES_REFERENCE.md${name}`
+  name => `https://github.com/shared-lints/shared-lints/blob/main/docs/RULES_REFERENCE.md${name}`
 );
 
 /**

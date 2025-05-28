@@ -11,7 +11,7 @@
 
 import * as importPlugin from "eslint-plugin-import-x";
 
-import explicitDecisionsPlugin from "../../eslint-plugin/dist/index.js";
+import explicitDecisionsPlugin from "@explicit-decisions/eslint-plugin";
 
 /**
  * Configure import plugin rules

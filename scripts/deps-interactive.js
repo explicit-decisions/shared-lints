@@ -5,7 +5,7 @@ import { readFileSync, writeFileSync } from 'fs';
 import { join } from 'path';
 import { createInterface } from 'readline';
 
-const rootDir = join(import.meta.dirname, '..');
+const rootDir = process.env.TEST_ROOT_DIR || join(import.meta.dirname, '..');
 
 /**
  * Interactive dependency management with decision tracking
@@ -27,130 +27,216 @@ async function interactiveDependencies() {
     console.log('✅ Created dependency-versions.json\n');
   }
 
-  // Run ncu in interactive mode first to get user selections
-  console.log('🔍 Running npm-check-updates in interactive mode...\n');
-  console.log('⚠️  For any MAJOR version updates, you will need to provide a reason.\n');
-
-  try {
-    // Run ncu -i to let user select which packages to update
-    execSync('pnpm exec npm-check-updates -i', { 
-      cwd: rootDir, 
-      stdio: 'inherit'
-    });
-
-    console.log('\n🎉 Package.json has been updated with your selections!');
-    console.log('📝 Now documenting your decisions in dependency-versions.json...\n');
-
-    // Update tracking file with user decisions
-    await updateTrackingFile(tracking, trackingPath);
-
-  } catch (error) {
-    if (error.status === 0) {
-      console.log('\n✅ No changes were made.');
-    } else {
-      console.error('❌ Error running interactive mode:', error.message);
-      process.exit(1);
-    }
-  }
-}
-
-/**
- * Create initial tracking file
- */
-async function createInitialTracking() {
-  const today = new Date().toISOString().split('T')[0];
+  // Get all outdated dependencies using ncu
+  console.log('🔍 Checking for outdated dependencies...\n');
   
-  return {
-    "$schema": "./schemas/dependency-versions.schema.json",
-    "lastUpdated": today,
-    "dependencies": {},
-    "rules": {
-      "allowedOutdatedDays": 30,
-      "requireReasonForOld": true,
-      "blockMajorUpdatesWithoutReview": true
-    }
-  };
-}
-
-/**
- * Update tracking file with user decisions
- */
-async function updateTrackingFile(tracking, trackingPath) {
-  const today = new Date().toISOString().split('T')[0];
+  let allOutdated;
   
-  // Get current state after ncu updates
-  let ncuOutput;
-  try {
-    const output = execSync('pnpm exec ncu --jsonAll', { 
-      cwd: rootDir, 
-      encoding: 'utf8',
-      stdio: ['pipe', 'pipe', 'pipe']
-    });
-    ncuOutput = JSON.parse(output);
-  } catch (error) {
-    if (error.stdout) {
-      ncuOutput = JSON.parse(error.stdout);
-    } else {
-      console.error('❌ Failed to get updated dependency info');
-      return;
-    }
-  }
-
-  // Find dependencies that still have updates available (user chose not to update)
-  const outdatedDeps = {};
-  [ncuOutput.dependencies, ncuOutput.devDependencies].forEach(deps => {
-    if (deps) {
-      Object.entries(deps).forEach(([name, info]) => {
-        if (info.current !== info.latest) {
-          outdatedDeps[name] = info;
-        }
+  // Check if we're in test mode with mocked data
+  if (process.env.MOCK_OUTDATED) {
+    allOutdated = JSON.parse(process.env.MOCK_OUTDATED);
+  } else {
+    let outdatedJson;
+    try {
+      const ncuOutput = execSync('pnpm exec npm-check-updates --jsonUpgraded', {
+        cwd: rootDir,
+        encoding: 'utf8',
+        stdio: ['pipe', 'pipe', 'pipe']
       });
+      outdatedJson = JSON.parse(ncuOutput || '{}');
+    } catch (error) {
+      // NCU returns non-zero when no updates available
+      outdatedJson = {};
     }
-  });
 
-  // For each outdated dependency, ask for reason if not already tracked
+    // Flatten all outdated deps from all workspaces
+    allOutdated = {};
+    Object.values(outdatedJson).forEach(deps => {
+      Object.assign(allOutdated, deps);
+    });
+  }
+
+  if (Object.keys(allOutdated).length === 0) {
+    console.log('✅ All dependencies are up to date!');
+    return;
+  }
+
+  console.log(`Found ${Object.keys(allOutdated).length} outdated dependencies.\n`);
+
+  // Interactive decision making
   const rl = createInterface({
     input: process.stdin,
     output: process.stdout
   });
 
-  for (const [depName, depInfo] of Object.entries(outdatedDeps)) {
-    const tracked = tracking.dependencies[depName];
-    const currentMajor = parseInt(depInfo.current.split('.')[0].replace(/\D/g, ''));
-    const latestMajor = parseInt(depInfo.latest.split('.')[0].replace(/\D/g, ''));
-    const isMajorUpdate = latestMajor > currentMajor;
+  const today = new Date().toISOString().split('T')[0];
+  const decisionsToApply = [];
+  
+  for (const [depName, newVersion] of Object.entries(allOutdated)) {
+    const tracked = tracking.dependencies?.[depName] || tracking[depName];
+    const currentVersion = tracked?.currentVersion || 'unknown';
+    
+    // Parse versions to determine update type
+    const parseVersion = (v) => {
+      const match = v.match(/(\d+)\.(\d+)\.(\d+)/);
+      return match ? { major: parseInt(match[1]), minor: parseInt(match[2]), patch: parseInt(match[3]) } : null;
+    };
+    
+    const current = parseVersion(currentVersion);
+    const latest = parseVersion(newVersion);
+    
+    let updateType = 'patch';
+    if (current && latest) {
+      if (latest.major > current.major) updateType = 'major';
+      else if (latest.minor > current.minor) updateType = 'minor';
+    }
 
-    if (!tracked || tracked.availableVersion !== depInfo.latest) {
-      console.log(`\n📦 ${depName}: ${depInfo.current} → ${depInfo.latest}`);
-      if (isMajorUpdate) {
-        console.log(`⚠️  This is a MAJOR version update (${currentMajor} → ${latestMajor})`);
+    console.log(`\n📦 ${depName}`);
+    console.log(`   Current: ${currentVersion}`);
+    console.log(`   Latest:  ${newVersion}`);
+    console.log(`   Type:    ${updateType} update`);
+    
+    if (tracked) {
+      console.log(`   Last reviewed: ${tracked.reviewDate}`);
+      if (tracked.reason) console.log(`   Previous reason: ${tracked.reason}`);
+    }
+
+    // For patch updates, default to update
+    let decision;
+    let reason;
+    
+    if (updateType === 'patch') {
+      const answer = await askQuestion(rl, `   Auto-update patch version? [Y/n] `);
+      decision = answer.toLowerCase() !== 'n' ? 'update' : 'keep';
+      if (decision === 'keep') {
+        reason = await askQuestion(rl, `   Reason for keeping old patch version: `);
+      } else {
+        reason = 'Patch update - backwards compatible';
       }
+    } else {
+      // For minor/major updates, ask for decision
+      const answer = await askQuestion(rl, `   Update? [y/N] `);
+      decision = answer.toLowerCase() === 'y' ? 'update' : 'keep';
+      
+      if (decision === 'update') {
+        reason = updateType === 'minor' 
+          ? 'Minor update - backwards compatible'
+          : await askQuestion(rl, `   Reason for major update: `);
+      } else {
+        reason = await askQuestion(rl, `   Reason for keeping current version: `);
+      }
+    }
 
-      const reason = await askQuestion(rl, 
-        `💭 Why are you keeping ${depName} at v${depInfo.current}? `
-      );
+    // Update tracking
+    if (!tracking.dependencies) tracking.dependencies = {};
+    tracking.dependencies[depName] = {
+      decision,
+      currentVersion: decision === 'update' ? newVersion : currentVersion,
+      availableVersion: newVersion,
+      reason,
+      reviewDate: today,
+      ...(tracked?.tier && { tier: tracked.tier }),
+      ...(tracked?.platformAlternative && { platformAlternative: tracked.platformAlternative }),
+      ...(tracked?.removalTrigger && { removalTrigger: tracked.removalTrigger })
+    };
 
-      const prefixedReason = isMajorUpdate && !reason.startsWith('REVIEWED:') 
-        ? `REVIEWED: ${reason}` 
-        : reason;
-
-      tracking.dependencies[depName] = {
-        decision: "keep",
-        currentVersion: depInfo.current,
-        availableVersion: depInfo.latest,
-        reason: prefixedReason,
-        reviewDate: today
-      };
+    if (decision === 'update') {
+      decisionsToApply.push({ name: depName, version: newVersion });
     }
   }
 
   rl.close();
 
+  // Apply updates
+  if (decisionsToApply.length > 0) {
+    console.log(`\n📥 Applying ${decisionsToApply.length} updates...\n`);
+    
+    const packagesToUpdate = decisionsToApply.map(d => `${d.name}@${d.version}`).join(' ');
+    
+    // In test mode, simulate updates by modifying package.json directly
+    if (process.env.MOCK_OUTDATED) {
+      const packagePath = join(rootDir, 'package.json');
+      const packageJson = JSON.parse(readFileSync(packagePath, 'utf8'));
+      
+      decisionsToApply.forEach(({ name, version }) => {
+        if (packageJson.dependencies?.[name]) {
+          packageJson.dependencies[name] = version;
+        } else if (packageJson.devDependencies?.[name]) {
+          packageJson.devDependencies[name] = version;
+        }
+      });
+      
+      writeFileSync(packagePath, JSON.stringify(packageJson, null, 2));
+      console.log('\n✅ Updates applied successfully!');
+    } else {
+      try {
+        execSync(`pnpm update ${packagesToUpdate}`, {
+          cwd: rootDir,
+          stdio: 'inherit'
+        });
+        console.log('\n✅ Updates applied successfully!');
+      } catch (error) {
+        console.error('\n❌ Error applying updates:', error.message);
+        console.log('💡 You may need to manually run: pnpm update');
+      }
+    }
+  }
+
   // Update tracking file
   tracking.lastUpdated = today;
   writeFileSync(trackingPath, JSON.stringify(tracking, null, 2));
+  
   console.log('\n✅ Updated dependency-versions.json with your decisions!');
   console.log('🔍 Run `pnpm lint:deps` to verify everything is tracked correctly.');
+}
+
+/**
+ * Create initial tracking structure
+ */
+async function createInitialTracking() {
+  const today = new Date().toISOString().split('T')[0];
+  
+  // Read package.json to get current versions
+  const packageJson = JSON.parse(readFileSync(join(rootDir, 'package.json'), 'utf8'));
+  const allDeps = { ...packageJson.dependencies, ...packageJson.devDependencies };
+  
+  const dependencies = {};
+  for (const [name, version] of Object.entries(allDeps)) {
+    dependencies[name] = {
+      decision: 'keep',
+      currentVersion: version,
+      availableVersion: version,
+      reason: 'Initial tracking',
+      reviewDate: today
+    };
+  }
+
+  return {
+    $schema: './schemas/dependency-versions.schema.json',
+    lastUpdated: today,
+    frameworkVersion: '1.0.0',
+    metadata: {
+      decisionFramework: 'docs/principles/PACKAGE_SELECTION.md',
+      reviewSchedule: '30-day cycle for all dependencies',
+      maintainer: 'Yehuda'
+    },
+    dependencies,
+    rules: {
+      allowedOutdatedDays: 30,
+      requireReasonForOld: true,
+      blockMajorUpdatesWithoutReview: true,
+      tierRequirements: {
+        essential: 'Must have platformAlternative documented',
+        justified: 'Must have removalTrigger documented',
+        deprecated: 'Must have removal timeline'
+      },
+      reviewCycle: {
+        essential: '6 months',
+        justified: '30 days',
+        deprecated: 'immediate removal'
+      }
+    }
+  };
 }
 
 /**

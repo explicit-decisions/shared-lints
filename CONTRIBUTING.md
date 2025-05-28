@@ -12,7 +12,7 @@ Thank you for your interest in contributing! This project follows its own princi
 
 ```bash
 # Clone the repository
-git clone https://github.com/explicit-decisions/shared-lints.git
+git clone https://github.com/shared-lints/shared-lints.git
 cd shared-lints
 
 # Install dependencies (we use pnpm)

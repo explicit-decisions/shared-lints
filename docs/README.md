@@ -1,13 +1,13 @@
 # Documentation
 
-Welcome to the explicit-decisions documentation. This guide will help you navigate the available resources.
+Welcome to the shared-lints documentation. This guide will help you navigate the available resources.
 
 ## 🚀 Getting Started
 
 - **[Author's Perspective](./AUTHOR_PERSPECTIVE.md)** - Why I built this framework (start here for context)
 - **[Getting Started Guide](./GETTING_STARTED.md)** - Set up the framework in your project in under 10 minutes
 - **[Philosophy](./PHILOSOPHY.md)** - Understand why explicit decisions matter for AI-assisted development
-- **[Framework Goals](./FRAMEWORK_GOALS.md)** - Vision and strategic goals of the explicit-decisions framework
+- **[Framework Goals](./FRAMEWORK_GOALS.md)** - Vision and strategic goals of the shared-lints framework
 
 ## 📚 Core Concepts
 
@@ -32,7 +32,7 @@ The `principles/` directory contains the core decision frameworks:
 ### Case Studies
 
 - **[TypeScript ESLint Migration](./case-studies/TYPESCRIPT_ESLINT_BLOG_POST.md)** - Real-world case study of building professional ESLint rules
-- **[Blog Post Template](./case-studies/BLOG_POST_TEMPLATE.md)** - Template for writing about explicit-decisions implementations
+- **[Blog Post Template](./case-studies/BLOG_POST_TEMPLATE.md)** - Template for writing about shared-lints implementations
 
 ### Templates
 

@@ -141,7 +141,7 @@ import type { Options } from './types.ts';
 ```typescript
 // Provide actionable guidance, not just complaints
 messages: {
-  noMocks: 'Avoid mocks - use real implementations or dependency injection. See: https://github.com/explicit-decisions/shared-lints/blob/main/docs/guides/TESTING_PHILOSOPHY.md',
+  noMocks: 'Avoid mocks - use real implementations or dependency injection. See: https://github.com/shared-lints/shared-lints/blob/main/docs/guides/TESTING_PHILOSOPHY.md',
 }
 ```
 

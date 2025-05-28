@@ -221,7 +221,7 @@ The package selection framework is enforced through:
    - Dependencies exist without being tracked
 3. **`pnpm deps:interactive`**: Interactive tool for making and documenting decisions
 
-This creates the "hard failures that LLMs cannot ignore" - a core principle of the explicit-decisions framework.
+This creates the "hard failures that LLMs cannot ignore" - a core principle of the shared-lints framework.
 
 ## Success Metrics
 

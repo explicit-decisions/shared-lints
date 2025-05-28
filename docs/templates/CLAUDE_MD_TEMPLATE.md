@@ -141,15 +141,15 @@ pnpm lint:deps             # Check dependency decisions
 
 This project uses `@explicit-decisions/eslint-config` and `@explicit-decisions/eslint-plugin` which implement the Enforced Explicit Decisions pattern through:
 
-### No-Mocks Rule (`explicit-decisions/no-mocks-or-spies`)
+### No-Mocks Rule (`shared-lints/no-mocks-or-spies`)
 
 Prevents use of mocking libraries, enforcing factory functions and real implementations as part of the explicit testing philosophy.
 
-### TypeScript Extensions (`explicit-decisions/require-ts-extensions`)
+### TypeScript Extensions (`shared-lints/require-ts-extensions`)
 
 Requires explicit `.ts` extensions for local TypeScript imports, eliminating module resolution ambiguity.
 
-### No NPX Usage (`explicit-decisions/no-npx-usage`)
+### No NPX Usage (`shared-lints/no-npx-usage`)
 
 Prevents arbitrary code execution via npx, enforcing explicit dependency management decisions.
 

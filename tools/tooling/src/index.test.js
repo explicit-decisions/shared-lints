@@ -8,7 +8,7 @@ describe('@explicit-decisions/tooling', () => {
   });
 
   it('exports help text', () => {
-    expect(help).toContain('explicit-decisions tooling');
+    expect(help).toContain('shared-lints tooling');
     expect(help).toContain('Commands:');
   });
 });
