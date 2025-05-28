@@ -10,9 +10,9 @@
   },
   "type": "module",
   "bin": {
-    "shared-lints": "./bin/cli.js",
-    "sl-deps": "./bin/deps.js",
-    "sl-init": "./bin/init.js"
+    "explicit-decisions": "./bin/cli.js",
+    "ed-deps": "./bin/deps.js",
+    "ed-init": "./bin/init.js"
   },
   "exports": {
     ".": "./src/index.js",

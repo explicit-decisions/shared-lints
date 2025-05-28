@@ -1,105 +1,195 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "Dependency Version Tracking",
-  "description": "Schema for tracking dependency versions and update decisions",
+  "description": "Schema for tracking dependency versions and update decisions with progressive detail based on decision complexity",
   "type": "object",
   "required": ["lastUpdated", "dependencies", "rules"],
   "properties": {
     "$schema": {
-      "type": "string"
+      "type": "string",
+      "description": "Reference to this JSON schema for validation"
     },
     "lastUpdated": {
       "type": "string",
       "format": "date",
-      "description": "Date when this file was last updated"
+      "description": "Date when any dependency decision was last updated (YYYY-MM-DD format)"
+    },
+    "frameworkVersion": {
+      "type": "string",
+      "description": "Version of the explicit-decisions dependency tracking framework"
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Project-level configuration for dependency management",
+      "properties": {
+        "decisionFramework": {
+          "type": "string",
+          "description": "Path to documentation explaining the decision-making framework"
+        },
+        "reviewSchedule": {
+          "type": "string",
+          "description": "Human-readable description of review frequency (e.g., '30-day cycle for all dependencies')"
+        },
+        "maintainer": {
+          "type": "string",
+          "description": "Primary person or team responsible for dependency decisions"
+        }
+      }
     },
     "dependencies": {
       "type": "object",
-      "description": "Map of dependency names to version tracking info",
+      "description": "Map of package names to their version decisions. Use progressive detail: simple decisions need fewer fields",
       "additionalProperties": {
         "$ref": "#/definitions/DependencyInfo"
       }
     },
     "rules": {
-      "$ref": "#/definitions/Rules"
+      "$ref": "#/definitions/Rules",
+      "description": "Global rules that apply to all dependencies"
     }
   },
   "definitions": {
     "DependencyInfo": {
       "type": "object",
-      "required": ["currentVersion", "latestAvailable", "reason", "reviewDate", "reviewer"],
+      "required": ["decision", "currentVersion", "reason", "reviewDate"],
+      "description": "Information about a specific dependency. Add more fields for complex decisions",
       "properties": {
+        "decision": {
+          "type": "string",
+          "enum": ["keep", "update", "deprecate"],
+          "description": "The decision made about this dependency. 'keep' = stay on current version, 'update' = upgrade planned, 'deprecate' = remove from project"
+        },
         "currentVersion": {
           "type": "string",
-          "description": "Version currently used in package.json"
+          "description": "Version/range currently in package.json (e.g., '^1.2.3', '~4.5.6', '>=7.0.0')"
         },
-        "latestAvailable": {
+        "availableVersion": {
           "type": "string",
-          "description": "Latest version available on npm"
+          "description": "Latest available version from npm registry. Can be auto-detected by tooling or manually set"
         },
         "reason": {
           "type": "string",
-          "description": "Reason for keeping current version or update decision"
+          "description": "Human-readable explanation of why this decision was made. Be specific about constraints or benefits"
         },
         "reviewDate": {
           "type": "string",
           "format": "date",
-          "description": "Date when this decision was last reviewed"
+          "description": "When this decision was made or last reviewed (YYYY-MM-DD format)"
         },
-        "reviewer": {
+        "tier": {
           "type": "string",
-          "description": "Who made the decision (user, system, etc.)"
+          "enum": ["essential", "justified", "deprecated"],
+          "description": "Importance classification. 'essential' = core to project, 'justified' = adds value but not critical, 'deprecated' = planning to remove"
         },
-        "updateScheduled": {
+        "platformAlternative": {
+          "type": "string",
+          "description": "For 'essential' tier: What built-in or platform alternative was considered and why it was rejected"
+        },
+        "removalTrigger": {
+          "type": "string",
+          "description": "For 'justified' tier: Specific condition that would make this dependency no longer needed"
+        },
+        "removalDate": {
           "type": "string",
           "format": "date",
-          "description": "When update is scheduled (if status is 'scheduled')"
+          "description": "For 'deprecate' decision: Target date for removing this dependency (YYYY-MM-DD)"
+        },
+        "migrationPath": {
+          "type": "string",
+          "description": "For 'deprecate' decision: Brief description of how to migrate away, or path to migration guide"
         },
         "updatePolicy": {
           "type": "object",
-          "description": "Policy for when to update this dependency",
+          "description": "Advanced: Automated update policy for this specific dependency",
           "properties": {
             "type": {
               "type": "string",
               "enum": ["manual", "tag-based", "scheduled"],
-              "description": "Type of update policy"
+              "description": "Update strategy. 'manual' = human decides each time, 'tag-based' = update when npm tag changes, 'scheduled' = update on specific date"
             },
             "targetTag": {
               "type": "string",
-              "description": "NPM dist-tag to wait for (e.g., 'stable', 'lts', 'latest')"
+              "description": "For 'tag-based' type: Which npm dist-tag to track (e.g., 'stable', 'lts', 'latest', 'next')"
             },
-            "checkInterval": {
+            "scheduledDate": {
               "type": "string",
-              "enum": ["daily", "weekly", "monthly"],
-              "description": "How often to check for tag changes"
+              "format": "date",
+              "description": "For 'scheduled' type: When to perform the update (YYYY-MM-DD)"
             }
-          },
-          "required": ["type"],
-          "additionalProperties": false
-        },
-        "breakingChanges": {
-          "type": "array",
-          "items": {"type": "string"},
-          "description": "Known breaking changes in newer versions"
+          }
         }
-      }
+      },
+      "examples": [
+        {
+          "decision": "keep",
+          "currentVersion": "^20.0.0",
+          "availableVersion": "^22.0.0",
+          "reason": "Staying on Node 20 LTS for stability",
+          "reviewDate": "2025-01-15"
+        },
+        {
+          "decision": "deprecate",
+          "currentVersion": "^1.0.0",
+          "reason": "Replaced by native Node.js features",
+          "reviewDate": "2025-01-15",
+          "removalDate": "2025-06-01",
+          "migrationPath": "Use fs.promises instead"
+        }
+      ]
     },
     "Rules": {
       "type": "object",
       "required": ["allowedOutdatedDays", "requireReasonForOld", "blockMajorUpdatesWithoutReview"],
+      "description": "Project-wide policies for dependency management",
       "properties": {
         "allowedOutdatedDays": {
           "type": "number",
           "minimum": 0,
-          "description": "Number of days a dependency can be outdated before requiring review"
+          "description": "How many days a dependency decision can be outdated before requiring review. Prevents stale decisions"
         },
         "requireReasonForOld": {
           "type": "boolean",
-          "description": "Whether a reason is required for keeping old versions"
+          "description": "If true, keeping an outdated dependency requires an explicit reason in the 'reason' field"
         },
         "blockMajorUpdatesWithoutReview": {
           "type": "boolean",
-          "description": "Whether major version updates require explicit review"
+          "description": "If true, major version updates (e.g., 1.x to 2.x) require explicit review and cannot be auto-updated"
+        },
+        "tierRequirements": {
+          "type": "object",
+          "description": "Specific requirements for each dependency tier",
+          "properties": {
+            "essential": {
+              "type": "string",
+              "description": "What must be documented for essential dependencies (e.g., 'Must have platformAlternative documented')"
+            },
+            "justified": {
+              "type": "string",
+              "description": "What must be documented for justified dependencies (e.g., 'Must have removalTrigger documented')"
+            },
+            "deprecated": {
+              "type": "string",
+              "description": "What must be documented for deprecated dependencies (e.g., 'Must have removal timeline')"
+            }
+          }
+        },
+        "reviewCycle": {
+          "type": "object",
+          "description": "How often each tier should be reviewed",
+          "properties": {
+            "essential": {
+              "type": "string",
+              "description": "Review frequency for essential dependencies (e.g., '6 months')"
+            },
+            "justified": {
+              "type": "string",
+              "description": "Review frequency for justified dependencies (e.g., '30 days')"
+            },
+            "deprecated": {
+              "type": "string",
+              "description": "Review frequency for deprecated dependencies (e.g., 'immediate removal')"
+            }
+          }
         }
       }
     }

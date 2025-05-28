@@ -1,6 +1,6 @@
 # Usage Examples and Patterns
 
-This document provides comprehensive examples of the explicit-decisions framework in action, demonstrating how the ESLint rules enforce better coding patterns and architectural decisions.
+This document provides comprehensive examples of the **Enforced Explicit Decisions framework** in action, demonstrating how the ESLint rules enforce better coding patterns and architectural decisions.
 
 ## Table of Contents
 

@@ -27,9 +27,9 @@ Dependency Management Commands:
   deps interactive    Interactive dependency management
 
 Examples:
-  shared-lints deps init
-  shared-lints deps check
-  shared-lints deps interactive
+  explicit-decisions deps init
+  explicit-decisions deps check
+  explicit-decisions deps interactive
 `);
   }
 }
@@ -71,8 +71,8 @@ async function initDependencyTracking(cwd) {
   console.log('✅ Created schemas/dependency-versions.schema.json');
   console.log('🎯 Next steps:');
   console.log('  1. Add "node_modules/@explicit-decisions/tooling/src/check-dependencies.js" to your lint script');
-  console.log('  2. Run `shared-lints deps check` to see current outdated dependencies');
-  console.log('  3. Run `shared-lints deps interactive` to make decisions about updates');
+  console.log('  2. Run `explicit-decisions deps check` to see current outdated dependencies');
+  console.log('  3. Run `explicit-decisions deps interactive` to make decisions about updates');
   console.log('  4. The lint command will now enforce your dependency decisions!\n');
 }
 
@@ -124,7 +124,7 @@ async function checkDependencies(cwd) {
     tracking = JSON.parse(readFileSync(trackingPath, 'utf8'));
   } catch (error) {
     console.error('❌ Cannot read dependency-versions.json:', error.message);
-    console.log('💡 Run `shared-lints deps init` to create initial tracking file');
+    console.log('💡 Run `explicit-decisions deps init` to create initial tracking file');
     process.exit(1);
   }
 
@@ -235,13 +235,13 @@ async function checkDependencies(cwd) {
     console.log(`${index + 1}. ${violation.message}`);
     
     if (violation.type === 'UNTRACKED') {
-      console.log(`   💡 Run 'shared-lints deps interactive' to make decisions about updates\n`);
+      console.log(`   💡 Run 'explicit-decisions deps interactive' to make decisions about updates\n`);
     } else if (violation.type === 'NEW_VERSION_AVAILABLE') {
-      console.log(`   💡 Run 'shared-lints deps interactive' to review the new version\n`);
+      console.log(`   💡 Run 'explicit-decisions deps interactive' to review the new version\n`);
     } else if (violation.type === 'TAG_POLICY_READY') {
-      console.log(`   🎯 Update ready! Run 'shared-lints deps interactive' to upgrade to ${violation.targetTag} tag\n`);
+      console.log(`   🎯 Update ready! Run 'explicit-decisions deps interactive' to upgrade to ${violation.targetTag} tag\n`);
     } else if (violation.type === 'STALE_DECISION') {
-      console.log(`   💡 Run 'shared-lints deps interactive' to refresh your decision\n`);
+      console.log(`   💡 Run 'explicit-decisions deps interactive' to refresh your decision\n`);
     }
   });
 

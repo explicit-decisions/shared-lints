@@ -1,6 +1,6 @@
 # @explicit-decisions/tooling
 
-CLI tools for setting up and managing the shared-lints framework.
+CLI tools for setting up and managing the **Enforced Explicit Decisions framework**.
 
 ## Installation
 
@@ -10,14 +10,14 @@ npm install -D @explicit-decisions/tooling @explicit-decisions/eslint-config
 
 ## Quick Start
 
-Initialize shared-lints in your project:
+Initialize explicit-decisions in your project:
 
 ```bash
-npx shared-lints init
+npx explicit-decisions init
 ```
 
 This will:
-- Set up ESLint configuration with shared-lints rules
+- Set up ESLint configuration with explicit-decisions rules
 - Initialize dependency tracking
 - Update your package.json scripts
 - Configure .gitignore appropriately
@@ -27,7 +27,7 @@ This will:
 ### Project Setup
 
 ```bash
-shared-lints init
+explicit-decisions init
 ```
 
 Interactive setup wizard that configures ESLint, dependency management, and project scripts.
@@ -36,13 +36,13 @@ Interactive setup wizard that configures ESLint, dependency management, and proj
 
 ```bash
 # Initialize dependency tracking
-shared-lints deps init
+explicit-decisions deps init
 
 # Check current dependency decisions
-shared-lints deps check
+explicit-decisions deps check
 
 # Interactive dependency management
-shared-lints deps interactive
+explicit-decisions deps interactive
 ```
 
 ## Dependency Management
@@ -56,7 +56,7 @@ The dependency management system implements the "Enforced Explicit Decision" pat
 
 ### Workflow
 
-1. Run `shared-lints deps interactive` to review outdated packages
+1. Run `explicit-decisions deps interactive` to review outdated packages
 2. Make decisions about which packages to update
 3. Document reasons for keeping older versions
 4. The system tracks your decisions in `dependency-versions.json`
@@ -69,10 +69,10 @@ Add to your package.json scripts:
 ```json
 {
   "scripts": {
-    "lint": "shared-lints deps check && eslint .",
+    "lint": "explicit-decisions deps check && eslint .",
     "lint:fix": "eslint . --fix",
-    "deps:check": "shared-lints deps check",
-    "deps:interactive": "shared-lints deps interactive"
+    "deps:check": "explicit-decisions deps check",
+    "deps:interactive": "explicit-decisions deps interactive"
   }
 }
 ```
@@ -86,7 +86,7 @@ Add to your package.json scripts:
 
 ## Philosophy
 
-This tooling implements the "Enforced Explicit Decision" pattern for LLM-assisted development:
+This tooling implements the **"Enforced Explicit Decisions" pattern** for LLM-assisted development:
 
 - **Hard failures** instead of warnings force attention to decisions
 - **Documentation requirements** capture human context that LLMs miss
@@ -100,7 +100,7 @@ This tooling implements the "Enforced Explicit Decision" pattern for LLM-assiste
 ```bash
 cd my-project
 npm install -D @explicit-decisions/tooling @explicit-decisions/eslint-config
-npx shared-lints init
+npx explicit-decisions init
 npm run lint
 ```
 

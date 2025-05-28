@@ -1,8 +1,10 @@
 # Testing Philosophy: Why No-Mocks Works Better with AI
 
+*Implementing the Enforced Explicit Decisions Pattern for Testing*
+
 ## The Problem with Traditional Mocking
 
-When AI assistants encounter mocked tests, they learn the wrong patterns:
+When AI assistants encounter mocked tests, they learn the wrong patterns. The **Enforced Explicit Decisions pattern** addresses this by making our testing philosophy explicit and enforceable through ESLint rules:
 
 ```typescript
 // ❌ What AI learns from mocked tests:

@@ -120,7 +120,7 @@ async function updateTrackingFile(tracking, trackingPath) {
     const latestMajor = parseInt(depInfo.latest.split('.')[0].replace(/\D/g, ''));
     const isMajorUpdate = latestMajor > currentMajor;
 
-    if (!tracked || tracked.latestAvailable !== depInfo.latest) {
+    if (!tracked || tracked.availableVersion !== depInfo.latest) {
       console.log(`\n📦 ${depName}: ${depInfo.current} → ${depInfo.latest}`);
       if (isMajorUpdate) {
         console.log(`⚠️  This is a MAJOR version update (${currentMajor} → ${latestMajor})`);
@@ -135,12 +135,11 @@ async function updateTrackingFile(tracking, trackingPath) {
         : reason;
 
       tracking.dependencies[depName] = {
+        decision: "keep",
         currentVersion: depInfo.current,
-        latestAvailable: depInfo.latest,
+        availableVersion: depInfo.latest,
         reason: prefixedReason,
-        reviewDate: today,
-        reviewer: "human",
-        status: "blocked"
+        reviewDate: today
       };
     }
   }

@@ -13,7 +13,7 @@ npm install -D @explicit-decisions/tooling @explicit-decisions/eslint-config esl
 
 ```bash
 # Interactive setup
-npx shared-lints init
+npx explicit-decisions init
 ```
 
 This will ask you questions and set up:
@@ -34,10 +34,10 @@ Example output:
 ❌ Dependency policy violations found:
 
 1. Dependency react has updates available but is not tracked in dependency-versions.json
-   💡 Run 'shared-lints deps interactive' to make decisions about updates
+   💡 Run 'explicit-decisions deps interactive' to make decisions about updates
 
 2. Dependency typescript decision is 45 days old (max: 30)
-   💡 Run 'shared-lints deps interactive' to refresh your decision
+   💡 Run 'explicit-decisions deps interactive' to refresh your decision
 ```
 
 ### 2. Make dependency decisions
@@ -96,10 +96,10 @@ After using the interactive mode, you'll get a file like:
 The tooling creates an `eslint.config.js`:
 
 ```javascript
-import sharedLints from '@explicit-decisions/eslint-config';
+import explicitDecisions from '@explicit-decisions/eslint-config';
 
 export default [
-  ...sharedLints,
+  ...explicitDecisions,
   
   // Project-specific overrides
   {
@@ -117,11 +117,11 @@ Your package.json gets updated with scripts:
 ```json
 {
   "scripts": {
-    "lint": "shared-lints deps check && eslint .",
+    "lint": "explicit-decisions deps check && eslint .",
     "lint:fix": "eslint . --fix", 
-    "deps:check": "shared-lints deps check",
-    "deps:interactive": "shared-lints deps interactive",
-    "deps:init": "shared-lints deps init"
+    "deps:check": "explicit-decisions deps check",
+    "deps:interactive": "explicit-decisions deps interactive",
+    "deps:init": "explicit-decisions deps init"
   },
   "devDependencies": {
     "@explicit-decisions/eslint-config": "^1.0.0",

@@ -1,12 +1,12 @@
 # Package Selection Decision Framework
 
-> "The best package is often the one you don't install"
+> "The best package is often the one you don't install" - Part of the Enforced Explicit Decisions Pattern
 
 ## Core Decision
 
 **Rationale:** Following DoctorWhoScripts philosophy of embracing platform features over dependencies
 
-**Core Philosophy:** Every dependency is a long-term commitment that should be justified with explicit reasoning and periodic review.
+**Core Philosophy:** Every dependency is a long-term commitment that should be justified with explicit reasoning and periodic review. This framework implements the **Enforced Explicit Decisions pattern** by requiring documented rationale for all package decisions.
 
 ## Implementation and Enforcement
 

@@ -1,19 +1,19 @@
 # Development Workflow: Two-Phase Process
 
-*Part of the explicit-decisions framework for LLM-assisted development*
+*Core component of the Enforced Explicit Decisions framework for AI-assisted development*
 
 ## Overview
 
-This project follows a structured two-phase development approach that separates **exploration** (rapid prototyping) from **consolidation** (production-ready refinement). This methodology ensures AI-assisted development produces maintainable, production-quality code while maximizing the speed benefits of AI collaboration.
+This project follows a structured two-phase development approach that separates **exploration** (rapid prototyping) from **consolidation** (production-ready refinement). This methodology is a key part of the **Enforced Explicit Decisions pattern**, ensuring AI-assisted development produces maintainable, production-quality code while maximizing the speed benefits of AI collaboration.
 
 ## Core Philosophy
 
-All development follows two mandatory phases:
+The **Enforced Explicit Decisions pattern** requires that all development follows two mandatory phases:
 
 1. **Exploration Phase**: "Make it work" - Rapid prototyping and discovery
 2. **Consolidation Phase**: "Make it right" - Systematic quality improvement
 
-This approach prevents the common AI-assisted development pitfall of shipping prototype-quality code to production.
+This approach prevents the common AI-assisted development pitfall of shipping prototype-quality code to production while ensuring decisions are explicit and enforceable.
 
 ## Phase 1: Exploration
 

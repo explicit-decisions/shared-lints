@@ -4,7 +4,7 @@ This document provides comprehensive documentation for all explicit-decisions ES
 
 ## Overview
 
-The explicit-decisions ESLint plugin enforces explicit technical decisions through rules that create hard failures LLMs cannot ignore. Each rule embodies the core philosophy: make implicit decisions explicit through tooling.
+The explicit-decisions ESLint plugin implements the **Enforced Explicit Decisions Pattern** through rules that create hard failures LLMs cannot ignore. Each rule embodies the core philosophy of this pattern: make implicit decisions explicit through tooling that enforces coordination between humans and AI assistants.
 
 ## Available Rules
 

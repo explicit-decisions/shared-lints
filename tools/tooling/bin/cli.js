@@ -1,16 +1,16 @@
 #!/usr/bin/env node
 
 import packageJson from '../package.json' with { type: 'json' };
-import { init } from '../src/init.js';
 import { deps } from '../src/deps.js';
+import { init } from '../src/init.js';
 
 function showHelp() {
   console.log(`
-shared-lints v${packageJson.version}
-CLI tools for setting up and managing shared-lints framework
+explicit-decisions v${packageJson.version}
+CLI tools for setting up and managing explicit-decisions framework
 
 Usage:
-  shared-lints <command> [options]
+  explicit-decisions <command> [options]
 
 Commands:
   init [options]       Initialize shared-lints in current project

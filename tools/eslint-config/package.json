@@ -1,11 +1,11 @@
 {
-  "name": "@shared-lints/eslint-config",
+  "name": "@explicit-decisions/eslint-config",
   "version": "1.0.0",
   "description": "ESLint configurations enforcing explicit decisions for LLM-assisted TypeScript development",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/yehudakatz/shared-lints.git",
+    "url": "https://github.com/explicit-decisions/shared-lints.git",
     "directory": "tools/eslint-config"
   },
   "type": "module",

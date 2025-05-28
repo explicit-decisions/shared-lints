@@ -1,10 +1,21 @@
 # AI Collaboration Guide
 
-*How to work effectively with AI assistants on the explicit-decisions project*
+*How to work effectively with AI assistants using the Enforced Explicit Decisions framework*
 
-## Core Philosophy
+## Core Philosophy: The Enforced Explicit Decisions Pattern
 
-This project implements the "Enforced Explicit Decision" pattern - making implicit decisions become hard failures that AI assistants cannot ignore. The goal is to make human context explicit enough for AI to understand and respect it, not to make AI smarter about human context.
+This project implements the **"Enforced Explicit Decisions" pattern** - making implicit decisions become hard failures that AI assistants cannot ignore. The goal is to make human context explicit enough for AI to understand and respect it, not to make AI smarter about human context.
+
+**The Enforced Explicit Decisions Framework** creates a coordination protocol between humans and AI where:
+
+- Humans maintain full decision authority while AI gets explicit context
+- Implicit assumptions become hard failures that force documentation
+- Both stakeholders work within a shared understanding of project constraints
+
+- **Humans remain in full control** of all architectural and strategic decisions
+- **AI receives explicit context** about project constraints and priorities
+- **Hard failures enforce compliance** with documented decisions
+- **Both humans and AI benefit** from reduced context-switching and clearer communication
 
 ## Critical Rules for AI Assistants
 

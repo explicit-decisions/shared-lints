@@ -2,7 +2,7 @@
   "name": "shared-lints",
   "version": "1.0.0",
   "private": true,
-  "description": "ESLint configurations enforcing explicit decisions for LLM-assisted development",
+  "description": "ESLint configurations implementing the Enforced Explicit Decisions pattern for LLM-assisted development",
   "license": "MIT",
   "repository": {
     "type": "git",

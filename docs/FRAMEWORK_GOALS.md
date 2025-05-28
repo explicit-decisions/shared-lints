@@ -1,4 +1,4 @@
-# Explicit Decisions Framework: Goals and Vision
+# The Enforced Explicit Decisions Framework: Goals and Vision
 
 ## The Core Problem We're Solving
 
@@ -17,11 +17,11 @@ When AI assistants read your code, they make assumptions based on pattern matchi
 
 Technical decisions are rarely purely technical—they're coordination problems that affect multiple people over time. AI treats these as technical problems to be optimized, missing the human context entirely.
 
-## Our Solution: Enforced Explicit Decisions
+## Our Solution: The Enforced Explicit Decisions Pattern
 
 ### Core Innovation
 
-Make implicit decisions become **hard failures that LLMs cannot ignore**. Not warnings. Not suggestions. Hard failures with clear guidance.
+The **Enforced Explicit Decisions** pattern makes implicit decisions become **hard failures that LLMs cannot ignore**. Not warnings. Not suggestions. Hard failures with clear guidance.
 
 ### How It Works
 

@@ -2,11 +2,13 @@
 
 **Copy this into your project's CLAUDE.md file and customize the placeholders marked with `[CUSTOMIZE]`**
 
-## Core Philosophy: Enforced Explicit Decisions
+## Core Philosophy: The Enforced Explicit Decisions Pattern
 
 **LLMs are excellent at pattern matching but poor at understanding human context around technical decisions.**
 
-This project uses the "Enforced Explicit Decision" pattern - making implicit decisions become hard failures that LLMs cannot ignore. See `PHILOSOPHY.md` for the complete philosophy.
+This project implements the **"Enforced Explicit Decisions" pattern** - making implicit decisions become hard failures that LLMs cannot ignore. The pattern creates a coordination protocol where humans maintain decision authority while AI assistants get the explicit context needed for better assistance.
+
+See `PHILOSOPHY.md` for the complete philosophy behind the Enforced Explicit Decisions framework.
 
 ## Critical Rules for AI Assistants
 
@@ -137,19 +139,19 @@ pnpm lint:deps             # Check dependency decisions
 
 ## Linting Rules Enforced
 
-This project uses `@explicit-decisions/eslint-config` and `@explicit-decisions/eslint-plugin` which enforce:
+This project uses `@explicit-decisions/eslint-config` and `@explicit-decisions/eslint-plugin` which implement the Enforced Explicit Decisions pattern through:
 
 ### No-Mocks Rule (`explicit-decisions/no-mocks-or-spies`)
 
-Prevents use of mocking libraries, enforcing factory functions and real implementations.
+Prevents use of mocking libraries, enforcing factory functions and real implementations as part of the explicit testing philosophy.
 
 ### TypeScript Extensions (`explicit-decisions/require-ts-extensions`)
 
-Requires explicit `.ts` extensions for local TypeScript imports.
+Requires explicit `.ts` extensions for local TypeScript imports, eliminating module resolution ambiguity.
 
 ### No NPX Usage (`explicit-decisions/no-npx-usage`)
 
-Prevents arbitrary code execution via npx, enforcing explicit dependency management.
+Prevents arbitrary code execution via npx, enforcing explicit dependency management decisions.
 
 ## AI Assistant Memory Notes
 

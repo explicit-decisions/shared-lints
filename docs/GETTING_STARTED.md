@@ -1,10 +1,10 @@
-# Getting Started with Shared Lints
+# Getting Started with the Enforced Explicit Decisions Framework
 
-This guide will help you integrate the shared-lints framework into your TypeScript/JavaScript project in under 10 minutes.
+This guide will help you integrate the Enforced Explicit Decisions framework into your TypeScript/JavaScript project in under 10 minutes.
 
-## What is Shared Lints?
+## What is the Enforced Explicit Decisions Framework?
 
-The shared-lints framework helps developers work more effectively with AI assistants by making technical decisions explicit and enforceable. It prevents AI from making incorrect assumptions about your codebase by enforcing documentation of non-standard patterns.
+The **Enforced Explicit Decisions framework** helps developers work more effectively with AI assistants by making technical decisions explicit and enforceable. It implements the "Enforced Explicit Decisions" pattern to prevent AI from making incorrect assumptions about your codebase by enforcing documentation of non-standard patterns.
 
 ## Prerequisites
 
@@ -32,20 +32,20 @@ yarn add -D @explicit-decisions/eslint-config @explicit-decisions/eslint-plugin
 Create or update your `eslint.config.js`:
 
 ```javascript
-import sharedConfig from '@explicit-decisions/eslint-config';
-import sharedPlugin from '@explicit-decisions/eslint-plugin';
+import explicitConfig from '@explicit-decisions/eslint-config';
+import explicitPlugin from '@explicit-decisions/eslint-plugin';
 
 export default [
-  ...sharedConfig.base,
+  ...explicitConfig.base,
   {
     plugins: {
-      'shared-lints': sharedPlugin
+      'explicit-decisions': explicitPlugin
     },
     rules: {
       // Start with warnings to see impact
-      'shared-lints/no-mocks-or-spies': 'warn',
-      'shared-lints/require-ts-extensions': 'warn',
-      'shared-lints/no-npx-usage': 'warn'
+      'explicit-decisions/no-mocks-or-spies': 'warn',
+      'explicit-decisions/require-ts-extensions': 'warn',
+      'explicit-decisions/no-npx-usage': 'warn'
     }
   }
 ];

@@ -1,8 +1,10 @@
 # Development Priorities Framework
 
+*Implementation of the Enforced Explicit Decisions Pattern for project development*
+
 ## Three-Tier Development Priority System
 
-**Rationale:** Adopting DoctorWhoScripts-inspired priority framework to ensure high-impact improvements over feature proliferation
+**Rationale:** Adopting DoctorWhoScripts-inspired priority framework to ensure high-impact improvements over feature proliferation. This framework embodies the **Enforced Explicit Decisions pattern** by requiring explicit justification and classification for all development work.
 
 **Decision:** Use three-tier system for all shared-lints development priorities:
 

@@ -11,7 +11,7 @@
 
 import * as importPlugin from "eslint-plugin-import-x";
 
-import sharedLintsPlugin from "../../eslint-plugin/dist/index.js";
+import explicitDecisionsPlugin from "../../eslint-plugin/dist/index.js";
 
 /**
  * Configure import plugin rules
@@ -20,7 +20,7 @@ import sharedLintsPlugin from "../../eslint-plugin/dist/index.js";
 export const importConfig = {
   plugins: {
     "import-x": /** @type {any} */ (importPlugin),
-    "@shared-lints": /** @type {any} */ (sharedLintsPlugin),
+    "@explicit-decisions": /** @type {any} */ (explicitDecisionsPlugin),
   },
   rules: {
     // Import sorting and organization (these support auto-fix)
@@ -57,14 +57,14 @@ export const importConfig = {
       },
     ],
 
-    // Shared lints rules - enforce explicit technical decisions
-    "@shared-lints/no-mocks-or-spies": "error",
-    "@shared-lints/require-ts-extensions": "error", 
-    "@shared-lints/no-npx-usage": "error",
-    "@shared-lints/prefer-ts-imports": "error",
-    "@shared-lints/require-factory-functions": "warn",
-    "@shared-lints/no-any-in-tests": "error", 
-    "@shared-lints/prefer-real-implementations": "warn",
+    // Explicit decisions rules - enforce explicit technical decisions
+    "@explicit-decisions/no-mocks-or-spies": "error",
+    "@explicit-decisions/require-ts-extensions": "error", 
+    "@explicit-decisions/no-npx-usage": "error",
+    "@explicit-decisions/prefer-ts-imports": "error",
+    "@explicit-decisions/require-factory-functions": "warn",
+    "@explicit-decisions/no-any-in-tests": "error", 
+    "@explicit-decisions/prefer-real-implementations": "warn",
   },
 };
 

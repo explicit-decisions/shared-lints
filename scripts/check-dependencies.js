@@ -81,13 +81,13 @@ async function checkDependencies() {
     }
 
     // Check if latest available has changed
-    if (tracked.latestAvailable !== newVersion) {
+    if (tracked.availableVersion !== newVersion) {
       violations.push({
         type: 'NEW_VERSION_AVAILABLE',
         dependency: depName,
-        trackedLatest: tracked.latestAvailable,
+        trackedLatest: tracked.availableVersion,
         actualLatest: newVersion,
-        message: `New version available: ${tracked.latestAvailable} → ${newVersion} (requires decision update)`
+        message: `New version available: ${tracked.availableVersion} → ${newVersion} (requires decision update)`
       });
     }
 

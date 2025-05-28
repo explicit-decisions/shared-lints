@@ -6,9 +6,9 @@
 
 When Claude sees outdated dependencies, it pattern-matches to "outdated = bad, should update." It doesn't know about deliberate version pinning, integration concerns, or team coordination needs. The AI treats these as pure technical problems when they're actually coordination problems—decisions that affect multiple people over time.
 
-## The Solution: Enforced Explicit Decision Pattern
+## The Solution: The Enforced Explicit Decisions Pattern
 
-This project implements tooling that makes implicit decisions become hard failures that LLMs cannot ignore.
+This project implements the **Enforced Explicit Decisions** pattern—tooling that makes implicit decisions become hard failures that LLMs cannot ignore.
 
 ### Key Principles
 
@@ -88,15 +88,48 @@ The AI runs `pnpm lint` and gets hard failures with clear messages:
 
 ### 2. Decision Documentation
 
-Every explicit decision gets logged:
+Every explicit decision gets logged with progressive detail:
+
+**Simple Keep/Update Decisions** (most common):
 
 ```json
 {
-  "dependency": "@types/node",
-  "decision": "keep", 
-  "reason": "Version 20 breaks our Docker build",
-  "reviewer": "yehuda",
-  "expiresAt": "2025-08-26"
+  "@types/node": {
+    "decision": "keep",
+    "currentVersion": "^20.17.50",
+    "availableVersion": "^22.15.21",
+    "reason": "Staying on Node 20 LTS for compatibility",
+    "reviewDate": "2025-02-26"
+  }
+}
+```
+
+**Strategic Decisions** (for essential packages):
+
+```json
+{
+  "vitest": {
+    "decision": "keep",
+    "currentVersion": "^3.1.4",
+    "availableVersion": "^3.1.4",
+    "reason": "Better TypeScript support than Jest",
+    "reviewDate": "2025-01-26",
+    "tier": "essential",
+    "platformAlternative": "Node.js test runner (rejected: immature)"
+  }
+}
+```
+
+**Deprecation Decisions**:
+
+```json
+{
+  "old-package": {
+    "decision": "deprecate",
+    "currentVersion": "^1.0.0",
+    "reason": "Replaced by built-in Node.js features",
+    "removalDate": "2025-06-01"
+  }
 }
 ```
 

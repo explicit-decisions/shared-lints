@@ -4,7 +4,9 @@
 
 ## Introduction
 
-ESLint rules are the backbone of code quality enforcement, but writing them in JavaScript often leads to property access errors, runtime failures, and maintenance headaches. After experiencing these pain points firsthand while building the explicit-decisions framework, we made the leap to TypeScript-first ESLint rule development.
+ESLint rules are the backbone of code quality enforcement, but writing them in JavaScript often leads to property access errors, runtime failures, and maintenance headaches. After experiencing these pain points firsthand while building tooling for the Enforced Explicit Decisions pattern, we made the leap to TypeScript-first ESLint rule development.
+
+The Enforced Explicit Decisions pattern uses linting rules to transform implicit architectural decisions into hard failures that force explicit documentation and reasoning. This requires robust, type-safe ESLint rules that can reliably detect violations and provide automatic fixes.
 
 This post chronicles our journey from fighting TypeScript property access errors to embracing professional TypeScript ESLint development patterns using `@typescript-eslint/utils`.
 
@@ -457,4 +459,4 @@ For any team serious about ESLint rule development, the TypeScript approach with
 
 ---
 
-*This approach is demonstrated in the [explicit-decisions framework](https://github.com/explicit-decisions/shared-lints), which provides a complete example of professional TypeScript ESLint rule development patterns.*
+*This approach is demonstrated in the [Enforced Explicit Decisions pattern implementation](https://github.com/explicit-decisions/shared-lints), which provides a complete example of professional TypeScript ESLint rule development patterns.*

@@ -1,12 +1,12 @@
 # Blog Post Writing Prompt Template
 
-**Use this prompt to help Claude write posts about the "Enforced Explicit Decision" pattern and LLM-assisted development:**
+**Use this prompt to help Claude write posts about the "Enforced Explicit Decisions" pattern and LLM-assisted development:**
 
 ---
 
 ## Context for Claude
 
-I've been working on a project called "shared-lints" (published under @explicit-decisions) that implements the "Enforced Explicit Decision" pattern for LLM-assisted development. This pattern addresses a fundamental mismatch: **LLMs excel at pattern recognition but lack context about human decision-making processes and organizational constraints.**
+I've been working on a project called "shared-lints" (published under @explicit-decisions) that implements the "Enforced Explicit Decisions" pattern for LLM-assisted development. This pattern addresses a fundamental mismatch: **LLMs excel at pattern recognition but lack context about human decision-making processes and organizational constraints.**
 
 ### The Core Problem: The AI Assumption Gap
 
@@ -49,7 +49,7 @@ An AI consistently suggests "cleaner" patterns that violate team decisions:
 
 ### The Solution: Enforced Explicit Decisions
 
-Transform implicit decisions into hard failures that force explicit documentation and reasoning:
+**The "Enforced Explicit Decisions" Pattern** transforms implicit decisions into hard failures that force explicit documentation and reasoning:
 
 1. **Make Decisions Visible**: Turn silent choices into explicit, documented decisions with clear rationale
 2. **Force Context Documentation**: Require reasoning, ownership, expiration dates, and success criteria
@@ -58,9 +58,13 @@ Transform implicit decisions into hard failures that force explicit documentatio
 5. **Facilitate Evolution**: Built-in expiration forces periodic reconsideration and prevents decision debt
 6. **Create Shared Understanding**: Make implicit team knowledge explicit for all stakeholders (human and AI)
 
-### Key Insight: AIs as Stakeholders in Human-Controlled Coordination
+### Why "Enforced" Matters
 
-The pattern treats AI assistants as legitimate stakeholders in a **human-controlled coordination protocol**. This isn't about delegating decisions to AI—it's about creating a framework where humans remain firmly in control while AI gets the context needed for better assistance.
+The enforcement mechanism is crucial—without it, decisions remain suggestions that both humans and AI can ignore. The pattern creates **unavoidable coordination points** where implicit assumptions must be made explicit.
+
+### Key Insight: The Enforced Explicit Decisions Pattern as Coordination Protocol
+
+The Enforced Explicit Decisions pattern treats AI assistants as legitimate stakeholders in a **human-controlled coordination protocol**. This isn't about delegating decisions to AI—it's about creating a framework where humans remain firmly in control while AI gets the context needed for better assistance.
 
 **Human Role (Decision Authority):**
 
@@ -223,7 +227,7 @@ explicit-decisions/
 
 ## Real Implementation Case Study: JavaScript to TypeScript Migration
 
-**This project provides a complete, documented case study of applying the explicit-decisions pattern to build production-ready tooling with AI assistance. Use these concrete achievements to ground the blog post in proven results.**
+**This project provides a complete, documented case study of applying the Enforced Explicit Decisions pattern to build production-ready tooling with AI assistance. Use these concrete achievements to ground the blog post in proven results.**
 
 ### Quantifiable Technical Achievements
 
@@ -932,7 +936,7 @@ The goal is a post that helps developers recognize this pattern in their own wor
 
 **Use this prompt to have Claude complete and improve the blog post draft:**
 
-I have a draft blog post about the "Enforced Explicit Decision" pattern for AI-assisted development. I've built production-ready tooling (7 TypeScript ESLint rules, comprehensive documentation) and want to polish this post for publication.
+I have a draft blog post about the "Enforced Explicit Decisions" pattern for AI-assisted development. I've built production-ready tooling (7 TypeScript ESLint rules, comprehensive documentation) that demonstrates this pattern in practice and want to polish this post for publication.
 
 **Current draft:** [INSERT BLOG POST DRAFT HERE]
 
