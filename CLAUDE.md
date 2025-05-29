@@ -53,11 +53,11 @@ const packageJson = await import('../package.json', { with: { type: 'json' } });
 
 ### Dependency Decisions
 
-All dependencies must be tracked in `dependency-versions.json` with explicit decisions. When adding or updating dependencies:
+All dependencies must be tracked in `decisions.toml` with explicit decisions. When adding or updating dependencies:
 
-1. Run `pnpm deps:interactive`
-2. Document your decision
-3. Set appropriate review dates
+1. Use the decisions CLI: `decisions deps add <package> --current <version> --decision <keep|update|deprecate> --reason "<why>"`
+2. Include tier information for essential packages: `--tier essential --platform-alternative "<what was considered>"`
+3. Review dates are automatically calculated based on tier (90 days for essential, 30 days for others)
 
 ### Testing Philosophy
 
@@ -86,9 +86,9 @@ When updating documentation, especially about explicit-decisions patterns:
 
 Never update dependencies directly. Always:
 
-1. Run `pnpm deps:interactive`
-2. Make explicit decisions about updates
-3. Document reasons for pinning or updating
+1. Check current decisions: `decisions deps list --outdated`
+2. Update with explicit decision: `decisions deps add <package> --decision update --reason "<why>"`
+3. For CI checks: `pnpm lint:deps` (runs `decisions deps check`)
 
 ## Error Resolution
 

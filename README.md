@@ -45,6 +45,19 @@ pnpm lint
 
 [→ Why I Built This: Author's Perspective](./docs/AUTHOR_PERSPECTIVE.md)
 
+## Project Structure
+
+This monorepo contains several packages:
+
+### Published Packages (in `tools/`)
+- **`@explicit-decisions/eslint-plugin`** - ESLint rules enforcing explicit decisions
+- **`@explicit-decisions/eslint-config`** - Pre-configured ESLint configs
+- **`@explicit-decisions/decisions`** - CLI for tracking technical decisions
+- **`@explicit-decisions/tooling`** - CLI for project setup and migration
+
+### Internal Scripts (in `scripts/`)
+The `scripts/` directory contains maintenance scripts for the shared-lints project itself. These are NOT part of the published packages. See [scripts/README.md](./scripts/README.md) for details.
+
 ## Core Principles
 
 ### 1. No Mocks in Tests
