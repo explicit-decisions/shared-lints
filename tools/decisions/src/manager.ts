@@ -1,12 +1,31 @@
-import { readFile, writeFile } from 'fs/promises';
 import { existsSync } from 'fs';
+import { readFile, writeFile } from 'fs/promises';
+
 import * as TOML from '@iarna/toml';
-function createDateString(date = new Date()) {
-  return date.toISOString().split('T')[0];
+
+interface Decision {
+  category: string;
+  key: string;
+  value: string;
+  reason: string;
+  reviewBy: string;
+  expired: boolean;
+}
+
+interface DecisionData {
+  value: string;
+  reason: string;
+  reviewBy: string;
+}
+
+function createDateString(date = new Date()): string {
+  const isoString = date.toISOString();
+  const datePart = isoString.split('T')[0];
+  return datePart || '';
 }
 
 export class DecisionsManager {
-  #configPath: string;
+  readonly #configPath: string;
   
   constructor(configPath: string = 'decisions.toml') {
     this.#configPath = configPath;
@@ -21,7 +40,7 @@ export class DecisionsManager {
     return TOML.parse(content);
   }
 
-  async save(decisions) {
+  async save(decisions: any): Promise<void> {
     const content = TOML.stringify(decisions);
     await writeFile(this.#configPath, content, 'utf8');
   }
@@ -46,7 +65,7 @@ export class DecisionsManager {
       const reviewDate = new Date();
       reviewDate.setMonth(reviewDate.getMonth() + 6);
 
-      decisions.dependencies = {
+      (decisions as any).dependencies = {
         typescript: {
           value: '^5.7.0',
           reason: 'Native .ts import support',
@@ -59,8 +78,8 @@ export class DecisionsManager {
     await this.save(decisions);
   }
 
-  async add(category, key, value, reason) {
-    const decisions = await this.load();
+  async add(category: string, key: string, value: string, reason: string): Promise<void> {
+    const decisions: any = await this.load();
     
     if (!decisions[category]) {
       decisions[category] = {};
@@ -79,31 +98,39 @@ export class DecisionsManager {
     await this.save(decisions);
   }
 
-  async list() {
+  async list(): Promise<Decision[]> {
     const decisions = await this.load();
-    const results = [];
+    const results: Decision[] = [];
     const today = createDateString();
 
     for (const [catName, catDecisions] of Object.entries(decisions)) {
       if (catName === 'metadata' || catName === 'defaults') continue;
 
-      for (const [decKey, decision] of Object.entries(catDecisions)) {
-        results.push({
-          category: catName,
-          key: decKey,
-          ...decision,
-          expired: decision.reviewBy < today
-        });
+      if (typeof catDecisions === 'object' && catDecisions !== null && !Array.isArray(catDecisions)) {
+        for (const [decKey, decision] of Object.entries(catDecisions as Record<string, unknown>)) {
+          if (typeof decision === 'object' && decision !== null && !Array.isArray(decision)) {
+            const decisionData = decision as DecisionData;
+            results.push({
+              category: catName,
+              key: decKey,
+              value: decisionData.value,
+              reason: decisionData.reason,
+              reviewBy: decisionData.reviewBy,
+              expired: decisionData.reviewBy < today
+            });
+          }
+        }
       }
     }
 
     return results;
   }
 
-  async getExpired() {
+  async getExpired(): Promise<Decision[]> {
     const all = await this.list();
     return all.filter(d => d.expired);
   }
 }
 
 export { createDateString };
+export type { Decision };

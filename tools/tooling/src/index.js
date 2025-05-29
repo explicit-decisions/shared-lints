@@ -13,6 +13,7 @@
 
 export { init } from './init.js';
 export { deps } from './deps.js';
+export { logger, rawConsole } from './logger.js';
 
 // Version info
 export const version = '1.0.0';

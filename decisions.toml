@@ -1,13 +1,25 @@
+# Technical Decisions Tracker
+# 
+# This file tracks non-dependency technical decisions.
+# For dependency decisions, use: pnpm deps:interactive
+# 
+# Categories:
+# - architecture: Major architectural decisions
+# - tooling: Tool and process choices (non-npm)
+# - patterns: Code patterns and conventions
+# - process: Development workflow decisions
+
 [metadata]
 version = "1.0"
-description = "Technical decisions for this project"
+description = "Non-dependency technical decisions for the shared-lints project"
 createdAt = "2025-05-29"
 
 [defaults]
 reviewAfter = "6m"
 
-[dependencies.typescript]
-value = "^5.7.0"
-reason = "Native .ts import support"
-reviewBy = "2025-11-29"
-decided = "2025-05-29"
+# Example architecture decision:
+# [architecture.monorepo]
+# value = "pnpm workspaces"
+# reason = "Native monorepo support with strict dependency management"
+# reviewBy = "2026-01-01"
+# decided = "2025-05-29"

@@ -1,10 +1,12 @@
 import { program } from 'commander';
+import { logger } from '../../tooling/src/logger.js';
+
 import { DecisionsManager } from './manager.ts';
 
 const manager = new DecisionsManager();
 
-function handleError(error) {
-  console.error('❌', error.message);
+function handleError(error: Error): void {
+  logger.error('❌', error.message);
   process.exit(1);
 }
 
@@ -17,12 +19,12 @@ program
   .command('init')
   .description('Create decisions.toml')
   .option('--with-examples', 'Include example')
-  .action(async (options) => {
+  .action(async (options: { withExamples?: boolean }) => {
     try {
-      await manager.init(options.withExamples);
-      console.log('✅ Created decisions.toml');
+      await manager.init(options.withExamples ?? false);
+      logger.success('Created decisions.toml');
     } catch (error) {
-      handleError(error);
+      handleError(error as Error);
     }
   });
 
@@ -33,12 +35,12 @@ program
   .argument('<key>', 'Key (e.g., typescript)')
   .argument('<value>', 'Value (e.g., ^5.7.0)')
   .argument('<reason>', 'Reason for decision')
-  .action(async (category, key, value, reason) => {
+  .action(async (category: string, key: string, value: string, reason: string) => {
     try {
       await manager.add(category, key, value, reason);
-      console.log(`✅ Added ${category}.${key}`);
+      logger.success(`Added ${category}.${key}`);
     } catch (error) {
-      handleError(error);
+      handleError(error as Error);
     }
   });
 
@@ -50,19 +52,19 @@ program
       const decisions = await manager.list();
       
       if (decisions.length === 0) {
-        console.log('No decisions found.');
+        logger.info('No decisions found.');
         return;
       }
 
       for (const decision of decisions) {
         const status = decision.expired ? '⚠️ EXPIRED' : '✅';
-        console.log(`${status} ${decision.category}.${decision.key}`);
-        console.log(`   ${decision.value} - ${decision.reason}`);
-        console.log(`   Review: ${decision.reviewBy}`);
-        console.log('');
+        logger.info(`${status} ${decision.category}.${decision.key}`);
+        logger.info(`   ${decision.value} - ${decision.reason}`);
+        logger.info(`   Review: ${decision.reviewBy}`);
+        logger.info('');
       }
     } catch (error) {
-      handleError(error);
+      handleError(error as Error);
     }
   });
 
@@ -74,17 +76,17 @@ program
       const expired = await manager.getExpired();
       
       if (expired.length === 0) {
-        console.log('✅ All decisions up to date');
+        logger.success('All decisions up to date');
         return;
       }
 
-      console.log(`❌ ${expired.length} expired decision(s):`);
+      logger.error(`❌ ${expired.length} expired decision(s):`);
       for (const decision of expired) {
-        console.log(`⚠️ ${decision.category}.${decision.key} (${decision.reviewBy})`);
+        logger.warn(`⚠️ ${decision.category}.${decision.key} (${decision.reviewBy})`);
       }
       process.exit(1);
     } catch (error) {
-      handleError(error);
+      handleError(error as Error);
     }
   });
 
@@ -96,19 +98,19 @@ program
       const expired = await manager.getExpired();
       
       if (expired.length === 0) {
-        console.log('✅ No expired decisions');
+        logger.success('No expired decisions');
         return;
       }
 
-      console.log('Expired decisions for review:');
+      logger.info('Expired decisions for review:');
       for (const decision of expired) {
-        console.log(`⚠️ ${decision.category}.${decision.key}`);
-        console.log(`   ${decision.value} - ${decision.reason}`);
-        console.log(`   Expired: ${decision.reviewBy}`);
-        console.log('');
+        logger.warn(`⚠️ ${decision.category}.${decision.key}`);
+        logger.info(`   ${decision.value} - ${decision.reason}`);
+        logger.info(`   Expired: ${decision.reviewBy}`);
+        logger.info('');
       }
     } catch (error) {
-      handleError(error);
+      handleError(error as Error);
     }
   });
 

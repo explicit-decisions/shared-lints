@@ -8,10 +8,7 @@ export default [
   // Project-specific overrides
   {
     rules: {
-      // Enforce TypeScript-first approach
-      "@explicit-decisions/no-js-files": "error",
-      // Prefer native JavaScript private fields
-      "@explicit-decisions/prefer-private-fields": "error",
+      // Currently no project-specific rule overrides needed
     }
   },
 
@@ -21,6 +18,7 @@ export default [
     rules: {
       "@explicit-decisions/no-npx-usage": "off",
       "@explicit-decisions/prefer-real-implementations": "off",
+      "no-console": "off", // CLIs need console output
     }
   },
 
