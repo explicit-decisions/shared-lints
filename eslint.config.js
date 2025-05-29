@@ -8,7 +8,10 @@ export default [
   // Project-specific overrides
   {
     rules: {
-      // Add any project-specific rule overrides here
+      // Enforce TypeScript-first approach
+      "@explicit-decisions/no-js-files": "error",
+      // Prefer native JavaScript private fields
+      "@explicit-decisions/prefer-private-fields": "error",
     }
   },
 
