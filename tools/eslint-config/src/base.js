@@ -9,9 +9,9 @@
  * Applied to all files in projects using this config
  */
 
+import explicitDecisionsPlugin from "@explicit-decisions/eslint-plugin";
 import * as importPlugin from "eslint-plugin-import-x";
 
-import explicitDecisionsPlugin from "@explicit-decisions/eslint-plugin";
 
 /**
  * Configure import plugin rules

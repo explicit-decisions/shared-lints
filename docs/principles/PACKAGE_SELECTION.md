@@ -36,19 +36,53 @@ All package decisions are tracked and enforced through `dependency-versions.json
 
 Run `pnpm deps:interactive` to review and update dependency decisions.
 
+**New: Quality Assessment Tool**
+
+The decisions CLI includes an `assess` command to evaluate package health:
+
+```bash
+# Assess all package decisions
+decisions assess
+
+# Assess specific package
+decisions assess --key toml-parser
+
+# Get JSON output for automation
+decisions assess --format json
+```
+
+The tool checks:
+- Time since last publish
+- Weekly download statistics  
+- Known security vulnerabilities
+- License status
+- Overall maintenance activity
+
 ## Package Selection Criteria
 
-### Tier 1: Prefer Platform Features
+### Tier 1: Prefer Platform Features When Adequate
 
-**Principle:** Use modern JavaScript/TypeScript/Node.js capabilities first
+**Principle:** Use modern JavaScript/TypeScript/Node.js capabilities when they provide equivalent functionality
 
-**Examples of platform-first decisions:**
+**Package justification requires ALL of:**
+1. **Significant user value** OR **significant complexity reduction** 
+2. **High quality** - Well-tested, good documentation, clean API
+3. **Active maintenance** - Regular updates, responsive to issues
 
-- **File operations:** Node.js `fs` over libraries like `fs-extra`
+**Examples of good platform-first decisions:**
+
+- **File operations:** Node.js `fs` over `fs-extra` (when extra features aren't needed)
 - **Path manipulation:** Node.js `path` over utility libraries  
 - **JSON parsing:** Native `JSON.parse()` over parsing libraries
 - **Async operations:** Native `Promise`/`async`/`await` over callback libraries
 - **Module loading:** ES modules over dynamic loading libraries
+
+**Examples where packages are justified:**
+
+- **CLI framework:** `commander` over raw `process.argv` (significant functionality gap)
+- **Terminal colors:** `chalk` over `util.styleText()` (cross-platform, better API)
+- **Interactive prompts:** `inquirer` over `readline` (complex UI patterns)
+- **Schema validation:** `ajv` over hand-rolled validation (correctness critical)
 
 **Decision Template:**
 

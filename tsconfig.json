@@ -30,7 +30,10 @@
     "**/.vitest",
     "eslint.config.js",
     "reference-repos/**",
-    "tools/**/*.js",
     "scripts/**/*.js"
+  ],
+  "include": [
+    "tools/*/src/**/*.ts",
+    "tools/*/test/**/*.ts"
   ]
 }

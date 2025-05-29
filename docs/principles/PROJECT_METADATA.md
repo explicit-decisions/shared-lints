@@ -3,6 +3,7 @@
 ## The Problem
 
 When working with multiple package.json files across a monorepo, it's easy for project metadata to drift:
+
 - Repository URLs might point to different locations
 - Package scopes might be inconsistent  
 - Homepage and issue URLs might be outdated
@@ -44,6 +45,7 @@ We make project metadata decisions explicit through a `project-metadata.json` fi
 ### Validation Script
 
 The `check-project-metadata.js` script:
+
 - Finds all package.json files
 - Validates they match the decided values
 - Checks if decisions need review
@@ -52,6 +54,7 @@ The `check-project-metadata.js` script:
 ### Integration
 
 Add to your lint process:
+
 ```json
 {
   "scripts": {
@@ -70,6 +73,7 @@ Add to your lint process:
 ## When to Use This Pattern
 
 Apply this pattern when you have:
+
 - Multiple package.json files
 - Published packages needing consistent metadata
 - Team members who might use different values

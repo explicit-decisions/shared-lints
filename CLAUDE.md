@@ -13,6 +13,7 @@ All project metadata is centrally managed through `project-metadata.json`. When 
    - Repository URL: `https://github.com/explicit-decisions/shared-lints.git`
 
 2. **Run validation** - After any package.json changes:
+
    ```bash
    pnpm lint:metadata
    ```
@@ -22,11 +23,13 @@ All project metadata is centrally managed through `project-metadata.json`. When 
 ## Development Workflow
 
 1. **ESLint Auto-fix** - Routinely run `eslint --fix` to eliminate problems as you create code:
+
    ```bash
    pnpm lint:fix
    ```
 
 2. **Check everything** - Before considering work complete:
+
    ```bash
    pnpm lint        # Runs all checks including metadata
    pnpm build       # Ensures TypeScript compiles
@@ -67,6 +70,7 @@ All dependencies must be tracked in `dependency-versions.json` with explicit dec
 ### Updating Documentation
 
 When updating documentation, especially about explicit-decisions patterns:
+
 1. Check if the pattern is already documented in `/docs/principles/`
 2. Update the principles README.md if adding new principles
 3. Ensure all cross-references are correct
@@ -81,6 +85,7 @@ When updating documentation, especially about explicit-decisions patterns:
 ### Dependency Updates
 
 Never update dependencies directly. Always:
+
 1. Run `pnpm deps:interactive`
 2. Make explicit decisions about updates
 3. Document reasons for pinning or updating
@@ -88,14 +93,17 @@ Never update dependencies directly. Always:
 ## Error Resolution
 
 ### TypeScript Errors
+
 - Focus on making types more specific, not using `any`
 - Use factory functions to create properly typed test data
 
 ### ESLint Errors
+
 - Run `pnpm lint:fix` first
 - For custom rules, check `/docs/guides/RULES_REFERENCE.md`
 
 ### Build Errors
+
 - Check that all imports use `.js` extensions (even for .ts files)
 - Ensure TypeScript config uses `"rewriteRelativeImportExtensions": true`
 
