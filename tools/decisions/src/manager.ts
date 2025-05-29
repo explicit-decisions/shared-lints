@@ -12,21 +12,6 @@ interface Decision {
   expired: boolean;
 }
 
-interface DecisionData {
-  value: string;
-  reason: string;
-  reviewBy: string;
-}
-
-// Simplified dependency decision - just the essentials
-interface DependencyDecision {
-  current: string;
-  available?: string;
-  decision: 'keep' | 'update' | 'deprecate';
-  reason: string;
-  reviewBy: string;
-}
-
 function createDateString(date = new Date()): string {
   const isoString = date.toISOString();
   const datePart = isoString.split('T')[0];
@@ -50,7 +35,9 @@ export class DecisionsManager {
   }
 
   async save(decisions: Record<string, unknown>): Promise<void> {
-    const content = TOML.stringify(decisions);
+    // TOML.stringify expects JsonMap but our decisions structure is compatible
+    const tomlData = decisions as unknown as TOML.JsonMap;
+    const content = TOML.stringify(tomlData);
     await writeFile(this.#configPath, content, 'utf8');
   }
 
@@ -75,7 +62,7 @@ export class DecisionsManager {
       reviewDate.setMonth(reviewDate.getMonth() + 6);
 
       const decisionData = decisions as Record<string, unknown>;
-      decisionData.dependencies = {
+      decisionData['dependencies'] = {
         typescript: {
           value: '^5.7.0',
           reason: 'Native .ts import support',
@@ -121,14 +108,14 @@ export class DecisionsManager {
       if (typeof catDecisions === 'object' && catDecisions !== null && !Array.isArray(catDecisions)) {
         for (const [decKey, decision] of Object.entries(catDecisions as Record<string, unknown>)) {
           if (typeof decision === 'object' && decision !== null && !Array.isArray(decision)) {
-            const decisionData = decision as DecisionData;
+            const decisionObj = decision as { value: string; reason: string; reviewBy: string };
             results.push({
               category: catName,
               key: decKey,
-              value: decisionData.value,
-              reason: decisionData.reason,
-              reviewBy: decisionData.reviewBy,
-              expired: decisionData.reviewBy < today
+              value: decisionObj.value,
+              reason: decisionObj.reason,
+              reviewBy: decisionObj.reviewBy,
+              expired: decisionObj.reviewBy < today
             });
           }
         }
@@ -152,4 +139,4 @@ export class DecisionsManager {
 }
 
 export { createDateString };
-export type { Decision, DependencyDecision };
+export type { Decision };

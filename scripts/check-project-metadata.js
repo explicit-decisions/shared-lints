@@ -1,14 +1,14 @@
 #!/usr/bin/env node
 
 import { readFileSync, existsSync, readdirSync, statSync } from 'fs';
-import { join, dirname } from 'path';
-import { fileURLToPath } from 'url';
+import { join } from 'path';
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
-const rootDir = join(__dirname, '..');
+import { paths } from './paths.js';
+
+const rootDir = paths.root;
 
 // Load project metadata decisions
-const metadataPath = join(rootDir, 'project-metadata.json');
+const metadataPath = paths.projectMetadata;
 if (!existsSync(metadataPath)) {
   console.error('❌ project-metadata.json not found. Run "pnpm metadata:init" to create it.');
   process.exit(1);

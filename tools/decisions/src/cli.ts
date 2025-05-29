@@ -1,7 +1,6 @@
 import { program } from 'commander';
 
-import { logger } from '../../tooling/src/logger.js';
-
+import { logger } from './logger.ts';
 import { DecisionsManager } from './manager.ts';
 
 const manager = new DecisionsManager();
@@ -83,7 +82,7 @@ program
 
       logger.error(`❌ ${expired.length} expired decision(s):`);
       for (const decision of expired) {
-        logger.warn(`⚠️ ${decision.category}.${decision.key} (${decision.reviewBy})`);
+        logger.warning(`⚠️ ${decision.category}.${decision.key} (${decision.reviewBy})`);
       }
       process.exit(1);
     } catch (error) {
@@ -105,7 +104,7 @@ program
 
       logger.info('Expired decisions for review:');
       for (const decision of expired) {
-        logger.warn(`⚠️ ${decision.category}.${decision.key}`);
+        logger.warning(`⚠️ ${decision.category}.${decision.key}`);
         logger.info(`   ${decision.value} - ${decision.reason}`);
         logger.info(`   Expired: ${decision.reviewBy}`);
         logger.info('');
@@ -171,7 +170,7 @@ deps
 
       logger.error(`❌ ${expired.length} dependency decision(s) expired:`);
       for (const dep of expired) {
-        logger.warn(`⚠️ ${dep.key} (review by ${dep.reviewBy})`);
+        logger.warning(`⚠️ ${dep.key} (review by ${dep.reviewBy})`);
       }
       process.exit(1);
     } catch (error) {

@@ -1,7 +1,7 @@
 // @ts-check
 
-import { describe, it, expect } from "vitest";
 import { RuleTester } from "@typescript-eslint/rule-tester";
+import { describe, it, expect } from "vitest";
 
 import { noMocksOrSpies } from "./rules/no-mocks-or-spies.ts";
 import { noNpxUsage } from "./rules/no-npx-usage.ts";

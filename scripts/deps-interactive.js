@@ -7,7 +7,9 @@ import { createInterface } from 'readline';
 
 import { logger, rawConsole } from '../tools/tooling/src/logger.js';
 
-const rootDir = process.env.TEST_ROOT_DIR || join(import.meta.dirname, '..');
+import { ROOT } from './paths.js';
+
+const rootDir = process.env.TEST_ROOT_DIR || ROOT;
 
 /**
  * Interactive dependency management with decision tracking

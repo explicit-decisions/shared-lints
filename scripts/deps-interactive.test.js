@@ -1,15 +1,14 @@
 import { spawn } from 'child_process';
 import fs from 'fs/promises';
 import path from 'path';
-import { fileURLToPath } from 'url';
 
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
+import { paths } from './paths.js';
 
 describe('deps-interactive', () => {
-  const scriptPath = path.join(__dirname, 'deps-interactive.js');
-  const testDir = path.join(__dirname, '../test-fixtures/deps-interactive');
+  const scriptPath = path.join(paths.scripts, 'deps-interactive.js');
+  const testDir = path.join(paths.root, 'test-fixtures/deps-interactive');
   const testPackageJson = path.join(testDir, 'package.json');
   const testDepsJson = path.join(testDir, 'dependency-versions.json');
 

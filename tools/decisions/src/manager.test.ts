@@ -1,7 +1,9 @@
-import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { existsSync } from 'fs';
 import { unlink } from 'fs/promises';
-import { DecisionsManager, createDateString } from './manager.js';
+
+import { describe, it, expect, beforeEach, afterEach } from 'vitest';
+
+import { DecisionsManager, createDateString } from "./manager.ts";
 
 describe('DecisionsManager', () => {
   const testConfigPath = 'test-decisions.toml';
@@ -24,11 +26,11 @@ describe('DecisionsManager', () => {
       expect(existsSync(testConfigPath)).toBe(true);
       
       const decisions = await manager.load();
-      expect(decisions.metadata).toMatchObject({
+      expect(decisions['metadata']).toMatchObject({
         version: '1.0',
         description: 'Technical decisions for this project'
       });
-      expect(decisions.defaults).toMatchObject({
+      expect(decisions['defaults']).toMatchObject({
         reviewAfter: '6m'
       });
     });
@@ -37,10 +39,10 @@ describe('DecisionsManager', () => {
       await manager.init(true);
       
       const decisions = await manager.load();
-      expect(decisions.dependencies).toBeDefined();
+      expect(decisions['dependencies']).toBeDefined();
       
-      const deps = decisions.dependencies as Record<string, unknown>;
-      expect(deps.typescript).toMatchObject({
+      const deps = decisions['dependencies'] as Record<string, unknown>;
+      expect(deps['typescript']).toMatchObject({
         value: '^5.7.0',
         reason: 'Native .ts import support'
       });
@@ -108,7 +110,8 @@ describe('DecisionsManager', () => {
       
       const decisions = await manager.list();
       const decision = decisions[0];
-      const reviewDate = new Date(decision!.reviewBy);
+      if (!decision) throw new Error('No decision found');
+      const reviewDate = new Date(decision.reviewBy);
       
       expect(reviewDate.getTime()).toBeGreaterThan(beforeAdd.getTime() + (5.5 * 30 * 24 * 60 * 60 * 1000));
       expect(reviewDate.getTime()).toBeLessThan(afterAdd.getTime() + (6.5 * 30 * 24 * 60 * 60 * 1000));
@@ -193,9 +196,9 @@ describe('DecisionsManager', () => {
       await manager.add('test', 'package', '1.0.0', 'test');
       
       const decisions = await manager.load();
-      const testCat = decisions.test as Record<string, unknown>;
-      const packageDecision = testCat.package as Record<string, unknown>;
-      packageDecision.reviewBy = '2020-01-01';
+      const testCat = decisions['test'] as Record<string, unknown>;
+      const packageDecision = testCat['package'] as Record<string, unknown>;
+      packageDecision['reviewBy'] = '2020-01-01';
       await manager.save(decisions);
       
       const expired = await manager.getExpired();

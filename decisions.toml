@@ -100,8 +100,3 @@ tier = "essential"
 value = ">=9.0.0"
 reviewBy = "2025-08-27"
 
-[dependencies.react]
-value = "^18.0.0"
-reason = "Using React for UI components"
-reviewBy = "2025-11-29"
-decided = "2025-05-29"
