@@ -1,11 +1,14 @@
 # Decisions CLI
 
-A command-line tool for tracking non-dependency technical decisions in TOML format.
+A command-line tool for tracking all technical decisions in TOML format, including dependencies, architecture choices, and process decisions.
 
 ## Purpose
 
-This tool tracks architectural, tooling, and process decisions that aren't npm dependencies.
-For dependency decisions, use `pnpm deps:interactive` instead.
+This tool provides a unified way to track and review technical decisions with built-in support for:
+- Dependency version decisions with rich metadata (tiers, alternatives, migration paths)
+- Architecture decisions (build tools, frameworks, patterns)
+- Process decisions (workflows, conventions)
+- Tool choices (CI/CD, development tools)
 
 ## Installation
 
@@ -15,6 +18,8 @@ pnpm install
 ```
 
 ## Usage
+
+### General Decisions
 
 ```bash
 # Initialize a decisions.toml file
@@ -31,6 +36,30 @@ decisions check
 
 # Review expired decisions interactively
 decisions review
+```
+
+### Dependency Decisions
+
+```bash
+# Add a dependency decision with full metadata
+decisions deps add typescript \
+  --current "^5.0.0" \
+  --decision keep \
+  --reason "Essential for type safety" \
+  --tier essential \
+  --available "^5.3.0"
+
+# List all dependency decisions
+decisions deps list
+
+# Show only outdated dependencies
+decisions deps list --outdated
+
+# Check dependency decisions (for CI)
+decisions deps check
+
+# Interactive dependency review (coming soon)
+decisions deps interactive
 ```
 
 ## Decision Categories
