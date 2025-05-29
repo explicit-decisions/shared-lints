@@ -18,6 +18,15 @@ interface DecisionData {
   reviewBy: string;
 }
 
+// Simplified dependency decision - just the essentials
+interface DependencyDecision {
+  current: string;
+  available?: string;
+  decision: 'keep' | 'update' | 'deprecate';
+  reason: string;
+  reviewBy: string;
+}
+
 function createDateString(date = new Date()): string {
   const isoString = date.toISOString();
   const datePart = isoString.split('T')[0];
@@ -130,7 +139,14 @@ export class DecisionsManager {
     const all = await this.list();
     return all.filter(d => d.expired);
   }
+
+
+  // Just reuse the general list method with a filter
+  async listByCategory(category: string): Promise<Decision[]> {
+    const all = await this.list();
+    return all.filter(d => d.category === category);
+  }
 }
 
 export { createDateString };
-export type { Decision };
+export type { Decision, DependencyDecision };

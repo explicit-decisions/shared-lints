@@ -114,4 +114,68 @@ program
     }
   });
 
+// Simplified dependency commands
+const deps = program
+  .command('deps')
+  .description('Dependency-specific commands');
+
+deps
+  .command('add <name> <version> <reason>')
+  .description('Add a dependency decision')
+  .action(async (name: string, version: string, reason: string) => {
+    try {
+      await manager.add('dependencies', name, version, reason);
+      logger.success(`Added dependency decision for ${name}`);
+    } catch (error) {
+      handleError(error as Error);
+    }
+  });
+
+deps
+  .command('list')
+  .description('List all dependency decisions')
+  .action(async () => {
+    try {
+      const dependencies = await manager.listByCategory('dependencies');
+      
+      if (dependencies.length === 0) {
+        logger.info('No dependency decisions found.');
+        return;
+      }
+
+      for (const dep of dependencies) {
+        const status = dep.expired ? '⚠️ EXPIRED' : '✅';
+        logger.info(`${status} ${dep.key}: ${dep.value}`);
+        logger.info(`   ${dep.reason}`);
+        logger.info(`   Review by: ${dep.reviewBy}`);
+        logger.info('');
+      }
+    } catch (error) {
+      handleError(error as Error);
+    }
+  });
+
+deps
+  .command('check')
+  .description('Check for expired dependency decisions')
+  .action(async () => {
+    try {
+      const dependencies = await manager.listByCategory('dependencies');
+      const expired = dependencies.filter(d => d.expired);
+      
+      if (expired.length === 0) {
+        logger.success('All dependency decisions are up to date');
+        return;
+      }
+
+      logger.error(`❌ ${expired.length} dependency decision(s) expired:`);
+      for (const dep of expired) {
+        logger.warn(`⚠️ ${dep.key} (review by ${dep.reviewBy})`);
+      }
+      process.exit(1);
+    } catch (error) {
+      handleError(error as Error);
+    }
+  });
+
 export { program };
