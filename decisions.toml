@@ -1,14 +1,3 @@
-# Technical Decisions Tracker
-# 
-# This file tracks non-dependency technical decisions.
-# For dependency decisions, use: pnpm deps:interactive
-# 
-# Categories:
-# - architecture: Major architectural decisions
-# - tooling: Tool and process choices (non-npm)
-# - patterns: Code patterns and conventions
-# - process: Development workflow decisions
-
 [metadata]
 version = "1.0"
 description = "Non-dependency technical decisions for the shared-lints project"
@@ -17,9 +6,102 @@ createdAt = "2025-05-29"
 [defaults]
 reviewAfter = "6m"
 
-# Example architecture decision:
-# [architecture.monorepo]
-# value = "pnpm workspaces"
-# reason = "Native monorepo support with strict dependency management"
-# reviewBy = "2026-01-01"
-# decided = "2025-05-29"
+[dependencies.typescript]
+decision = "keep"
+currentVersion = "^5.8.3"
+availableVersion = "^5.8.3"
+reason = "Essential for TypeScript development"
+tier = "essential"
+value = "^5.8.3"
+reviewBy = "2025-08-27"
+
+[dependencies."@types/node"]
+decision = "keep"
+current = "^20.0.0"
+reason = "Staying on Node 20 LTS"
+available = "^22.0.0"
+tier = "essential"
+value = "^20.0.0"
+reviewBy = "2025-08-27"
+
+  [dependencies."@types/node".policy]
+  update = "auto"
+  range = "^"
+  major = "review"
+
+  [dependencies."@types/node".meta]
+  security = "medium"
+  alt = "None suitable"
+
+[dependencies."@typescript-eslint/eslint-plugin"]
+decision = "keep"
+currentVersion = "^8.33.0"
+availableVersion = "^8.33.0"
+reason = "Minor update with backwards compatibility"
+tier = "essential"
+value = "^8.33.0"
+reviewBy = "2025-08-27"
+
+[dependencies."@typescript-eslint/parser"]
+decision = "keep"
+currentVersion = "^8.33.0"
+availableVersion = "^8.33.0"
+reason = "Minor update with backwards compatibility"
+tier = "essential"
+value = "^8.33.0"
+reviewBy = "2025-08-27"
+
+[dependencies."@typescript-eslint/utils"]
+decision = "keep"
+currentVersion = "^8.32.1"
+availableVersion = "^8.32.1"
+reason = "Minor update with backwards compatibility"
+tier = "essential"
+platformAlternative = "Raw ESLint APIs (rejected: no type safety)"
+value = "^8.32.1"
+reviewBy = "2025-08-27"
+
+[dependencies.vitest]
+decision = "keep"
+currentVersion = "^3.1.4"
+availableVersion = "^3.1.4"
+reason = "Better TypeScript support than Jest, faster execution"
+tier = "essential"
+platformAlternative = "Node.js test runner (rejected: immature)"
+value = "^3.1.4"
+reviewBy = "2025-08-27"
+
+[dependencies.markdownlint-cli2]
+decision = "keep"
+currentVersion = "^0.12.1"
+availableVersion = "^0.18.1"
+reason = "Version 0.x series, waiting for 1.0 stable release"
+tier = "justified"
+removalTrigger = "When documentation quality can be maintained without it"
+value = "^0.12.1"
+reviewBy = "2025-06-28"
+
+[dependencies.npm-check-updates]
+decision = "keep"
+currentVersion = "^17.1.11"
+availableVersion = "^18.0.1"
+reason = "Major version update, need to test breaking changes"
+tier = "justified"
+removalTrigger = "When package managers add equivalent built-in functionality"
+value = "^17.1.11"
+reviewBy = "2025-06-28"
+
+[dependencies.eslint]
+decision = "keep"
+currentVersion = ">=9.0.0"
+availableVersion = "^9.27.0"
+reason = "Essential for project rule enforcement approach"
+tier = "essential"
+value = ">=9.0.0"
+reviewBy = "2025-08-27"
+
+[dependencies.react]
+value = "^18.0.0"
+reason = "Using React for UI components"
+reviewBy = "2025-11-29"
+decided = "2025-05-29"
