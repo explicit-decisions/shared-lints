@@ -5,6 +5,7 @@ node_modules
 /docs/ephemeral
 
 dist/
+coverage/
 
 # Reference repositories for analysis
 # Keep configuration files and documentation, but ignore the synced repos
