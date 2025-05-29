@@ -1,0 +1,13 @@
+[metadata]
+version = "1.0"
+description = "Technical decisions for this project"
+createdAt = "2025-05-29"
+
+[defaults]
+reviewAfter = "6m"
+
+[dependencies.typescript]
+value = "^5.7.0"
+reason = "Native .ts import support"
+reviewBy = "2025-11-29"
+decided = "2025-05-29"

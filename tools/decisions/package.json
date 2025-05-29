@@ -1,0 +1,45 @@
+{
+  "name": "@explicit-decisions/decisions",
+  "version": "0.1.0",
+  "description": "Simple tool for tracking explicit technical decisions in TOML format",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/explicit-decisions/shared-lints.git",
+    "directory": "tools/decisions"
+  },
+  "type": "module",
+  "bin": {
+    "decisions": "./bin/decisions.js"
+  },
+  "exports": "./src/manager.ts",
+  "files": [
+    "src",
+    "bin",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest"
+  },
+  "keywords": [
+    "decisions",
+    "toml",
+    "technical-decisions",
+    "explicit-decisions"
+  ],
+  "author": "Yehuda Katz",
+  "homepage": "https://github.com/explicit-decisions/shared-lints#readme",
+  "dependencies": {
+    "@iarna/toml": "^2.2.5",
+    "commander": "^12.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.17.50",
+    "typescript": "^5.7.2",
+    "vitest": "^3.1.4"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
