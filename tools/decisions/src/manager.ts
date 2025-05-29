@@ -30,31 +30,31 @@ interface DependencyDecision {
 function createDateString(date = new Date()): string {
   const isoString = date.toISOString();
   const datePart = isoString.split('T')[0];
-  return datePart || '';
+  return datePart ?? '';
 }
 
 export class DecisionsManager {
   readonly #configPath: string;
   
-  constructor(configPath: string = 'decisions.toml') {
+  constructor(configPath = 'decisions.toml') {
     this.#configPath = configPath;
   }
 
-  async load() {
+  async load(): Promise<Record<string, unknown>> {
     if (!existsSync(this.#configPath)) {
       throw new Error(`Decisions file not found: ${this.#configPath}`);
     }
     
     const content = await readFile(this.#configPath, 'utf8');
-    return TOML.parse(content);
+    return TOML.parse(content) as Record<string, unknown>;
   }
 
-  async save(decisions: any): Promise<void> {
+  async save(decisions: Record<string, unknown>): Promise<void> {
     const content = TOML.stringify(decisions);
     await writeFile(this.#configPath, content, 'utf8');
   }
 
-  async init(withExamples = false) {
+  async init(withExamples = false): Promise<void> {
     if (existsSync(this.#configPath)) {
       throw new Error(`File already exists: ${this.#configPath}`);
     }
@@ -74,7 +74,8 @@ export class DecisionsManager {
       const reviewDate = new Date();
       reviewDate.setMonth(reviewDate.getMonth() + 6);
 
-      (decisions as any).dependencies = {
+      const decisionData = decisions as Record<string, unknown>;
+      decisionData.dependencies = {
         typescript: {
           value: '^5.7.0',
           reason: 'Native .ts import support',
@@ -88,16 +89,18 @@ export class DecisionsManager {
   }
 
   async add(category: string, key: string, value: string, reason: string): Promise<void> {
-    const decisions: any = await this.load();
+    const decisions = await this.load();
     
-    if (!decisions[category]) {
+    // Initialize category if it doesn't exist
+    if (decisions[category] === undefined || typeof decisions[category] !== 'object') {
       decisions[category] = {};
     }
 
     const reviewDate = new Date();
     reviewDate.setMonth(reviewDate.getMonth() + 6);
 
-    decisions[category][key] = {
+    const categoryObj = decisions[category] as Record<string, unknown>;
+    categoryObj[key] = {
       value,
       reason,
       reviewBy: createDateString(reviewDate),

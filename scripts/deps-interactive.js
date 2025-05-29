@@ -4,6 +4,7 @@ import { execSync } from 'child_process';
 import { readFileSync, writeFileSync } from 'fs';
 import { join } from 'path';
 import { createInterface } from 'readline';
+
 import { logger, rawConsole } from '../tools/tooling/src/logger.js';
 
 const rootDir = process.env.TEST_ROOT_DIR || join(import.meta.dirname, '..');

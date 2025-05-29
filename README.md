@@ -50,12 +50,14 @@ pnpm lint
 This monorepo contains several packages:
 
 ### Published Packages (in `tools/`)
+
 - **`@explicit-decisions/eslint-plugin`** - ESLint rules enforcing explicit decisions
 - **`@explicit-decisions/eslint-config`** - Pre-configured ESLint configs
 - **`@explicit-decisions/decisions`** - CLI for tracking technical decisions
 - **`@explicit-decisions/tooling`** - CLI for project setup and migration
 
 ### Internal Scripts (in `scripts/`)
+
 The `scripts/` directory contains maintenance scripts for the shared-lints project itself. These are NOT part of the published packages. See [scripts/README.md](./scripts/README.md) for details.
 
 ## Core Principles
@@ -100,7 +102,7 @@ pnpm add -D some-tool && pnpm exec some-tool
 - 🤝 **[AI Collaboration](./docs/AI_COLLABORATION.md)** - Work effectively with AI
 - 🔄 **[Development Workflow](./docs/DEVELOPMENT_WORKFLOW.md)** - Two-phase development process
 
-## Project Structure
+## Repository Layout
 
 ```
 shared-lints/

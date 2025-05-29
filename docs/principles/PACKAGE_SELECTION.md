@@ -52,6 +52,7 @@ decisions assess --format json
 ```
 
 The tool checks:
+
 - Time since last publish
 - Weekly download statistics  
 - Known security vulnerabilities
@@ -65,7 +66,8 @@ The tool checks:
 **Principle:** Use modern JavaScript/TypeScript/Node.js capabilities when they provide equivalent functionality
 
 **Package justification requires ALL of:**
-1. **Significant user value** OR **significant complexity reduction** 
+
+1. **Significant user value** OR **significant complexity reduction**
 2. **High quality** - Well-tested, good documentation, clean API
 3. **Active maintenance** - Regular updates, responsive to issues
 
