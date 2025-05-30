@@ -26,10 +26,10 @@ This document explicitly tracks how the shared-lints codebase follows (or intent
 - Git history shows thoughtful, incremental changes
 - CLAUDE.md includes explicit "Think Before Acting" instructions
 
-**Current violation:**
+**Fixed violation:**
 
-- ❌ `no-mocks-or-spies` auto-fix removes code without understanding context
-- This is "mashing until it works" behavior we explicitly discourage
+- ✅ `no-mocks-or-spies` now provides suggestions instead of destructive auto-fixes
+- Rule changed from type 'problem' to 'suggestion' with manual review required
 
 ### 3. ⚠️ Hard Failures Over Warnings
 
@@ -52,10 +52,13 @@ This document explicitly tracks how the shared-lints codebase follows (or intent
 - Complex decisions (like dependency tiers) have detailed documentation
 - Error messages provide increasing detail based on context
 
-**Where we could improve:**
+**Fixed violation:**
 
-- `no-inconsistent-patterns` rule violates this - too complex for its purpose
-- Should be split into simpler, focused rules
+- ✅ Split `no-inconsistent-patterns` into 4 focused rules:
+  - `no-mixed-async-patterns` - detects mixing callbacks/promises/async-await
+  - `no-inconsistent-import-extensions` - enforces consistent import extensions
+  - `no-duplicate-utilities` - finds similar function signatures
+  - `no-outdated-polyfills` - detects obsolete patterns
 
 ### 5. ⚠️ Auto-fix When Possible, Guide When Not
 
@@ -64,10 +67,10 @@ This document explicitly tracks how the shared-lints codebase follows (or intent
 - Mechanical fixes (adding `.ts` extensions) are automated
 - Architectural decisions (dependency injection) are guidance-only
 
-**Current violations:**
+**Fixed violation:**
 
-- ❌ `no-mocks-or-spies` auto-fix makes architectural decisions (removing test code)
-- Should be guidance-only since it requires understanding intent
+- ✅ `no-mocks-or-spies` now uses suggestions instead of auto-fix
+- Provides guidance-only suggestions since it requires understanding intent
 
 ## Testing Philosophy Compliance
 
@@ -115,10 +118,10 @@ const testDir = await mkdtemp(join(tmpdir(), 'decisions-test-'));
 - Most ESLint rules focus on one pattern
 - Clear separation between rule detection and fixing
 
-**Current violation:**
+**Fixed violation:**
 
-- ❌ `no-inconsistent-patterns` tries to detect 4+ different issues
-- Violates single responsibility principle
+- ✅ Split `no-inconsistent-patterns` into 4 single-purpose rules
+- Each new rule has exactly one responsibility
 
 ### ✅ Clear Abstraction Boundaries
 
@@ -189,9 +192,17 @@ To ensure ongoing compliance:
 
 ### Immediate (This Week)
 
-1. Fix `no-mocks-or-spies` destructive auto-fix
-2. Split `no-inconsistent-patterns` into focused rules
-3. Add factory functions to test files with warnings
+1. ~~Fix `no-mocks-or-spies` destructive auto-fix~~ ✅ Completed
+2. ~~Split `no-inconsistent-patterns` into focused rules~~ ✅ Completed
+   - Created `no-mixed-async-patterns`
+   - Created `no-inconsistent-import-extensions`
+   - Created `no-duplicate-utilities`
+   - Created `no-outdated-polyfills`
+3. ~~Add comprehensive tests for new split rules~~ ✅ Completed
+   - Each rule has multiple valid and invalid test cases
+   - Tests cover edge cases and real-world scenarios
+   - All tests passing
+4. Add factory functions to test files with warnings
 
 ### Short-term (This Month)
 
@@ -210,10 +221,10 @@ To ensure ongoing compliance:
 | Principle | Compliance | Notes |
 |-----------|------------|-------|
 | Explicit Decisions | 90% | Some implicit patterns remain |
-| Think Before Acting | 85% | One significant violation |
+| Think Before Acting | 95% | Fixed destructive auto-fix |
 | Hard Failures | 95% | Well implemented |
-| Progressive Disclosure | 80% | Some overly complex rules |
-| Auto-fix Reliability | 70% | Critical issue with mock removal |
+| Progressive Disclosure | 95% | Fixed by splitting complex rule |
+| Auto-fix Reliability | 85% | Fixed mock removal, some minor issues remain |
 | No Mocks Testing | 100% | Exemplary implementation |
 | Real Implementations | 95% | Minor factory function issues |
 

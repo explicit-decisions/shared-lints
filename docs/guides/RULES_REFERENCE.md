@@ -21,6 +21,13 @@ The shared-lints ESLint plugin implements the **Enforced Explicit Decisions Patt
 - [`require-ts-extensions`](#require-ts-extensions) - Enforce explicit TypeScript imports
 - [`prefer-ts-imports`](#prefer-ts-imports) - Prefer .ts over .js when available
 
+### Pattern Consistency Rules
+
+- [`no-mixed-async-patterns`](#no-mixed-async-patterns) - Enforce consistent async patterns
+- [`no-inconsistent-import-extensions`](#no-inconsistent-import-extensions) - Enforce consistent import extensions
+- [`no-duplicate-utilities`](#no-duplicate-utilities) - Detect duplicate utility functions
+- [`no-outdated-polyfills`](#no-outdated-polyfills) - Detect outdated polyfill usage
+
 ---
 
 ## Testing Philosophy Rules
@@ -537,81 +544,75 @@ Automatically converts `.js` imports to `.ts` when:
 - TypeScript file exists at the resolved path
 - Import is a relative path
 
-### `no-inconsistent-patterns`
+## Pattern Consistency Rules
 
-Detects when the same problem is solved in multiple different ways within a codebase, suggesting copy-paste or pattern-matching without understanding. This is a common LLM "vibe coding" pattern where different approaches are used inconsistently throughout the codebase.
+These rules detect when the same problem is solved in multiple different ways within a codebase, suggesting copy-paste or pattern-matching without understanding. This is a common LLM "vibe coding" pattern.
+
+### `no-mixed-async-patterns`
+
+**Type:** Suggestion  
+**Fixable:** No  
+**TypeScript Version:** `no-mixed-async-patterns`
+
+Detects when different async patterns (callbacks, promises, async/await) are mixed within the same file.
 
 #### Why This Rule Exists
 
-LLMs often generate code by pattern-matching from their training data, which can lead to:
+Mixing async patterns in the same file suggests code copied from different sources without understanding. Consistent async patterns improve:
 
-- Multiple async patterns in the same codebase (callbacks, promises, async/await)
-- Inconsistent import styles (with/without extensions)  
-- Duplicate utility functions with slightly different names
-- Old polyfills when modern alternatives exist
-
-This creates maintenance burden and confusion for developers.
+- Code readability and maintainability
+- Error handling consistency
+- Developer understanding
+- Debugging experience
 
 #### Examples
 
 ❌ **Incorrect:**
 
 ```typescript
-// File A: Using async/await
+// Mixing async/await and promises in same file
 async function fetchUser(id: string) {
   const response = await fetch(`/api/users/${id}`);
   return response.json();
 }
 
-// File B: Using promises in the same codebase
-function fetchUser(id: string) {
-  return fetch(`/api/users/${id}`)
+function updateUser(id: string, data: any) {
+  return fetch(`/api/users/${id}`, { method: 'PUT', body: JSON.stringify(data) })
     .then(response => response.json());
 }
 
-// File C: Using callbacks (even worse)
-function fetchUser(id: string, callback: (user: User) => void) {
-  fetch(`/api/users/${id}`)
-    .then(response => response.json())
-    .then(callback);
+function deleteUser(id: string, callback: (success: boolean) => void) {
+  fetch(`/api/users/${id}`, { method: 'DELETE' })
+    .then(() => callback(true))
+    .catch(() => callback(false));
 }
 ```
 
 ✅ **Correct:**
 
 ```typescript
-// Consistent async/await pattern across all files
-async function fetchUser(id: string): Promise<User> {
+// Consistent async/await pattern
+async function fetchUser(id: string) {
   const response = await fetch(`/api/users/${id}`);
   return response.json();
 }
 
-async function updateUser(id: string, data: Partial<User>): Promise<User> {
-  const response = await fetch(`/api/users/${id}`, {
-    method: 'PUT',
-    body: JSON.stringify(data)
+async function updateUser(id: string, data: any) {
+  const response = await fetch(`/api/users/${id}`, { 
+    method: 'PUT', 
+    body: JSON.stringify(data) 
   });
   return response.json();
 }
-```
 
-#### What It Detects
-
-1. **Inconsistent async patterns** - mixing async/await, promises, and callbacks
-2. **Inconsistent import extensions** - some files using .js extensions, others not
-3. **Duplicate utility functions** - similar functions with slightly different names
-4. **Outdated patterns** - using polyfills when modern alternatives exist
-
-Example of outdated pattern detection:
-
-```typescript
-// ❌ Detects old __dirname polyfill
-import { dirname } from 'path';
-import { fileURLToPath } from 'url';
-const __dirname = dirname(fileURLToPath(import.meta.url));
-
-// ✅ Use modern alternative
-const __dirname = import.meta.dirname;
+async function deleteUser(id: string): Promise<boolean> {
+  try {
+    await fetch(`/api/users/${id}`, { method: 'DELETE' });
+    return true;
+  } catch {
+    return false;
+  }
+}
 ```
 
 #### Configuration
@@ -619,18 +620,213 @@ const __dirname = import.meta.dirname;
 ```json
 {
   "rules": {
-    "@explicit-decisions/no-inconsistent-patterns": "error"
+    "@explicit-decisions/no-mixed-async-patterns": "error"
   }
 }
 ```
 
-#### Auto-fix Behavior
+---
 
-This rule does not provide auto-fix because:
+### `no-inconsistent-import-extensions`
 
-- Choosing the right pattern requires understanding the codebase context
-- Automatic refactoring could break existing code
-- The goal is to make developers aware of the inconsistency
+**Type:** Suggestion  
+**Fixable:** No  
+**TypeScript Version:** `no-inconsistent-import-extensions`
+
+Enforces consistent use of file extensions in import statements within a file.
+
+#### Why This Rule Exists
+
+Inconsistent import extensions suggest code copied from different sources. Consistency ensures:
+
+- Clear module resolution strategy
+- Predictable bundler behavior
+- Easier refactoring
+- Better tool support
+
+#### Examples
+
+❌ **Incorrect:**
+
+```typescript
+// Inconsistent - some imports have extensions, others don't
+import { User } from './models/user';
+import { validateEmail } from './utils/validation.ts';
+import { config } from '../config/app';
+import { logger } from '../services/logger.ts';
+```
+
+✅ **Correct:**
+
+```typescript
+// Consistent - all imports use extensions
+import { User } from './models/user.ts';
+import { validateEmail } from './utils/validation.ts';
+import { config } from '../config/app.ts';
+import { logger } from '../services/logger.ts';
+
+// OR consistent - no extensions
+import { User } from './models/user';
+import { validateEmail } from './utils/validation';
+import { config } from '../config/app';
+import { logger } from '../services/logger';
+```
+
+#### Configuration
+
+```json
+{
+  "rules": {
+    "@explicit-decisions/no-inconsistent-import-extensions": "error"
+  }
+}
+```
+
+---
+
+### `no-duplicate-utilities`
+
+**Type:** Suggestion  
+**Fixable:** No  
+**TypeScript Version:** `no-duplicate-utilities`
+
+Detects functions with similar signatures and names that likely duplicate functionality.
+
+#### Why This Rule Exists
+
+Duplicate utilities suggest copy-paste programming without consolidation. This leads to:
+
+- Maintenance burden (fixing bugs in multiple places)
+- Inconsistent behavior
+- Larger bundle sizes
+- Confusion about which utility to use
+
+#### Examples
+
+❌ **Incorrect:**
+
+```typescript
+// Similar functions with slightly different names
+function validateUserEmail(email: string): boolean {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+function validateCompanyEmail(email: string): boolean {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+function formatUserDate(date: Date): string {
+  return date.toISOString().split('T')[0];
+}
+
+function formatOrderDate(date: Date): string {
+  return date.toISOString().split('T')[0];
+}
+```
+
+✅ **Correct:**
+
+```typescript
+// Single utility function
+function validateEmail(email: string): boolean {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+function formatDate(date: Date): string {
+  return date.toISOString().split('T')[0];
+}
+
+// Use the same function for different contexts
+const isValidUserEmail = validateEmail(userEmail);
+const isValidCompanyEmail = validateEmail(companyEmail);
+```
+
+#### Configuration
+
+```json
+{
+  "rules": {
+    "@explicit-decisions/no-duplicate-utilities": "warn"
+  }
+}
+```
+
+---
+
+### `no-outdated-polyfills`
+
+**Type:** Suggestion  
+**Fixable:** No  
+**TypeScript Version:** `no-outdated-polyfills`
+
+Detects usage of polyfills or workarounds for features that are now natively supported.
+
+#### Why This Rule Exists
+
+Using outdated polyfills suggests code copied from older sources without understanding modern alternatives. This leads to:
+
+- Unnecessary code complexity
+- Worse performance
+- Larger bundle sizes
+- Missing out on native optimizations
+
+#### Examples
+
+❌ **Incorrect:**
+
+```typescript
+// Old __dirname polyfill
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
+// Old JSON import pattern
+import { readFileSync } from 'fs';
+import { join } from 'path';
+const packageJson = JSON.parse(readFileSync(join(__dirname, 'package.json'), 'utf8'));
+
+// Array.prototype.slice.call pattern
+function toArray(arrayLike) {
+  return Array.prototype.slice.call(arrayLike);
+}
+
+// Promise.resolve().then() pattern
+Promise.resolve().then(() => {
+  console.log('Next tick');
+});
+```
+
+✅ **Correct:**
+
+```typescript
+// Modern import.meta.dirname
+const __dirname = import.meta.dirname;
+
+// Modern JSON imports
+import packageJson from './package.json' with { type: 'json' };
+
+// Modern array conversion
+function toArray(arrayLike) {
+  return Array.from(arrayLike);
+  // or [...arrayLike]
+}
+
+// Modern async/await
+async function nextTick() {
+  await Promise.resolve();
+  console.log('Next tick');
+}
+```
+
+#### Configuration
+
+```json
+{
+  "rules": {
+    "@explicit-decisions/no-outdated-polyfills": "warn"
+  }
+}
+```
 
 ---
 

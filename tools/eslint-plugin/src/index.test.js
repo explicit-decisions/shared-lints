@@ -12,9 +12,9 @@ describe("shared ESLint plugin", () => {
   });
 
   it("should include no-mocks-or-spies rule", () => {
-    
-    
-    
+    expect(plugin.rules["no-mocks-or-spies"]).toBeDefined();
+    expect(plugin.rules["no-mocks-or-spies"].meta).toBeDefined();
+    expect(plugin.rules["no-mocks-or-spies"].create).toBeDefined();
   });
 
   it("should include require-ts-extensions rule", () => {
@@ -31,8 +31,8 @@ describe("shared ESLint plugin", () => {
 
   it("should have proper rule metadata", () => {
     const noMocksRule = plugin.rules["no-mocks-or-spies"];
-    expect(noMocksRule.meta?.type).toBe("problem");
-    expect(noMocksRule.meta?.fixable).toBe("code");
+    expect(noMocksRule.meta?.type).toBe("suggestion"); // Changed from 'problem' to 'suggestion'
+    expect(noMocksRule.meta?.hasSuggestions).toBe(true); // Now uses suggestions instead of auto-fix
     
     const tsExtRule = plugin.rules["require-ts-extensions"];
     expect(tsExtRule.meta?.type).toBe("problem");
