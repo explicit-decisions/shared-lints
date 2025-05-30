@@ -1,5 +1,6 @@
 // TypeScript version of the ESLint plugin index
 import { noAnyInTests } from './rules/no-any-in-tests.ts';
+import { noInconsistentPatterns } from './rules/no-inconsistent-patterns.ts';
 import { noMocksOrSpies } from './rules/no-mocks-or-spies.ts';
 import { noNpxUsage } from './rules/no-npx-usage.ts';
 import { preferRealImplementations } from './rules/prefer-real-implementations.ts';
@@ -20,6 +21,7 @@ const plugin = {
     'prefer-ts-imports': preferTsImports,
     'require-factory-functions': requireFactoryFunctions,
     'require-ts-extensions': requireTsExtensions,
+    'no-inconsistent-patterns': noInconsistentPatterns,
   },
 };
 

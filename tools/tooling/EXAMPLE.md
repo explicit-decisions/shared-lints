@@ -17,6 +17,7 @@ npx shared-lints init
 ```
 
 This will ask you questions and set up:
+
 - ESLint configuration
 - Dependency tracking
 - Package.json scripts
@@ -25,11 +26,13 @@ This will ask you questions and set up:
 ## Daily Workflow
 
 ### 1. Check dependency status
+
 ```bash
 npm run deps:check
 ```
 
 Example output:
+
 ```
 ❌ Dependency policy violations found:
 
@@ -41,6 +44,7 @@ Example output:
 ```
 
 ### 2. Make dependency decisions
+
 ```bash
 npm run deps:interactive
 ```
@@ -48,11 +52,13 @@ npm run deps:interactive
 This runs `npm-check-updates` in interactive mode, then prompts you to document decisions for any packages you chose not to update.
 
 ### 3. Lint your code
+
 ```bash
 npm run lint
 ```
 
 This runs both dependency checking and ESLint. It will fail if:
+
 - Dependencies need decisions
 - ESLint rules are violated
 - Dependency decisions are stale (>30 days)
@@ -140,6 +146,7 @@ npm run lint
 ```
 
 This will fail if:
+
 1. Any dependencies are outdated without documented decisions
 2. Any decisions are older than 30 days
 3. Any ESLint rules are violated

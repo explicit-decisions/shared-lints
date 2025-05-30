@@ -1,9 +1,11 @@
 import { program } from 'commander';
 
+import { ClaudeUpdater } from './claude-updater.ts';
 import { logger } from './logger.ts';
 import { DecisionsManager } from './manager.ts';
 
 const manager = new DecisionsManager();
+const claudeUpdater = new ClaudeUpdater();
 
 function handleError(error: Error): void {
   logger.error('❌', error.message);
@@ -173,6 +175,70 @@ deps
         logger.warning(`⚠️ ${dep.key} (review by ${dep.reviewBy})`);
       }
       process.exit(1);
+    } catch (error) {
+      handleError(error as Error);
+    }
+  });
+
+// Claude commands - create subcommand
+const claudeCommand = program
+  .command('claude')
+  .description('Manage CLAUDE.md AI instructions');
+
+claudeCommand
+  .command('init')
+  .description('Initialize CLAUDE.md with shared principles')
+  .option('--force', 'Overwrite existing file')
+  .action(async (options) => {
+    try {
+      await claudeUpdater.init(options.force);
+      logger.success('Created CLAUDE.md with shared principles');
+      logger.info('');
+      logger.info('Next steps:');
+      logger.info('  - Add project-specific instructions');
+      logger.info('  - Run "decisions claude update" periodically for updates');
+    } catch (error) {
+      handleError(error as Error);
+    }
+  });
+
+claudeCommand
+  .command('update')
+  .description('Update shared sections in CLAUDE.md')
+  .action(async () => {
+    try {
+      const result = await claudeUpdater.update();
+      
+      if (result.updated.length > 0) {
+        logger.success(`Updated ${result.updated.length} section(s):`);
+        result.updated.forEach(section => { logger.info(`  - ${section}`); });
+      }
+      
+      if (result.preserved.length > 0) {
+        logger.info(`\nPreserved ${result.preserved.length} custom section(s)`);
+      }
+      
+      logger.info('\n✅ CLAUDE.md is up to date');
+    } catch (error) {
+      handleError(error as Error);
+    }
+  });
+
+claudeCommand
+  .command('check')
+  .description('Check if CLAUDE.md needs updates')
+  .action(async () => {
+    try {
+      const result = await claudeUpdater.checkForUpdates();
+      
+      if (result.hasUpdates) {
+        logger.warning(`Updates available for ${result.sections.length} section(s):`);
+        result.sections.forEach(section => { logger.info(`  - ${section}`); });
+        logger.info('\nRun "decisions claude update" to apply updates');
+        process.exit(1);
+      } else {
+        logger.success('CLAUDE.md is up to date');
+      }
     } catch (error) {
       handleError(error as Error);
     }

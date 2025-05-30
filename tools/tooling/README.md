@@ -17,6 +17,7 @@ npx shared-lints init
 ```
 
 This will:
+
 - Set up ESLint configuration with shared-lints rules
 - Initialize dependency tracking
 - Update your package.json scripts

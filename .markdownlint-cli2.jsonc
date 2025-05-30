@@ -1,0 +1,36 @@
+{
+  // Configuration for markdownlint-cli2
+  "globs": [
+    "*.md",
+    "docs/**/*.md",
+    "tools/**/*.md",
+    "scripts/**/*.md"
+  ],
+  "ignores": [
+    "node_modules/**/*",
+    "**/node_modules/**/*",
+    "dist/**/*",
+    "coverage/**/*",
+    "reference-repos/**/*",
+    "docs/archive/**/*",
+    "docs/ephemeral/**/*"
+  ],
+  "config": {
+    // Disable line length limit (MD013)
+    "MD013": false,
+    // Disable emphasis used instead of heading (MD036)
+    "MD036": false,
+    // Disable fenced code blocks should have a language specified (MD040)
+    "MD040": false,
+    // Disable first line in a file should be a top-level heading (MD041)
+    "MD041": false,
+    // Allow duplicate headings when not siblings
+    "MD024": {
+      "siblings_only": true
+    },
+    // Allow HTML elements for collapsible sections
+    "MD033": {
+      "allowed_elements": ["details", "summary"]
+    }
+  }
+}

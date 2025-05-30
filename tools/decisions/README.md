@@ -5,6 +5,7 @@ A command-line tool for tracking all technical decisions in TOML format, includi
 ## Purpose
 
 This tool provides a unified way to track and review technical decisions with built-in support for:
+
 - Dependency version decisions with rich metadata (tiers, alternatives, migration paths)
 - Architecture decisions (build tools, frameworks, patterns)
 - Process decisions (workflows, conventions)

@@ -5,6 +5,7 @@ This directory contains maintenance scripts for the shared-lints project itself.
 ## Purpose
 
 These scripts help maintain the shared-lints monorepo by:
+
 - Managing our own dependencies
 - Validating project consistency
 - Updating reference repositories
@@ -13,16 +14,19 @@ These scripts help maintain the shared-lints monorepo by:
 ## Scripts Overview
 
 ### Dependency Management (Internal)
+
 - `deps-init.js` - Initialize dependency tracking for shared-lints
 - `deps-interactive.js` - Interactive dependency review for shared-lints' own dependencies
 - `check-dependencies.js` - Validate our dependency decisions against tracking file
 
 ### Project Maintenance
+
 - `check-project-metadata.js` - Ensure all package.json files have consistent metadata
 - `llm-bootstrap.js` - Quick health check and orientation for AI assistants
 - `migrate-dependencies-to-decisions.js` - One-time migration to unified decisions system
 
 ### Reference Repository Management
+
 - `update-reference-repos.sh` - Pull latest changes from reference repositories
 - `link-reference-repos.sh` - Create symlinks for local development
 - `validate-reference-config.js` - Validate reference repository configuration

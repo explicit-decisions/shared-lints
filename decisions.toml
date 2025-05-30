@@ -100,3 +100,15 @@ tier = "essential"
 value = ">=9.0.0"
 reviewBy = "2025-08-27"
 
+[architecture.package_structure]
+value = "two packages: universal decisions tool and JS-specific eslint-tools"
+reason = """
+Decision tracking and CLAUDE.md management are language-agnostic tools useful for Python/Rust/Go/etc projects. 
+These shouldn't require ESLint dependencies. Split enables:
+1) Lighter installs for non-JS users
+2) Better discoverability
+3) Independent versioning
+4) Clearer positioning as universal engineering tools vs JS implementation
+"""
+reviewBy = "2025-11-30"
+decided = "2025-05-30"

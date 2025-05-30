@@ -537,6 +537,101 @@ Automatically converts `.js` imports to `.ts` when:
 - TypeScript file exists at the resolved path
 - Import is a relative path
 
+### `no-inconsistent-patterns`
+
+Detects when the same problem is solved in multiple different ways within a codebase, suggesting copy-paste or pattern-matching without understanding. This is a common LLM "vibe coding" pattern where different approaches are used inconsistently throughout the codebase.
+
+#### Why This Rule Exists
+
+LLMs often generate code by pattern-matching from their training data, which can lead to:
+
+- Multiple async patterns in the same codebase (callbacks, promises, async/await)
+- Inconsistent import styles (with/without extensions)  
+- Duplicate utility functions with slightly different names
+- Old polyfills when modern alternatives exist
+
+This creates maintenance burden and confusion for developers.
+
+#### Examples
+
+❌ **Incorrect:**
+
+```typescript
+// File A: Using async/await
+async function fetchUser(id: string) {
+  const response = await fetch(`/api/users/${id}`);
+  return response.json();
+}
+
+// File B: Using promises in the same codebase
+function fetchUser(id: string) {
+  return fetch(`/api/users/${id}`)
+    .then(response => response.json());
+}
+
+// File C: Using callbacks (even worse)
+function fetchUser(id: string, callback: (user: User) => void) {
+  fetch(`/api/users/${id}`)
+    .then(response => response.json())
+    .then(callback);
+}
+```
+
+✅ **Correct:**
+
+```typescript
+// Consistent async/await pattern across all files
+async function fetchUser(id: string): Promise<User> {
+  const response = await fetch(`/api/users/${id}`);
+  return response.json();
+}
+
+async function updateUser(id: string, data: Partial<User>): Promise<User> {
+  const response = await fetch(`/api/users/${id}`, {
+    method: 'PUT',
+    body: JSON.stringify(data)
+  });
+  return response.json();
+}
+```
+
+#### What It Detects
+
+1. **Inconsistent async patterns** - mixing async/await, promises, and callbacks
+2. **Inconsistent import extensions** - some files using .js extensions, others not
+3. **Duplicate utility functions** - similar functions with slightly different names
+4. **Outdated patterns** - using polyfills when modern alternatives exist
+
+Example of outdated pattern detection:
+
+```typescript
+// ❌ Detects old __dirname polyfill
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
+// ✅ Use modern alternative
+const __dirname = import.meta.dirname;
+```
+
+#### Configuration
+
+```json
+{
+  "rules": {
+    "@explicit-decisions/no-inconsistent-patterns": "error"
+  }
+}
+```
+
+#### Auto-fix Behavior
+
+This rule does not provide auto-fix because:
+
+- Choosing the right pattern requires understanding the codebase context
+- Automatic refactoring could break existing code
+- The goal is to make developers aware of the inconsistency
+
 ---
 
 ## Migration Guide

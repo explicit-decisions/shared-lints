@@ -1,1 +1,0 @@
-{"version":3,"file":"prefer-real-implementations.d.ts","sourceRoot":"","sources":["../../src/rules/prefer-real-implementations.ts"],"names":[],"mappings":"AACA,OAAO,EAAE,WAAW,EAAkB,MAAM,0BAA0B,CAAC;AAEvE,KAAK,UAAU,GAAG,kBAAkB,GAAG,uBAAuB,GAAG,kBAAkB,CAAC;AAEpF,MAAM,WAAW,OAAO;IACtB,cAAc,CAAC,EAAE,MAAM,EAAE,CAAC;CAC3B;AAMD;;;GAGG;AACH,eAAO,MAAM,yBAAyB,kFAuIpC,CAAC"}

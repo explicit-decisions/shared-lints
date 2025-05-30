@@ -5,6 +5,7 @@ This guide explains how to get the best development experience when working with
 ## Overview
 
 The Explicit Decisions framework provides first-class TOML support with:
+
 - **JSON Schema** for validation and autocomplete
 - **VS Code integration** via Even Better TOML extension
 - **Formatting** via taplo
@@ -121,6 +122,7 @@ reviewBy = "not-a-date"  # ❌ Error: Invalid date format
 ### 2. Autocomplete
 
 When you type in VS Code:
+
 - Category names (dependencies, architecture, etc.)
 - Field names (value, reason, decided, etc.)
 - Special fields (tags, alternatives, references)
@@ -128,6 +130,7 @@ When you type in VS Code:
 ### 3. Documentation
 
 Hover over any field to see its purpose:
+
 - `value`: The decided value
 - `reason`: Why this decision was made
 - `reviewBy`: When this decision should be reviewed
@@ -143,6 +146,7 @@ You can use multiple decision files:
 ```
 
 All will get schema support if they match the patterns:
+
 - `decisions.toml`
 - `decisions.*.toml`
 - `.decisions.toml`
@@ -161,11 +165,13 @@ For JetBrains IDEs:
 ### Schema Not Working
 
 1. Ensure `@explicit-decisions/core` is installed:
+
    ```bash
    npm install @explicit-decisions/core
    ```
 
 2. Check the schema path exists:
+
    ```bash
    ls node_modules/@explicit-decisions/core/schemas/
    ```
@@ -177,11 +183,13 @@ For JetBrains IDEs:
 ### Formatting Issues
 
 1. Check taplo is installed:
+
    ```bash
    taplo --version
    ```
 
 2. Validate your TOML syntax:
+
    ```bash
    taplo lint decisions.toml
    ```
